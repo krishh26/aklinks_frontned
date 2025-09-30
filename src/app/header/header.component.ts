@@ -21,15 +21,26 @@ import { RouterModule } from '@angular/router';
               
               <li class="dropdown">
                 <button class="dropdown-toggle">
-                  More
+                  Important Pages
                   <span>▼</span>
                 </button>
                 <div class="dropdown-menu">
-                  <a href="#" (click)="$event.preventDefault()">Payment System</a>
-                  <a href="#" (click)="$event.preventDefault()">Payment Rules</a>
+                  <a routerLink="/payment-system">Payment System</a>
+                  <a routerLink="/payment-rules">Payment Rules</a>
                 </div>
               </li>
             </ul>
+            
+            <div class="auth-buttons">
+              <a routerLink="/auth/login" class="btn-login">
+                <span class="btn-icon">🔑</span>
+                Login
+              </a>
+              <a routerLink="/auth/signup" class="btn-signup">
+                <span class="btn-icon">👤</span>
+                Sign Up
+              </a>
+            </div>
             
             <button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
               ☰
