@@ -11,7 +11,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
     <div class="auth-container">
       <div class="auth-card">
         <div class="auth-header">
-          <h1>InShortUrl</h1>
+          <h1>AKLinks</h1>
           <p>Welcome back! Please sign in to your account.</p>
         </div>
 

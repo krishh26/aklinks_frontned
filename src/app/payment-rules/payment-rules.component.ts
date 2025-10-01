@@ -42,7 +42,7 @@ import { RouterModule } from '@angular/router';
               <div class="rule-icon">🔗</div>
               <div class="rule-content">
                 <h3>Multiple Shorteners</h3>
-                <p>Using Multiple Shorteners Only After Inshorturl Is Allowed (Sub2Unlock And Similar Too).</p>
+                <p>Using Multiple Shorteners Only After AKLinks Is Allowed (Sub2Unlock And Similar Too).</p>
               </div>
             </div>
 
@@ -67,7 +67,7 @@ import { RouterModule } from '@angular/router';
               <div class="rule-icon">⏰</div>
               <div class="rule-content">
                 <h3>Activity Requirements</h3>
-                <p>Inactive Users With More Than <strong>10 Days</strong> Will Not Get Their Payment. To Be Considered Active, Users Must Use InShortUrl For at Least 1 Week.</p>
+                <p>Inactive Users With More Than <strong>10 Days</strong> Will Not Get Their Payment. To Be Considered Active, Users Must Use AKLinks For at Least 1 Week.</p>
               </div>
             </div>
 

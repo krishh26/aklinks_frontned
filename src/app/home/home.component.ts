@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
     <section class="hero">
       <div class="container">
         <h1>Turn Your Traffic into Profit.</h1>
-        <p class="hero-subtitle">Why just share links? Shorten them and get paid with InShortUrl!</p>
+        <p class="hero-subtitle">Why just share links? Shorten them and get paid with AKLinks!</p>
         
         <div class="hero-buttons">
           <a routerLink="/auth/login" class="btn btn-primary">Login</a>
@@ -27,20 +27,20 @@ import { RouterModule } from '@angular/router';
         <div class="section-header">
           <h6>Work Process</h6>
           <h2>How It Works?</h2>
-          <p>InShortUrl is a completely free tool where you can create short links and get paid.</p>
+          <p>AKLinks is a completely free tool where you can create short links and get paid.</p>
         </div>
         
         <div class="steps-grid">
           <div class="step-card">
             <div class="step-number">1</div>
             <h3>Create Account</h3>
-            <p>In order to get started with InShortUrl, at first all you need is InShortUrl Account & you can create it by sign-up option.</p>
+            <p>In order to get started with AKLinks, at first all you need is AKLinks Account & you can create it by sign-up option.</p>
           </div>
           
           <div class="step-card">
             <div class="step-number">2</div>
             <h3>Shorten Your Links</h3>
-            <p>Shorten that links with InShortUrl you want to share, you can use Link Shorten option given in Dashboard</p>
+            <p>Shorten that links with AKLinks you want to share, you can use Link Shorten option given in Dashboard</p>
           </div>
           
           <div class="step-card">
@@ -57,7 +57,7 @@ import { RouterModule } from '@angular/router';
       <div class="container">
         <div class="section-header">
           <h2>Why join us?</h2>
-          <p>All legitimate visits you bring to InShortUrl will be counted up to 1 visits per IP every 24 hours. You will earn more with InShortUrl thanks also to our exclusive AdBlocks stop tools.</p>
+          <p>All legitimate visits you bring to AKLinks will be counted up to 1 visits per IP every 24 hours. You will earn more with AKLinks thanks also to our exclusive AdBlocks stop tools.</p>
         </div>
         
         <div class="features-grid">
@@ -90,14 +90,14 @@ import { RouterModule } from '@angular/router';
       <div class="container">
         <div class="section-header">
           <h2>We bring solutions to make life easier for our members.</h2>
-          <p>InShortUrl is the best solution for publishers who want to earn more money with easier shortlink pages, InShortUrl doesn't contain any pop ups , captcha and fake ads. We provide flat 6$ to 8$ CPM to All Countries..</p>
+          <p>AKLinks is the best solution for publishers who want to earn more money with easier shortlink pages, AKLinks doesn't contain any pop ups , captcha and fake ads. We provide flat 6$ to 8$ CPM to All Countries..</p>
         </div>
         
         <div class="solutions-grid">
           <div class="solution-card">
             <div class="solution-icon">🤖</div>
             <h3>Telegram Bot</h3>
-            <p>Telegram Bot will help you to create short links directly from your InShortUrl account</p>
+            <p>Telegram Bot will help you to create short links directly from your AKLinks account</p>
             <a href="#" class="solution-link">Open Telegram bot</a>
           </div>
           
@@ -133,7 +133,7 @@ import { RouterModule } from '@angular/router';
         <div class="testimonials-grid">
           <div class="testimonial-card">
             <div class="testimonial-content">
-              <p>"InShortUrl is very LEGIT. I have withdrawn around 650$ till now. instant payments and payments using USDT are a big plus for me. Have been using it for 4 months"</p>
+              <p>"AKLinks is very LEGIT. I have withdrawn around 650$ till now. instant payments and payments using USDT are a big plus for me. Have been using it for 4 months"</p>
             </div>
             <div class="testimonial-author">
               <div class="author-info">
@@ -157,7 +157,7 @@ import { RouterModule } from '@angular/router';
           
           <div class="testimonial-card">
             <div class="testimonial-content">
-              <p>"Amount received : 8$ InShortUrl is one of the best URL Shortener can support Daily Payment So there are no worries about money and can focus on work (make money)"</p>
+              <p>"Amount received : 8$ AKLinks is one of the best URL Shortener can support Daily Payment So there are no worries about money and can focus on work (make money)"</p>
             </div>
             <div class="testimonial-author">
               <div class="author-info">
@@ -169,7 +169,7 @@ import { RouterModule } from '@angular/router';
           
           <div class="testimonial-card">
             <div class="testimonial-content">
-              <p>"Since I started using InShortUrl, I've been able to monetize my website traffic more effectively and efficiently. It's been a great addition to my revenue strategy."</p>
+              <p>"Since I started using AKLinks, I've been able to monetize my website traffic more effectively and efficiently. It's been a great addition to my revenue strategy."</p>
             </div>
             <div class="testimonial-author">
               <div class="author-info">
@@ -181,7 +181,7 @@ import { RouterModule } from '@angular/router';
           
           <div class="testimonial-card">
             <div class="testimonial-content">
-              <p>"Managing my links has never been easier since I started using InShortUrl. It's a game-changer!."</p>
+              <p>"Managing my links has never been easier since I started using AKLinks. It's a game-changer!."</p>
             </div>
             <div class="testimonial-author">
               <div class="author-info">
@@ -212,7 +212,7 @@ import { RouterModule } from '@angular/router';
             <div class="phone-mockup">
               <div class="phone-screen">
                 <div class="app-interface">
-                  <div class="app-header">InShortUrl</div>
+                  <div class="app-header">AKLinks</div>
                   <div class="app-content">
                     <div class="link-input">Paste your link here...</div>
                     <div class="shorten-btn">Shorten Link</div>
@@ -230,7 +230,7 @@ import { RouterModule } from '@angular/router';
     <footer class="footer">
       <div class="container">
         <div class="footer-content">
-          <p>InShortUrl is a free service providing an easy way to earn money by sharing shortened links with your followers. With our simple platform, you can quickly monetize your content and make money online.</p>
+          <p>AKLinks is a free service providing an easy way to earn money by sharing shortened links with your followers. With our simple platform, you can quickly monetize your content and make money online.</p>
           <div class="footer-bottom">
             <p>&copy; 2025 Copyrights by AKLinks All Rights Reserved.</p>
           </div>

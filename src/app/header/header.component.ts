@@ -42,10 +42,45 @@ import { RouterModule } from '@angular/router';
               </a>
             </div>
             
-            <button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
-              ☰
+            <button class="mobile-menu-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen">
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
             </button>
           </nav>
+        </div>
+      </div>
+      
+      <!-- Mobile Menu Overlay -->
+      <div class="mobile-menu-overlay" [class.active]="isMobileMenuOpen" (click)="closeMobileMenu()">
+        <div class="mobile-menu" (click)="$event.stopPropagation()">
+          <ul class="mobile-nav-links">
+            <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Home</a></li>
+            <li><a routerLink="/publisher-rates" routerLinkActive="active" (click)="closeMobileMenu()">Publisher Rates</a></li>
+            <li><a routerLink="/payment-proof" routerLinkActive="active" (click)="closeMobileMenu()">Payment Proof</a></li>
+            <li><a routerLink="/blog" routerLinkActive="active" (click)="closeMobileMenu()">Blog</a></li>
+            <li class="mobile-dropdown">
+              <button class="mobile-dropdown-toggle" (click)="toggleMobileDropdown()">
+                Important Pages
+                <span [class.rotated]="isMobileDropdownOpen">▼</span>
+              </button>
+              <div class="mobile-dropdown-menu" [class.active]="isMobileDropdownOpen">
+                <a routerLink="/payment-system" (click)="closeMobileMenu()">Payment System</a>
+                <a routerLink="/payment-rules" (click)="closeMobileMenu()">Payment Rules</a>
+              </div>
+            </li>
+          </ul>
+          
+          <div class="mobile-auth-buttons">
+            <a routerLink="/auth/login" class="btn-login" (click)="closeMobileMenu()">
+              <span class="btn-icon">🔑</span>
+              Login
+            </a>
+            <a routerLink="/auth/signup" class="btn-signup" (click)="closeMobileMenu()">
+              <span class="btn-icon">👤</span>
+              Sign Up
+            </a>
+          </div>
         </div>
       </div>
     </header>
@@ -58,9 +93,23 @@ import { RouterModule } from '@angular/router';
   `]
 })
 export class HeaderComponent {
+  isMobileMenuOpen = false;
+  isMobileDropdownOpen = false;
+
   toggleMobileMenu() {
-    // Mobile menu functionality can be implemented here
-    console.log('Mobile menu toggled');
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    if (!this.isMobileMenuOpen) {
+      this.isMobileDropdownOpen = false;
+    }
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+    this.isMobileDropdownOpen = false;
+  }
+
+  toggleMobileDropdown() {
+    this.isMobileDropdownOpen = !this.isMobileDropdownOpen;
   }
 }
 
