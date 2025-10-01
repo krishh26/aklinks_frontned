@@ -77,6 +77,18 @@ import { RouterModule } from '@angular/router';
             <div class="feature-icon">🚀</div>
             <h3>Fastest and Free API Support</h3>
           </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <img src="assets/images/minimum-payout.svg" alt="Minimum $1 Payout" class="feature-image">
+            </div>
+            <h3>Minimum $1 Payout</h3>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <img src="assets/images/refer-earn.svg" alt="Refer And Earn" class="feature-image">
+            </div>
+            <h3>Refer And Earn</h3>
+          </div>
         </div>
         
         <div class="cta-section">
@@ -349,25 +361,43 @@ import { RouterModule } from '@angular/router';
 
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1.5rem;
       margin: 3rem 0;
     }
 
     .feature-item {
       text-align: center;
-      padding: 1.5rem;
+      padding: 1rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     }
 
     .feature-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-image {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      margin-bottom: 0.75rem;
     }
 
     .feature-item h3 {
-      font-size: 1.3rem;
+      font-size: 1rem;
       color: #333;
       margin: 0;
+      font-weight: 600;
+      line-height: 1.3;
     }
 
     .cta-section {
@@ -628,10 +658,21 @@ import { RouterModule } from '@angular/router';
       }
 
       .steps-grid,
-      .features-grid,
       .solutions-grid,
       .testimonials-grid {
         grid-template-columns: 1fr;
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
       }
     }
   `]

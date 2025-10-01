@@ -175,7 +175,8 @@ body {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   transition: all 0.3s ease;
-  border: 1px solid transparent;
+  border: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -183,7 +184,8 @@ body {
 
 .btn-login:hover {
   color: #667eea;
-  background-color: #f8f9fa;
+  background-color: #e9ecef;
+  border-color: #667eea;
 }
 
 .btn-signup {
