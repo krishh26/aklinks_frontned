@@ -17,5 +17,9 @@ export const routes: Routes = [
   { path: 'blog', component: BlogComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: 'auth/signup', component: SignupComponent },
+  { 
+    path: 'admin', 
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) 
+  },
   { path: '**', redirectTo: '' }
 ];
