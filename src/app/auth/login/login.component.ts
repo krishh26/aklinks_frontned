@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -303,7 +303,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -314,12 +314,17 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       console.log('Login form submitted:', this.loginForm.value);
-      // Handle login logic here
+      // Simulate successful login
+      // In a real application, you would make an API call here
+      // For now, we'll just redirect to the dashboard
+      this.router.navigate(['/admin/dashboard']);
     }
   }
 
   signInWithGoogle() {
     console.log('Sign in with Google clicked');
     // Handle Google sign in logic here
+    // For now, redirect to dashboard after Google sign in
+    this.router.navigate(['/admin/dashboard']);
   }
 }
