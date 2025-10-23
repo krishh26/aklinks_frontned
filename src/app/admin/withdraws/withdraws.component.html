@@ -1,0 +1,518 @@
+<div class="dashboard-container" [class]="currentTheme + '-theme'">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.open]="isSidebarOpen">
+    <div class="sidebar-header">
+      <h2 class="logo">AKLinks</h2>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <!-- HOME Section -->
+      <div class="nav-section">
+        <div class="nav-category">HOME</div>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link">
+              Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/news" class="nav-link">
+              News & Updates
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/plans" class="nav-link">
+              Manage Plans
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- LINKS Section -->
+      <div class="nav-section">
+        <div class="nav-category">LINKS</div>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a routerLink="/admin/links" class="nav-link">
+              All Links
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/links/create" class="nav-link">
+              Create Link
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/links/bulk" class="nav-link">
+              Bulk Import
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- ANALYTICS Section -->
+      <div class="nav-section">
+        <div class="nav-category">ANALYTICS</div>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a routerLink="/admin/analytics" class="nav-link">
+              Overview
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/analytics/links" class="nav-link">
+              Link Analytics
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/analytics/users" class="nav-link">
+              User Analytics
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- USERS Section -->
+      <div class="nav-section">
+        <div class="nav-category">USERS</div>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a routerLink="/admin/users" class="nav-link">
+              All Users
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/users/roles" class="nav-link">
+              User Roles
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/users/activity" class="nav-link">
+              Activity Log
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- PAYOUTS Section -->
+      <div class="nav-section">
+        <div class="nav-category">PAYOUTS</div>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a routerLink="/admin/withdraws" routerLinkActive="active" class="nav-link">
+              Withdrawals
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/payments" class="nav-link">
+              Payments
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- SUPPORT Section -->
+      <div class="nav-section">
+        <div class="nav-category">SUPPORT</div>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a routerLink="/admin/support" class="nav-link">
+              Support Tickets
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/faq" class="nav-link">
+              FAQ Management
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- SETTINGS Section -->
+      <div class="nav-section">
+        <div class="nav-category">SETTINGS</div>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a routerLink="/admin/settings" class="nav-link">
+              General Settings
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/settings/domains" class="nav-link">
+              Domain Settings
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/settings/security" class="nav-link">
+              Security
+              <span class="nav-chevron">›</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="admin-withdraws-container">
+      <!-- Admin Header -->
+      <header class="admin-header">
+        <div class="header-left">
+          <button class="hamburger-menu" (click)="toggleSidebar()">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </button>
+        </div>
+        
+        <div class="header-center">
+          <h1 class="page-title">Withdrawal Management</h1>
+        </div>
+        
+        <div class="header-right">
+          <div class="theme-switcher">
+            <button class="theme-toggle" (click)="toggleThemeDropdown()">
+              <span class="theme-icon">{{ getThemeIcon() }}</span>
+              <span class="theme-text">{{ currentTheme | titlecase }}</span>
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            
+            <div class="theme-dropdown" [class.open]="isThemeDropdownOpen">
+              <button (click)="selectTheme('light')" [class.active]="currentTheme === 'light'">
+                ☀️ Light
+              </button>
+              <button (click)="selectTheme('dark')" [class.active]="currentTheme === 'dark'">
+                🌙 Dark
+              </button>
+              <button (click)="selectTheme('blue')" [class.active]="currentTheme === 'blue'">
+                🌊 Blue
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <div class="withdraws-content">
+        <div class="withdraws-header">
+          <div class="header-left">
+            <p class="page-subtitle">Manage user withdrawal requests and transactions</p>
+          </div>
+    <div class="header-right">
+      <button class="export-btn">
+        <span class="btn-icon">📊</span>
+        Export Data
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="stats-overview">
+    <div class="stat-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-content">
+        <h3>{{ adminStats.totalWithdrawals }}</h3>
+        <p>Total Withdrawals</p>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-content">
+        <h3>{{ adminStats.pendingWithdrawals }}</h3>
+        <p>Pending Requests</p>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-content">
+        <h3>{{ adminStats.completedWithdrawals }}</h3>
+        <p>Completed</p>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">💵</div>
+      <div class="stat-content">
+        <h3>{{ formatCurrency(adminStats.totalAmount) }}</h3>
+        <p>Total Amount</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-container">
+    <div class="tabs">
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'withdrawals'"
+        (click)="activeTab = 'withdrawals'">
+        Withdrawals
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'users'"
+        (click)="activeTab = 'users'">
+        Users
+      </button>
+    </div>
+  </div>
+
+  <!-- Withdrawals Tab -->
+  <div class="tab-content" *ngIf="activeTab === 'withdrawals'">
+    <!-- Filters and Search -->
+    <div class="filters-section">
+      <div class="search-box">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          placeholder="Search by ID, username, or email..."
+          class="search-input">
+        <span class="search-icon">🔍</span>
+      </div>
+      
+      <div class="filter-controls">
+        <select [(ngModel)]="statusFilter" class="filter-select">
+          <option value="all">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="processing">Processing</option>
+          <option value="completed">Completed</option>
+          <option value="rejected">Rejected</option>
+        </select>
+        
+        <select [(ngModel)]="methodFilter" class="filter-select">
+          <option value="all">All Methods</option>
+          <option *ngFor="let method of paymentMethods" [value]="method.name">
+            {{ method.name }}
+          </option>
+        </select>
+        
+        <button class="clear-filters-btn" (click)="clearFilters()">
+          Clear Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Withdrawals Table -->
+    <div class="table-container">
+      <table class="withdrawals-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let withdrawal of filteredWithdrawals">
+            <td class="withdrawal-id">{{ withdrawal.id }}</td>
+            <td class="user-info">
+              <div class="user-details">
+                <div class="username">{{ withdrawal.username }}</div>
+                <div class="email">{{ withdrawal.email }}</div>
+              </div>
+            </td>
+            <td class="amount">{{ formatCurrency(withdrawal.amount) }}</td>
+            <td class="method">
+              <span class="method-badge">{{ withdrawal.method }}</span>
+            </td>
+            <td>
+              <span class="status-badge" [class]="getStatusClass(withdrawal.status)">
+                {{ getStatusText(withdrawal.status) }}
+              </span>
+            </td>
+            <td class="date">{{ formatDate(withdrawal.date) }}</td>
+            <td class="actions">
+              <button 
+                class="action-btn view-btn" 
+                (click)="viewWithdrawal(withdrawal)">
+                View Details
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Users Tab -->
+  <div class="tab-content" *ngIf="activeTab === 'users'">
+    <div class="users-grid">
+      <div class="user-card" *ngFor="let user of users">
+        <div class="user-header">
+          <div class="user-avatar">{{ user.username.charAt(0).toUpperCase() }}</div>
+          <div class="user-info">
+            <h3>{{ user.username }}</h3>
+            <p>{{ user.email }}</p>
+          </div>
+        </div>
+        
+        <div class="user-stats">
+          <div class="stat">
+            <span class="label">Balance:</span>
+            <span class="value">{{ formatCurrency(user.balance) }}</span>
+          </div>
+          <div class="stat">
+            <span class="label">Pending:</span>
+            <span class="value">{{ formatCurrency(user.pendingAmount) }}</span>
+          </div>
+          <div class="stat">
+            <span class="label">Total Earned:</span>
+            <span class="value">{{ formatCurrency(user.totalEarnings) }}</span>
+          </div>
+        </div>
+        
+        <div class="user-actions">
+          <button class="action-btn" (click)="viewUser(user)">View Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Withdrawal Details Modal -->
+<div class="modal-overlay" *ngIf="showWithdrawalModal" (click)="showWithdrawalModal = false">
+  <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="selectedWithdrawal">
+    <div class="modal-header">
+      <h2>Withdrawal Details - {{ selectedWithdrawal.id }}</h2>
+      <button class="close-btn" (click)="showWithdrawalModal = false">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="details-grid">
+        <div class="detail-item">
+          <label>User:</label>
+          <span>{{ selectedWithdrawal.username }} ({{ selectedWithdrawal.email }})</span>
+        </div>
+        <div class="detail-item">
+          <label>Amount:</label>
+          <span class="amount">{{ formatCurrency(selectedWithdrawal.amount) }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Method:</label>
+          <span>{{ selectedWithdrawal.method }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Account Details:</label>
+          <span class="account-details">{{ selectedWithdrawal.accountDetails }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Date:</label>
+          <span>{{ formatDate(selectedWithdrawal.date) }}</span>
+        </div>
+        <div class="detail-item" *ngIf="selectedWithdrawal.processedDate">
+          <label>Processed:</label>
+          <span>{{ formatDate(selectedWithdrawal.processedDate) }}</span>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <h3>Update Status</h3>
+        <div class="form-group">
+          <label for="status">Status:</label>
+          <select id="status" [(ngModel)]="withdrawalForm.status" class="form-select">
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="completed">Completed</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="transactionId">Transaction ID:</label>
+          <input 
+            type="text" 
+            id="transactionId"
+            [(ngModel)]="withdrawalForm.transactionId" 
+            class="form-input"
+            placeholder="Enter transaction ID">
+        </div>
+        
+        <div class="form-group">
+          <label for="notes">Admin Notes:</label>
+          <textarea 
+            id="notes"
+            [(ngModel)]="withdrawalForm.notes" 
+            class="form-textarea"
+            placeholder="Add admin notes..."></textarea>
+        </div>
+        
+        <div class="form-actions">
+          <button class="cancel-btn" (click)="showWithdrawalModal = false">Cancel</button>
+          <button class="save-btn" (click)="updateWithdrawal()">Update Withdrawal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- User Details Modal -->
+<div class="modal-overlay" *ngIf="showUserModal" (click)="showUserModal = false">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>User Profile</h2>
+      <button class="close-btn" (click)="showUserModal = false">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="user-profile">
+        <div class="profile-header">
+          <div class="profile-avatar">U</div>
+          <div class="profile-info">
+            <h3>User Name</h3>
+            <p>user&#64;example.com</p>
+            <span class="member-since">Member since Jan 2023</span>
+          </div>
+        </div>
+        
+        <div class="profile-stats">
+          <div class="stat-card">
+            <h4>Account Balance</h4>
+            <p class="stat-value">$125.50</p>
+          </div>
+          <div class="stat-card">
+            <h4>Total Earnings</h4>
+            <p class="stat-value">$2,500.00</p>
+          </div>
+          <div class="stat-card">
+            <h4>Withdrawals</h4>
+            <p class="stat-value">12</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      </div>
+    </div>
+  </main>
+</div>

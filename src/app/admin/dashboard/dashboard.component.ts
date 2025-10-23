@@ -13,6 +13,7 @@ import { ThemeService, Theme } from '../../services/theme.service';
 export class DashboardComponent implements OnInit {
   currentTheme: Theme = 'light';
   isThemeDropdownOpen = false;
+  isSidebarOpen = false;
 
   constructor(
     private router: Router,
@@ -46,6 +47,14 @@ export class DashboardComponent implements OnInit {
   selectTheme(theme: Theme): void {
     this.themeService.setTheme(theme);
     this.isThemeDropdownOpen = false;
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar(): void {
+    this.isSidebarOpen = false;
   }
 
   logout() {
