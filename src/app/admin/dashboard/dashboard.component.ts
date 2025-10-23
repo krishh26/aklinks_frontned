@@ -120,6 +120,151 @@ import { RouterModule, Router } from '@angular/router';
             </div>
           </div>
 
+          <!-- New Metric Cards -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">👁️</div>
+              <div class="stat-content">
+                <h3 class="stat-number">807</h3>
+                <p class="stat-label">Total Views</p>
+                <span class="stat-change positive">+18% from last month</span>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">🔗</div>
+              <div class="stat-content">
+                <h3 class="stat-number">$6.96</h3>
+                <p class="stat-label">Average CPM</p>
+                <span class="stat-change positive">+5% from last month</span>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">👥</div>
+              <div class="stat-content">
+                <h3 class="stat-number">$4.37</h3>
+                <p class="stat-label">Referral Earnings</p>
+                <span class="stat-change positive">+12% from last month</span>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">💰</div>
+              <div class="stat-content">
+                <h3 class="stat-number">$5.62</h3>
+                <p class="stat-label">Total Earnings</p>
+                <span class="stat-change positive">+8% from last month</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Statistics Section -->
+          <div class="statistics-section">
+            <div class="statistics-header">
+              <h2 class="statistics-title">Statistics</h2>
+              <div class="statistics-tabs">
+                <button class="tab-button active">Table</button>
+                <button class="tab-button">Top 10 Links</button>
+              </div>
+            </div>
+            
+            <div class="statistics-content">
+              <div class="table-container">
+                <table class="statistics-table">
+                  <thead>
+                    <tr>
+                      <th>DATE</th>
+                      <th>VIEWS</th>
+                      <th>DAILY CPM</th>
+                      <th>EARNINGS</th>
+                      <th>REFERRALS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2025-10-11</td>
+                      <td>120</td>
+                      <td>$6.95</td>
+                      <td>$0.83</td>
+                      <td>$0.31</td>
+                    </tr>
+                    <tr>
+                      <td>2025-10-10</td>
+                      <td>54</td>
+                      <td>$6.67</td>
+                      <td>$0.36</td>
+                      <td>$0.48</td>
+                    </tr>
+                    <tr>
+                      <td>2025-10-09</td>
+                      <td>53</td>
+                      <td>$7.58</td>
+                      <td>$0.40</td>
+                      <td>$0.41</td>
+                    </tr>
+                    <tr>
+                      <td>2025-10-08</td>
+                      <td>89</td>
+                      <td>$6.25</td>
+                      <td>$0.56</td>
+                      <td>$0.38</td>
+                    </tr>
+                    <tr>
+                      <td>2025-10-07</td>
+                      <td>76</td>
+                      <td>$7.12</td>
+                      <td>$0.54</td>
+                      <td>$0.29</td>
+                    </tr>
+                    <tr>
+                      <td>2025-10-06</td>
+                      <td>95</td>
+                      <td>$6.89</td>
+                      <td>$0.65</td>
+                      <td>$0.42</td>
+                    </tr>
+                    <tr>
+                      <td>2025-10-05</td>
+                      <td>67</td>
+                      <td>$7.34</td>
+                      <td>$0.49</td>
+                      <td>$0.35</td>
+                    </tr>
+                    <tr>
+                      <td>2025-10-04</td>
+                      <td>82</td>
+                      <td>$6.78</td>
+                      <td>$0.56</td>
+                      <td>$0.33</td>
+                    </tr>
+                    <tr>
+                      <td>2025-10-03</td>
+                      <td>71</td>
+                      <td>$7.01</td>
+                      <td>$0.50</td>
+                      <td>$0.28</td>
+                    </tr>
+                    <tr>
+                      <td>2025-10-02</td>
+                      <td>58</td>
+                      <td>$6.45</td>
+                      <td>$0.37</td>
+                      <td>$0.31</td>
+                    </tr>
+                    <tr>
+                      <td>2025-10-01</td>
+                      <td>63</td>
+                      <td>$6.95</td>
+                      <td>$0.44</td>
+                      <td>$0.26</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
           <!-- Charts and Tables Section -->
           <div class="dashboard-grid">
             <!-- Recent Activity -->
@@ -649,6 +794,93 @@ import { RouterModule, Router } from '@angular/router';
 
     .action-text {
       font-weight: 500;
+    }
+
+    /* Statistics Section */
+    .statistics-section {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .statistics-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .statistics-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+
+    .statistics-tabs {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .tab-button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #e9ecef;
+      background: white;
+      color: #666;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .tab-button:hover {
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    .tab-button.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    .statistics-content {
+      padding: 0;
+    }
+
+    .statistics-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .statistics-table th {
+      background-color: #f8f9fa;
+      padding: 1rem 1.5rem;
+      text-align: left;
+      font-weight: 600;
+      color: #333;
+      border-bottom: 1px solid #e9ecef;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .statistics-table td {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #f1f3f4;
+      color: #333;
+      font-size: 0.875rem;
+    }
+
+    .statistics-table tbody tr:hover {
+      background-color: #f8f9fa;
+    }
+
+    .statistics-table tbody tr:last-child td {
+      border-bottom: none;
     }
 
     /* Responsive Design */
