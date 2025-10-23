@@ -11,47 +11,99 @@ import { RouterModule, Router } from '@angular/router';
       <!-- Sidebar -->
       <aside class="sidebar">
         <div class="sidebar-header">
-          <h2 class="logo">AKLinks Admin</h2>
+          <h2 class="logo">AKLinks</h2>
+        </div>
+        
+        <!-- User Profile Card -->
+        <div class="user-profile-card">
+          <div class="user-avatar">
+            <span>👤</span>
+          </div>
+          <div class="user-info">
+            <div class="username">Admin User</div>
+            <div class="user-role">Administrator</div>
+          </div>
+          <div class="user-menu">
+            <span>⋮</span>
+          </div>
         </div>
         
         <nav class="sidebar-nav">
-          <ul class="nav-list">
-            <li class="nav-item">
-              <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link">
-                <span class="nav-icon">📊</span>
-                Dashboard
-              </a>
-            </li>
-            <li class="nav-item">
-              <a routerLink="/admin/links" class="nav-link">
-                <span class="nav-icon">🔗</span>
-                Manage Links
-              </a>
-            </li>
-            <li class="nav-item">
-              <a routerLink="/admin/users" class="nav-link">
-                <span class="nav-icon">👥</span>
-                Users
-              </a>
-            </li>
-            <li class="nav-item">
-              <a routerLink="/admin/analytics" class="nav-link">
-                <span class="nav-icon">📈</span>
-                Analytics
-              </a>
-            </li>
-            <li class="nav-item">
-              <a routerLink="/admin/settings" class="nav-link">
-                <span class="nav-icon">⚙️</span>
-                Settings
-              </a>
-            </li>
-          </ul>
+          <!-- HOME Section -->
+          <div class="nav-section">
+            <div class="nav-category">HOME</div>
+            <ul class="nav-list">
+              <li class="nav-item">
+                <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link">
+                  Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="/admin/news" class="nav-link">
+                  News & Updates
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="/admin/plans" class="nav-link">
+                  Manage Plans
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- LINKS Section -->
+          <div class="nav-section">
+            <div class="nav-category">LINKS</div>
+            <ul class="nav-list">
+              <li class="nav-item">
+                <a routerLink="/admin/links" class="nav-link">
+                  Manage Links
+                  <span class="nav-chevron">›</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="/admin/traffic" class="nav-link">
+                  Traffic Sources
+                  <span class="nav-chevron">›</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="/admin/tools" class="nav-link">
+                  Tools
+                  <span class="nav-chevron">›</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- PAYOUTS Section -->
+          <div class="nav-section">
+            <div class="nav-category">PAYOUTS</div>
+            <ul class="nav-list">
+              <li class="nav-item">
+                <a routerLink="/admin/payments" class="nav-link">
+                  Payments
+                  <span class="nav-chevron">›</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- SUPPORT Section -->
+          <div class="nav-section">
+            <div class="nav-category">SUPPORT</div>
+            <ul class="nav-list">
+              <li class="nav-item">
+                <a routerLink="/admin/support" class="nav-link">
+                  Help Center
+                </a>
+              </li>
+            </ul>
+          </div>
         </nav>
         
         <div class="sidebar-footer">
           <button class="logout-btn" (click)="logout()">
-            <span class="nav-icon">🚪</span>
             Logout
           </button>
         </div>
@@ -59,23 +111,39 @@ import { RouterModule, Router } from '@angular/router';
 
       <!-- Main Content -->
       <main class="main-content">
+        <!-- Admin Header -->
+        <header class="admin-header">
+          <div class="header-left">
+            <button class="hamburger-menu">
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+            </button>
+            <button class="shorten-link-btn">
+              Shorten Link
+              <span class="plus-icon">+</span>
+            </button>
+          </div>
+          
+          <div class="header-right">
+            <button class="header-icon theme-toggle">
+              <span>☀️</span>
+            </button>
+            <button class="header-icon notifications">
+              <span>🔔</span>
+              <span class="notification-badge">3</span>
+            </button>
+            <button class="header-icon profile">
+              <span>👤</span>
+            </button>
+          </div>
+        </header>
+
         <!-- Top Bar -->
         <header class="top-bar">
           <div class="top-bar-left">
             <h1 class="page-title">Dashboard</h1>
             <p class="page-subtitle">Welcome back! Here's what's happening with your links.</p>
-          </div>
-          
-          <div class="top-bar-right">
-            <div class="user-info">
-              <div class="user-avatar">
-                <span>👤</span>
-              </div>
-              <div class="user-details">
-                <span class="user-name">Admin User</span>
-                <span class="user-role">Administrator</span>
-              </div>
-            </div>
           </div>
         </header>
 
@@ -419,7 +487,7 @@ import { RouterModule, Router } from '@angular/router';
     }
 
     .sidebar-header {
-      padding: 2rem 1.5rem;
+      padding: 1.5rem 1.5rem 1rem 1.5rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
@@ -427,11 +495,70 @@ import { RouterModule, Router } from '@angular/router';
       font-size: 1.5rem;
       font-weight: 700;
       margin: 0;
+      color: #667eea;
+    }
+
+    /* User Profile Card */
+    .user-profile-card {
+      background: rgba(255, 255, 255, 0.05);
+      margin: 1rem 1.5rem;
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      background: #667eea;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .username {
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .user-role {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.8rem;
+    }
+
+    .user-menu {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.2rem;
+      cursor: pointer;
     }
 
     .sidebar-nav {
       flex: 1;
-      padding: 1rem 0;
+      padding: 0.5rem 0;
+    }
+
+    .nav-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .nav-category {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.5rem 1.5rem;
+      margin-bottom: 0.5rem;
     }
 
     .nav-list {
@@ -441,13 +568,14 @@ import { RouterModule, Router } from '@angular/router';
     }
 
     .nav-item {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
     }
 
     .nav-link {
       display: flex;
       align-items: center;
-      padding: 1rem 1.5rem;
+      justify-content: space-between;
+      padding: 0.75rem 1.5rem;
       color: rgba(255, 255, 255, 0.8);
       text-decoration: none;
       transition: all 0.3s ease;
@@ -460,14 +588,20 @@ import { RouterModule, Router } from '@angular/router';
     }
 
     .nav-link.active {
-      background-color: rgba(255, 255, 255, 0.15);
+      background-color: rgba(102, 126, 234, 0.2);
       color: white;
-      border-left-color: white;
+      border-left-color: #667eea;
     }
 
     .nav-icon {
       margin-right: 0.75rem;
+      font-size: 1.1rem;
+    }
+
+    .nav-chevron {
+      color: rgba(255, 255, 255, 0.5);
       font-size: 1.2rem;
+      font-weight: bold;
     }
 
     .sidebar-footer {
@@ -498,6 +632,122 @@ import { RouterModule, Router } from '@angular/router';
       flex: 1;
       margin-left: 280px;
       padding: 0;
+    }
+
+    /* Admin Header */
+    .admin-header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .hamburger-menu {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      cursor: pointer;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger-menu:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .hamburger-line {
+      width: 22px;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .shorten-link-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      color: white;
+      padding: 0.875rem 1.75rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .shorten-link-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .plus-icon {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header-icon {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0.75rem;
+      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      position: relative;
+      font-size: 1.1rem;
+    }
+
+    .header-icon:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .notifications {
+      position: relative;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #e74c3c;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
     }
 
     .top-bar {
@@ -896,6 +1146,24 @@ import { RouterModule, Router } from '@angular/router';
 
       .main-content {
         margin-left: 0;
+      }
+
+      .admin-header {
+        padding: 1rem;
+      }
+
+      .shorten-link-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .header-right {
+        gap: 0.5rem;
+      }
+
+      .header-icon {
+        width: 35px;
+        height: 35px;
       }
 
       .dashboard-grid {
