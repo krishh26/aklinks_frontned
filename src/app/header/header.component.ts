@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <header class="header">
+    <header class="header" *ngIf="!isAdminRoute">
       <div class="container">
         <div class="header-content">
           <a routerLink="/" class="logo">AKLinks</a>
@@ -95,6 +96,16 @@ import { RouterModule } from '@angular/router';
 export class HeaderComponent {
   isMobileMenuOpen = false;
   isMobileDropdownOpen = false;
+  isAdminRoute = false;
+
+  constructor(private router: Router) {
+    // Listen to route changes to detect admin routes
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.isAdminRoute = event.url.startsWith('/admin');
+      });
+  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
