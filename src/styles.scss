@@ -3,6 +3,70 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme Variables */
+:root, body.light-theme {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --border-color: #e9ecef;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-hover: rgba(0, 0, 0, 0.15);
+  --gradient-start: #667eea;
+  --gradient-end: #764ba2;
+  --admin-header-start: #1e3c72;
+  --admin-header-end: #2a5298;
+  --sidebar-gradient-start: #667eea;
+  --sidebar-gradient-end: #764ba2;
+  --card-bg: #ffffff;
+  --hover-bg: #f8f9fa;
+  --active-bg: rgba(102, 126, 234, 0.1);
+}
+
+body.dark-theme {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #3d3d3d;
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #808080;
+  --border-color: #404040;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --shadow-hover: rgba(0, 0, 0, 0.4);
+  --gradient-start: #667eea;
+  --gradient-end: #764ba2;
+  --admin-header-start: #0f1f36;
+  --admin-header-end: #1a2f4c;
+  --sidebar-gradient-start: #4a5f9a;
+  --sidebar-gradient-end: #5a3d72;
+  --card-bg: #2d2d2d;
+  --hover-bg: #3d3d3d;
+  --active-bg: rgba(102, 126, 234, 0.2);
+}
+
+body.blue-theme {
+  --bg-primary: #0d1b2a;
+  --bg-secondary: #1b263b;
+  --bg-tertiary: #2d3e50;
+  --text-primary: #e0e1dd;
+  --text-secondary: #b0b3b8;
+  --text-tertiary: #778da9;
+  --border-color: #415a77;
+  --shadow: rgba(0, 0, 0, 0.4);
+  --shadow-hover: rgba(0, 0, 0, 0.5);
+  --gradient-start: #3a86ff;
+  --gradient-end: #8338ec;
+  --admin-header-start: #06111e;
+  --admin-header-end: #0d1f31;
+  --sidebar-gradient-start: #3a86ff;
+  --sidebar-gradient-end: #6a4c93;
+  --card-bg: #1b263b;
+  --hover-bg: #2d3e50;
+  --active-bg: rgba(58, 134, 255, 0.2);
+}
+
 /* Global Styles */
 * {
   margin: 0;
@@ -13,8 +77,9 @@
 body {
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
-  color: #333;
-  background-color: #ffffff;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
