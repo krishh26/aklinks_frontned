@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth/auth.service';
+import { LocalStorageService } from '../../services/local-storage/local-storage.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-signup',
@@ -99,8 +102,13 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
               You must agree to the terms and conditions
             </div>
 
-            <button type="submit" class="signup-btn" [disabled]="signupForm.invalid">
-              Sign Up
+            <div class="error-message" *ngIf="errorMessage" style="margin-bottom: 1rem;">
+              {{ errorMessage }}
+            </div>
+
+            <button type="submit" class="signup-btn" [disabled]="signupForm.invalid || isLoading">
+              <span *ngIf="!isLoading">Sign Up</span>
+              <span *ngIf="isLoading">Signing Up...</span>
             </button>
           </form>
 
@@ -328,8 +336,15 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 })
 export class SignupComponent {
   signupForm: FormGroup;
+  isLoading: boolean = false;
+  errorMessage: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private localStorageService: LocalStorageService,
+    private router: Router
+  ) {
     this.signupForm = this.fb.group({
       fullName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -353,13 +368,48 @@ export class SignupComponent {
 
   onSubmit() {
     if (this.signupForm.valid) {
-      console.log('Signup form submitted:', this.signupForm.value);
-      // Handle signup logic here
+      this.isLoading = true;
+      this.errorMessage = '';
+      
+      // Prepare payload - map fullName to name for backend
+      const payload = {
+        name: this.signupForm.value.fullName,
+        email: this.signupForm.value.email,
+        password: this.signupForm.value.password
+      };
+
+      this.authService.registerUser(payload).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          if (response.status === 'success' && response.data) {
+            // Save token and user data
+            if (response.data.token) {
+              this.localStorageService.setLoginToken({ token: response.data.token });
+            }
+            if (response.data.user) {
+              this.localStorageService.setLogger(response.data.user);
+            }
+            // Redirect to dashboard or home page
+            this.router.navigate(['/admin/dashboard']);
+          } else {
+            this.errorMessage = response.message || 'Registration failed. Please try again.';
+          }
+        },
+        error: (error) => {
+          this.isLoading = false;
+          if (error.error && error.error.message) {
+            this.errorMessage = error.error.message;
+          } else {
+            this.errorMessage = 'Registration failed. Please try again.';
+          }
+          console.error('Registration error:', error);
+        }
+      });
     }
   }
 
   signUpWithGoogle() {
-    console.log('Sign up with Google clicked');
-    // Handle Google sign up logic here
+    // Redirect to Google OAuth endpoint
+    window.location.href = `${environment.baseUrl}/auth/google`;
   }
 }

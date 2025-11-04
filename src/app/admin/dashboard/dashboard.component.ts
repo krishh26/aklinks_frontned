@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +18,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -59,10 +61,7 @@ export class DashboardComponent implements OnInit {
 
   logout() {
     // Implement logout functionality
-    console.log('Logout clicked');
-    // Clear any stored authentication data
-    // localStorage.removeItem('token');
-    // localStorage.removeItem('user');
+    this.localStorageService.clearStorage();
     
     // Redirect to login page
     this.router.navigate(['/auth/login']);

@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth/auth.service';
+import { LocalStorageService } from '../../services/local-storage/local-storage.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -59,6 +62,10 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
               </div>
             </div>
 
+            <div class="error-message" *ngIf="errorMessage" style="margin-bottom: 1rem;">
+              {{ errorMessage }}
+            </div>
+
             <div class="form-options">
               <label class="checkbox-container">
                 <input type="checkbox" formControlName="rememberMe">
@@ -71,8 +78,9 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
               </a>
             </div>
 
-            <button type="submit" class="signin-btn" [disabled]="loginForm.invalid">
-              Sign In
+            <button type="submit" class="signin-btn" [disabled]="loginForm.invalid || isLoading">
+              <span *ngIf="!isLoading">Sign In</span>
+              <span *ngIf="isLoading">Signing In...</span>
             </button>
           </form>
 
@@ -302,8 +310,15 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  isLoading: boolean = false;
+  errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService,
+    private localStorageService: LocalStorageService
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -313,18 +328,47 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Login form submitted:', this.loginForm.value);
-      // Simulate successful login
-      // In a real application, you would make an API call here
-      // For now, we'll just redirect to the dashboard
-      this.router.navigate(['/admin/dashboard']);
+      this.isLoading = true;
+      this.errorMessage = '';
+      
+      // Prepare payload
+      const payload = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password
+      };
+
+      this.authService.loginUser(payload).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          if (response.status === 'success' && response.data) {
+            // Save token and user data
+            if (response.data.token) {
+              this.localStorageService.setLoginToken({ token: response.data.token });
+            }
+            if (response.data.user) {
+              this.localStorageService.setLogger(response.data.user);
+            }
+            // Redirect to dashboard
+            this.router.navigate(['/admin/dashboard']);
+          } else {
+            this.errorMessage = response.message || 'Login failed. Please try again.';
+          }
+        },
+        error: (error) => {
+          this.isLoading = false;
+          if (error.error && error.error.message) {
+            this.errorMessage = error.error.message;
+          } else {
+            this.errorMessage = 'Login failed. Please check your credentials and try again.';
+          }
+          console.error('Login error:', error);
+        }
+      });
     }
   }
 
   signInWithGoogle() {
-    console.log('Sign in with Google clicked');
-    // Handle Google sign in logic here
-    // For now, redirect to dashboard after Google sign in
-    this.router.navigate(['/admin/dashboard']);
+    // Redirect to Google OAuth endpoint
+    window.location.href = `${environment.baseUrl}/auth/google`;
   }
 }
