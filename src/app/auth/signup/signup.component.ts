@@ -34,59 +34,63 @@ import { environment } from '../../../environments/environment';
           <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
             <h2>Create new account</h2>
             
-            <div class="form-group">
-              <label for="fullName">Full Name</label>
-              <input 
-                type="text" 
-                id="fullName" 
-                formControlName="fullName" 
-                placeholder="Enter your full name"
-                [class.error]="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched"
-              >
-              <div class="error-message" *ngIf="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched">
-                Full name is required
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input 
+                  type="text" 
+                  id="fullName" 
+                  formControlName="fullName" 
+                  placeholder="Enter your full name"
+                  [class.error]="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched"
+                >
+                <div class="error-message" *ngIf="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched">
+                  Full name is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  formControlName="email" 
+                  placeholder="Enter your email"
+                  [class.error]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
+                >
+                <div class="error-message" *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+                  Please enter a valid email address
+                </div>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input 
-                type="email" 
-                id="email" 
-                formControlName="email" 
-                placeholder="Enter your email"
-                [class.error]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
-              >
-              <div class="error-message" *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
-                Please enter a valid email address
+            <div class="form-row">
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input 
+                  type="password" 
+                  id="password" 
+                  formControlName="password" 
+                  placeholder="Create a password"
+                  [class.error]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
+                >
+                <div class="error-message" *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+                  Password must be at least 6 characters
+                </div>
               </div>
-            </div>
 
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input 
-                type="password" 
-                id="password" 
-                formControlName="password" 
-                placeholder="Create a password"
-                [class.error]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
-              >
-              <div class="error-message" *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
-                Password must be at least 6 characters
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="confirmPassword">Confirm Password</label>
-              <input 
-                type="password" 
-                id="confirmPassword" 
-                formControlName="confirmPassword" 
-                placeholder="Confirm your password"
-                [class.error]="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched"
-              >
-              <div class="error-message" *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched">
-                Passwords do not match
+              <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input 
+                  type="password" 
+                  id="confirmPassword" 
+                  formControlName="confirmPassword" 
+                  placeholder="Confirm your password"
+                  [class.error]="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched"
+                >
+                <div class="error-message" *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched">
+                  Passwords do not match
+                </div>
               </div>
             </div>
 
@@ -102,7 +106,7 @@ import { environment } from '../../../environments/environment';
               You must agree to the terms and conditions
             </div>
 
-            <div class="error-message" *ngIf="errorMessage" style="margin-bottom: 1rem;">
+            <div class="error-message" *ngIf="errorMessage" style="margin-bottom: 0.5rem;">
               {{ errorMessage }}
             </div>
 
@@ -121,12 +125,13 @@ import { environment } from '../../../environments/environment';
   `,
   styles: [`
     .auth-container {
-      min-height: 100vh;
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 2rem;
+      padding: 1rem;
+      overflow: hidden;
     }
 
     .auth-card {
@@ -134,21 +139,21 @@ import { environment } from '../../../environments/environment';
       border-radius: 16px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 400px;
+      max-width: 650px;
       overflow: hidden;
     }
 
     .auth-header {
       text-align: center;
-      padding: 2rem 2rem 1rem 2rem;
+      padding: 1rem 2rem 0.75rem 2rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
     }
 
     .auth-header h1 {
-      font-size: 2rem;
+      font-size: 1.75rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
     }
 
     .auth-header p {
@@ -157,7 +162,7 @@ import { environment } from '../../../environments/environment';
     }
 
     .auth-content {
-      padding: 2rem;
+      padding: 1rem 1.5rem;
     }
 
     .google-signup-btn {
@@ -166,7 +171,7 @@ import { environment } from '../../../environments/environment';
       align-items: center;
       justify-content: center;
       gap: 0.75rem;
-      padding: 0.75rem 1rem;
+      padding: 0.6rem 1rem;
       border: 2px solid #ddd;
       border-radius: 8px;
       background: white;
@@ -174,7 +179,7 @@ import { environment } from '../../../environments/environment';
       font-weight: 500;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
 
     .google-signup-btn:hover {
@@ -189,7 +194,7 @@ import { environment } from '../../../environments/environment';
 
     .divider {
       text-align: center;
-      margin: 1.5rem 0;
+      margin: 1rem 0;
       position: relative;
     }
 
@@ -212,28 +217,36 @@ import { environment } from '../../../environments/environment';
 
     .signup-form h2 {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       color: #333;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
     }
 
     .form-group {
-      margin-bottom: 1.5rem;
+      margin-bottom: 0;
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.35rem;
       color: #333;
       font-weight: 500;
+      font-size: 0.9rem;
     }
 
     .form-group input {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.6rem;
       border: 2px solid #ddd;
       border-radius: 8px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       transition: border-color 0.3s ease;
       box-sizing: border-box;
     }
@@ -249,12 +262,12 @@ import { environment } from '../../../environments/environment';
 
     .error-message {
       color: #e74c3c;
-      font-size: 0.875rem;
-      margin-top: 0.25rem;
+      font-size: 0.8rem;
+      margin-top: 0.2rem;
     }
 
     .form-options {
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.75rem;
     }
 
     .checkbox-container {
@@ -285,9 +298,9 @@ import { environment } from '../../../environments/environment';
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
-      padding: 0.75rem;
+      padding: 0.65rem;
       border-radius: 8px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -305,7 +318,7 @@ import { environment } from '../../../environments/environment';
 
     .auth-footer {
       text-align: center;
-      margin-top: 1.5rem;
+      margin-top: 0.75rem;
     }
 
     .auth-footer p {
@@ -321,6 +334,16 @@ import { environment } from '../../../environments/environment';
 
     .auth-footer a:hover {
       text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-card {
+        max-width: 100%;
+      }
     }
 
     @media (max-width: 480px) {
