@@ -14,7 +14,7 @@ import { LocalStorageService } from 'src/app/services/local-storage/local-storag
 export class DashboardComponent implements OnInit {
   currentTheme: Theme = 'light';
   isThemeDropdownOpen = false;
-  isSidebarOpen = false;
+  isSidebarOpen = true; // Sidebar is open by default
   isUserMenuOpen = true; // Card is open by default
 
   constructor(

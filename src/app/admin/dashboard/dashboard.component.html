@@ -1,7 +1,12 @@
-<div class="dashboard-container">
+<div class="dashboard-container" [class.sidebar-closed]="!isSidebarOpen">
   <!-- Sidebar -->
   <aside class="sidebar" [class.open]="isSidebarOpen">
     <div class="sidebar-header">
+      <button class="sidebar-toggle-btn" (click)="toggleSidebar()">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
       <h2 class="logo">AKLinks</h2>
     </div>
     
@@ -124,11 +129,11 @@
     <!-- Admin Header -->
     <header class="admin-header">
         <div class="header-left">
-          <button class="hamburger-menu" (click)="toggleSidebar()">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-          </button>
+        <button class="sidebar-toggle-header-btn" *ngIf="!isSidebarOpen" (click)="toggleSidebar()" title="Open Sidebar">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
         <button class="shorten-link-btn">
           Shorten Link
           <span class="plus-icon">+</span>
