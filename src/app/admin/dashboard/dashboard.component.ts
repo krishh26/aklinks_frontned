@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   currentTheme: Theme = 'light';
   isThemeDropdownOpen = false;
   isSidebarOpen = false;
+  isUserMenuOpen = true; // Card is open by default
 
   constructor(
     private router: Router,
@@ -57,6 +58,11 @@ export class DashboardComponent implements OnInit {
 
   closeSidebar(): void {
     this.isSidebarOpen = false;
+  }
+
+  toggleUserMenu(): void {
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+    // You can add dropdown menu functionality here if needed
   }
 
   logout() {
