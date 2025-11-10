@@ -55,7 +55,7 @@
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 1.4375rem;
   font-weight: 700;
   margin: 0;
   color: #667eea;
@@ -91,7 +91,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
+  font-size: 1.7375rem;
   flex-shrink: 0;
   line-height: 1;
 }
@@ -106,7 +106,7 @@
 .username {
   color: white;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   margin-bottom: 0.25rem;
   white-space: nowrap;
   overflow: hidden;
@@ -116,7 +116,7 @@
 
 .user-role {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 0.85rem;
+  font-size: 0.7875rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -127,7 +127,7 @@
   background: transparent;
   border: none;
   color: rgba(255, 255, 255, 0.6);
-  font-size: 1.1rem;
+  font-size: 1.0375rem;
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 6px;
@@ -172,7 +172,7 @@
   color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   transition: all 0.3s ease;
-  font-size: 0.9rem;
+  font-size: 0.8375rem;
   border-left: 3px solid transparent;
 }
 
@@ -183,7 +183,7 @@
 }
 
 .profile-link-icon {
-  font-size: 1.1rem;
+  font-size: 1.0375rem;
   width: 20px;
   display: flex;
   align-items: center;
@@ -202,7 +202,7 @@
 
 .nav-category {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -244,12 +244,12 @@
 
 .nav-icon {
   margin-right: 0.75rem;
-  font-size: 1.1rem;
+  font-size: 1.0375rem;
 }
 
 .nav-chevron {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 1.2rem;
+  font-size: 1.1375rem;
   font-weight: bold;
 }
 
@@ -369,7 +369,7 @@
   border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.8875rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -383,7 +383,7 @@
 }
 
 .plus-icon {
-  font-size: 1.1rem;
+  font-size: 1.0375rem;
   font-weight: bold;
 }
 
@@ -407,7 +407,7 @@
   justify-content: center;
   transition: all 0.3s ease;
   position: relative;
-  font-size: 1.1rem;
+  font-size: 1.0375rem;
 }
 
 .header-icon:hover {
@@ -455,7 +455,7 @@
   align-items: center;
   gap: 0.75rem;
   color: var(--text-primary);
-  font-size: 0.95rem;
+  font-size: 0.8875rem;
   font-family: inherit;
 }
 
@@ -473,7 +473,7 @@
 }
 
 .theme-icon {
-  font-size: 1.2rem;
+  font-size: 1.1375rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -497,7 +497,7 @@
   border-radius: 50%;
   width: 20px;
   height: 20px;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -516,7 +516,7 @@
 }
 
 .page-title {
-  font-size: 2rem;
+  font-size: 1.9375rem;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 0.5rem 0;
@@ -543,7 +543,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.1375rem;
 }
 
 .user-details {
@@ -557,7 +557,7 @@
 }
 
 .user-role {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: #666;
 }
 
@@ -591,7 +591,7 @@
 }
 
 .stat-icon {
-  font-size: 2.5rem;
+  font-size: 2.4375rem;
   opacity: 0.8;
 }
 
@@ -600,7 +600,7 @@
 }
 
 .stat-number {
-  font-size: 2rem;
+  font-size: 1.9375rem;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 0.25rem 0;
@@ -610,12 +610,12 @@
 .stat-label {
   color: var(--text-secondary);
   margin: 0 0 0.5rem 0;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   transition: color 0.3s ease;
 }
 
 .stat-change {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 600;
 }
 
@@ -649,7 +649,7 @@
 }
 
 .card-title {
-  font-size: 1.25rem;
+  font-size: 1.1875rem;
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
@@ -660,7 +660,7 @@
   color: var(--gradient-start);
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   transition: color 0.3s ease;
 }
 
@@ -701,7 +701,7 @@
 }
 
 .activity-time {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--text-secondary);
   transition: color 0.3s ease;
 }
@@ -743,7 +743,7 @@
 }
 
 .link-original {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--text-secondary);
   max-width: 200px;
   overflow: hidden;
@@ -755,7 +755,7 @@
 .status-badge {
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 600;
 }
 
@@ -779,7 +779,7 @@
 }
 
 .section-title {
-  font-size: 1.25rem;
+  font-size: 1.1875rem;
   font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 1.5rem 0;
@@ -812,7 +812,7 @@
 }
 
 .action-icon {
-  font-size: 2rem;
+  font-size: 1.9375rem;
 }
 
 .action-text {
@@ -889,7 +889,7 @@
   font-weight: 600;
   color: var(--text-primary);
   border-bottom: 1px solid var(--border-color);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
@@ -899,7 +899,7 @@
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-primary);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   transition: color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -932,7 +932,7 @@
 
   .shorten-link-btn {
     padding: 0.5rem 1rem;
-    font-size: 0.9rem;
+    font-size: 0.8375rem;
   }
 
   .header-right {
