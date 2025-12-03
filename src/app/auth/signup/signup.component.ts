@@ -401,6 +401,9 @@ export class SignupComponent {
         password: this.signupForm.value.password
       };
 
+      // this.router.navigate(['/admin/dashboard']);
+      // return;
+
       this.authService.registerUser(payload).subscribe({
         next: (response) => {
           this.isLoading = false;

@@ -337,6 +337,8 @@ export class LoginComponent {
         password: this.loginForm.value.password
       };
 
+      // this.router.navigate(['/admin/dashboard']);
+      // return;
       this.authService.loginUser(payload).subscribe({
         next: (response) => {
           this.isLoading = false;

@@ -72,5 +72,9 @@ export class DashboardComponent implements OnInit {
     // Redirect to login page
     this.router.navigate(['/auth/login']);
   }
+
+  navigateToShortenLink() {
+    this.router.navigate(['/admin/shorten-link']);
+  }
 }
 
