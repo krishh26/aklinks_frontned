@@ -48,12 +48,12 @@
             Dashboard
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isMasterRole">
           <a routerLink="/admin/news" class="nav-link">
             News & Updates
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isMasterRole">
           <a routerLink="/admin/plans" class="nav-link">
             Manage Plans
           </a>
@@ -65,19 +65,19 @@
     <div class="nav-section">
       <div class="nav-category">LINKS</div>
       <ul class="nav-list">
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isMasterRole">
           <a routerLink="/admin/links" class="nav-link">
             All Links
             <span class="nav-chevron">›</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isMasterRole">
           <a routerLink="/admin/links/create" class="nav-link">
             Create Link
             <span class="nav-chevron">›</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isMasterRole">
           <a routerLink="/admin/links/bulk" class="nav-link">
             Bulk Import
             <span class="nav-chevron">›</span>
@@ -93,7 +93,7 @@
     </div>
 
     <!-- ANALYTICS Section -->
-    <div class="nav-section">
+    <div class="nav-section" *ngIf="isMasterRole">
       <div class="nav-category">ANALYTICS</div>
       <ul class="nav-list">
         <li class="nav-item">
@@ -118,7 +118,7 @@
     </div>
 
     <!-- USERS Section -->
-    <div class="nav-section">
+    <div class="nav-section" *ngIf="isMasterRole">
       <div class="nav-category">USERS</div>
       <ul class="nav-list">
         <li class="nav-item">

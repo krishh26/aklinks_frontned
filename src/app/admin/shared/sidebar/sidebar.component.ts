@@ -18,6 +18,7 @@ export class SidebarComponent implements OnInit {
   currentTheme: Theme = 'light';
   isUserMenuOpen = true;
   isSettingsMenuOpen = false;
+  isMasterRole: boolean = false;
 
   constructor(
     private router: Router,
@@ -30,6 +31,15 @@ export class SidebarComponent implements OnInit {
     this.themeService.theme$.subscribe(theme => {
       this.currentTheme = theme;
     });
+    this.checkUserRole();
+  }
+
+  checkUserRole(): void {
+    const user = this.localStorageService.getLogger();
+    if (user && user.role) {
+      const userRole = user.role.toLowerCase();
+      this.isMasterRole = userRole === 'master admin' || userRole === 'master_admin' || userRole === 'masteradmin';
+    }
   }
 
   toggleSidebar(): void {
