@@ -1,21 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
-import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-support',
   standalone: true,
-  imports: [CommonModule, RouterModule, SidebarComponent],
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  imports: [CommonModule, FormsModule, RouterModule, SidebarComponent],
+  templateUrl: './support.component.html',
+  styleUrl: './support.component.scss'
 })
-export class DashboardComponent implements OnInit {
+export class SupportComponent implements OnInit {
   currentTheme: Theme = 'light';
   isThemeDropdownOpen = false;
   isSidebarOpen = true; // Sidebar is open by default
+
+  contactForm = {
+    name: '',
+    subject: '',
+    email: '',
+    message: '',
+    consent: false
+  };
 
   constructor(
     private router: Router,
@@ -60,10 +69,27 @@ export class DashboardComponent implements OnInit {
     this.isSidebarOpen = false;
   }
 
-  // Logout is handled by the sidebar component
-
-  navigateToShortenLink() {
-    this.router.navigate(['/admin/shorten-link']);
+  onSubmit() {
+    if (this.contactForm.consent && this.contactForm.name && this.contactForm.email && this.contactForm.message) {
+      // Handle form submission here
+      console.log('Form submitted:', this.contactForm);
+      // You can add API call here to submit the form
+      alert('Thank you for contacting us! We will get back to you soon.');
+      
+      // Reset form
+      this.contactForm = {
+        name: '',
+        subject: '',
+        email: '',
+        message: '',
+        consent: false
+      };
+    } else {
+      alert('Please fill in all required fields and accept the consent.');
+    }
   }
 }
+
+
+
 

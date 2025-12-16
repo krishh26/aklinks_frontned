@@ -5,11 +5,12 @@ import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { LinkService, Link } from '../../services/link/link.service';
+import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-shorten-link',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, SidebarComponent],
   templateUrl: './shorten-link.component.html',
   styleUrls: ['./shorten-link.component.scss']
 })
@@ -17,7 +18,6 @@ export class ShortenLinkComponent implements OnInit {
   currentTheme: Theme = 'light';
   isThemeDropdownOpen = false;
   isSidebarOpen = true;
-  isUserMenuOpen = true;
   
   originalLink: string = '';
   isLoading: boolean = false;
@@ -70,14 +70,7 @@ export class ShortenLinkComponent implements OnInit {
     this.isSidebarOpen = false;
   }
 
-  toggleUserMenu(): void {
-    this.isUserMenuOpen = !this.isUserMenuOpen;
-  }
-
-  logout() {
-    this.localStorageService.clearStorage();
-    this.router.navigate(['/auth/login']);
-  }
+  // Logout is handled by the sidebar component
 
   onSubmit(): void {
     // Check if user is authenticated

@@ -1,0 +1,216 @@
+<aside class="sidebar" [class.open]="isOpen">
+  <div class="sidebar-header">
+    <button class="sidebar-toggle-btn" (click)="toggleSidebar()">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    <h2 class="logo">AKLinks</h2>
+  </div>
+  
+  <!-- User Profile Card -->
+  <div class="user-profile-card">
+    <div class="user-profile-top">
+      <div class="user-avatar">
+        <span>😊</span>
+      </div>
+      <div class="user-info">
+        <div class="username">Time17</div>
+        <div class="user-role">Member</div>
+      </div>
+      <button class="user-menu-btn" (click)="toggleUserMenu()">
+        <span>☰</span>
+      </button>
+    </div>
+    <div class="user-profile-links" [class.collapsed]="!isUserMenuOpen">
+      <a href="#" class="profile-link" (click)="$event.preventDefault()">
+        <span class="profile-link-icon">👤</span>
+        <span>My Account</span>
+      </a>
+      <a href="#" class="profile-link" (click)="$event.preventDefault()">
+        <span class="profile-link-icon">💳</span>
+        <span>Payments</span>
+      </a>
+      <a href="#" class="profile-link" (click)="$event.preventDefault(); logout()">
+        <span class="profile-link-icon">🚪</span>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+  
+  <nav class="sidebar-nav">
+    <!-- HOME Section -->
+    <div class="nav-section">
+      <div class="nav-category">HOME</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link">
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/news" class="nav-link">
+            News & Updates
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/plans" class="nav-link">
+            Manage Plans
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- LINKS Section -->
+    <div class="nav-section">
+      <div class="nav-category">LINKS</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a routerLink="/admin/links" class="nav-link">
+            All Links
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/links/create" class="nav-link">
+            Create Link
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/links/bulk" class="nav-link">
+            Bulk Import
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/traffic-source" routerLinkActive="active" class="nav-link">
+            Traffic Source
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ANALYTICS Section -->
+    <div class="nav-section">
+      <div class="nav-category">ANALYTICS</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a routerLink="/admin/analytics" class="nav-link">
+            Overview
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/analytics/links" class="nav-link">
+            Link Analytics
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/analytics/users" class="nav-link">
+            User Analytics
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- USERS Section -->
+    <div class="nav-section">
+      <div class="nav-category">USERS</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a routerLink="/admin/users" class="nav-link">
+            All Users
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/users/roles" class="nav-link">
+            User Roles
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/users/activity" class="nav-link">
+            Activity Log
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- PAYOUTS Section -->
+    <div class="nav-section">
+      <div class="nav-category">PAYOUTS</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a routerLink="/admin/withdraws" routerLinkActive="active" class="nav-link">
+            Withdrawals
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/payments" class="nav-link">
+            Payments
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- SUPPORT Section -->
+    <div class="nav-section">
+      <div class="nav-category">SUPPORT</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a routerLink="/admin/support" routerLinkActive="active" class="nav-link">
+            Support Tickets
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/faq" class="nav-link">
+            FAQ Management
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- SETTINGS Section -->
+    <div class="nav-section">
+      <div class="nav-category">SETTINGS</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <button class="nav-link settings-toggle" (click)="toggleSettingsMenu()">
+            <span>Setting</span>
+            <span class="nav-chevron" [class.rotated]="isSettingsMenuOpen">▼</span>
+          </button>
+          <ul class="settings-submenu" [class.collapsed]="!isSettingsMenuOpen">
+            <li class="nav-item">
+              <a routerLink="/admin/settings/profile" routerLinkActive="active" class="nav-link submenu-link">
+                Profile
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/settings/change-password" routerLinkActive="active" class="nav-link submenu-link">
+                Change Password
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+  </nav>
+  
+  <div class="sidebar-footer">
+    <button class="logout-btn" (click)="logout()">
+      Logout
+    </button>
+  </div>
+</aside>
+

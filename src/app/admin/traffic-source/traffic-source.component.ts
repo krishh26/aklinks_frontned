@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 
 interface TrafficSource {
   id: number;
@@ -15,7 +16,7 @@ interface TrafficSource {
 @Component({
   selector: 'app-traffic-source',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, SidebarComponent],
   templateUrl: './traffic-source.component.html',
   styleUrls: ['./traffic-source.component.scss']
 })
@@ -23,7 +24,6 @@ export class TrafficSourceComponent implements OnInit {
   currentTheme: Theme = 'light';
   isThemeDropdownOpen = false;
   isSidebarOpen = true; // Sidebar is open by default
-  isUserMenuOpen = true; // Card is open by default
   isAddSourceFormOpen = false;
 
   trafficSources: TrafficSource[] = [
@@ -83,17 +83,7 @@ export class TrafficSourceComponent implements OnInit {
     this.isSidebarOpen = false;
   }
 
-  toggleUserMenu(): void {
-    this.isUserMenuOpen = !this.isUserMenuOpen;
-  }
-
-  logout() {
-    // Implement logout functionality
-    this.localStorageService.clearStorage();
-    
-    // Redirect to login page
-    this.router.navigate(['/auth/login']);
-  }
+  // Logout is handled by the sidebar component
 
   toggleAddSourceForm(): void {
     this.isAddSourceFormOpen = !this.isAddSourceFormOpen;

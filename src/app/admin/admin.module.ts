@@ -5,6 +5,8 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { WithdrawsComponent } from "./withdraws/withdraws.component";
 import { TrafficSourceComponent } from "./traffic-source/traffic-source.component";
 import { ShortenLinkComponent } from "./shorten-link/shorten-link.component";
+import { SupportComponent } from "./support/support.component";
+import { ChangePasswordComponent } from "./settings/change-password/change-password.component";
 
 @NgModule({
   declarations: [],
@@ -14,12 +16,16 @@ import { ShortenLinkComponent } from "./shorten-link/shorten-link.component";
     WithdrawsComponent,
     TrafficSourceComponent,
     ShortenLinkComponent,
+    SupportComponent,
+    ChangePasswordComponent,
     RouterModule.forChild([
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'withdraws', component: WithdrawsComponent },
       { path: 'traffic-source', component: TrafficSourceComponent },
-      { path: 'shorten-link', component: ShortenLinkComponent }
+      { path: 'shorten-link', component: ShortenLinkComponent },
+      { path: 'support', component: SupportComponent },
+      { path: 'settings/change-password', component: ChangePasswordComponent }
     ])
   ],
   exports: [],

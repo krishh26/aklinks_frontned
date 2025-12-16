@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
+import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 
 interface Withdrawal {
   id: string;
@@ -33,7 +34,7 @@ interface User {
 @Component({
   selector: 'app-withdraws',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, SidebarComponent],
   templateUrl: './withdraws.component.html',
   styleUrls: ['./withdraws.component.scss']
 })
@@ -316,13 +317,6 @@ export class WithdrawsComponent implements OnInit {
   }
 
   logout(): void {
-    // Implement logout functionality
-    console.log('Logout clicked');
-    // Clear any stored authentication data
-    // localStorage.removeItem('token');
-    // localStorage.removeItem('user');
-
-    // Redirect to login page
-    this.router.navigate(['/auth/login']);
+    // Logout is handled by the sidebar component
   }
 }
