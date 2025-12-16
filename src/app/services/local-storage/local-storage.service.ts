@@ -43,4 +43,26 @@ export class LocalStorageService {
   clearStorage(): void {
     localStorage.clear();
   }
+
+  // Generic method to get item from localStorage
+  getItem(key: string): any {
+    const item = localStorage.getItem(key);
+    if (item) {
+      try {
+        return JSON.parse(item);
+      } catch (e) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  // Generic method to set item in localStorage
+  setItem(key: string, value: any): void {
+    if (typeof value === 'string') {
+      localStorage.setItem(key, value);
+    } else {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+  }
 }

@@ -7,6 +7,7 @@ import { TrafficSourceComponent } from "./traffic-source/traffic-source.componen
 import { ShortenLinkComponent } from "./shorten-link/shorten-link.component";
 import { SupportComponent } from "./support/support.component";
 import { ChangePasswordComponent } from "./settings/change-password/change-password.component";
+import { ProfileComponent } from "./settings/profile/profile.component";
 
 @NgModule({
   declarations: [],
@@ -18,6 +19,7 @@ import { ChangePasswordComponent } from "./settings/change-password/change-passw
     ShortenLinkComponent,
     SupportComponent,
     ChangePasswordComponent,
+    ProfileComponent,
     RouterModule.forChild([
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
@@ -25,6 +27,7 @@ import { ChangePasswordComponent } from "./settings/change-password/change-passw
       { path: 'traffic-source', component: TrafficSourceComponent },
       { path: 'shorten-link', component: ShortenLinkComponent },
       { path: 'support', component: SupportComponent },
+      { path: 'settings/profile', component: ProfileComponent },
       { path: 'settings/change-password', component: ChangePasswordComponent }
     ])
   ],

@@ -24,6 +24,10 @@ export class ChangePasswordComponent implements OnInit {
     confirmPassword: ''
   };
 
+  showCurrentPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
+
   constructor(
     private router: Router,
     private themeService: ThemeService,
@@ -67,6 +71,18 @@ export class ChangePasswordComponent implements OnInit {
     this.isSidebarOpen = false;
   }
 
+  toggleCurrentPasswordVisibility(): void {
+    this.showCurrentPassword = !this.showCurrentPassword;
+  }
+
+  toggleNewPasswordVisibility(): void {
+    this.showNewPassword = !this.showNewPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
   onSubmit(): void {
     if (!this.passwordForm.currentPassword || !this.passwordForm.newPassword || !this.passwordForm.confirmPassword) {
       alert('Please fill in all fields.');
@@ -98,6 +114,9 @@ export class ChangePasswordComponent implements OnInit {
       newPassword: '',
       confirmPassword: ''
     };
+    this.showCurrentPassword = false;
+    this.showNewPassword = false;
+    this.showConfirmPassword = false;
   }
 }
 
