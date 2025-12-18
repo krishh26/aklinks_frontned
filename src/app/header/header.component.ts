@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -93,7 +93,7 @@ import { filter } from 'rxjs/operators';
     }
   `]
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   isMobileMenuOpen = false;
   isMobileDropdownOpen = false;
   isAdminRoute = false;
@@ -103,8 +103,13 @@ export class HeaderComponent {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        this.isAdminRoute = event.url.startsWith('/admin');
+        this.isAdminRoute = event.url.startsWith('/admin') || event.url.startsWith('/manage-user-admin');
       });
+  }
+
+  ngOnInit(): void {
+    // Check initial route
+    this.isAdminRoute = this.router.url.startsWith('/admin') || this.router.url.startsWith('/manage-user-admin');
   }
 
   toggleMobileMenu() {

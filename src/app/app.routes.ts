@@ -22,8 +22,8 @@ export const routes: Routes = [
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) 
   },
   { 
-    path: 'master-admin', 
-    loadChildren: () => import('./master-admin/master-admin.module').then(m => m.MasterAdminModule) 
+    path: 'manage-user-admin', 
+    loadChildren: () => import('./manage-user-admin/manage-user-admin.module').then(m => m.ManageUserAdminModule) 
   },
   { path: '**', redirectTo: '' }
 ];

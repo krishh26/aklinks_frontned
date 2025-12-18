@@ -18,8 +18,8 @@ export class SidebarComponent implements OnInit, OnChanges {
   currentTheme: Theme = 'light';
   isUserMenuOpen = false;
   isSettingsMenuOpen = false;
-  isAdminRole: boolean = false; // For master-admin module (admin role)
-  isUserRole: boolean = false; // For admin module (user role)
+  isAdminRole: boolean = false;
+  isUserRole: boolean = false;
 
   constructor(
     private router: Router,
@@ -47,9 +47,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     const user = this.localStorageService.getLogger();
     if (user && user.role) {
       const userRole = user.role.toLowerCase();
-      // master-admin module is for 'admin' role
-      this.isAdminRole = userRole === 'admin' || userRole === 'master admin' || userRole === 'master_admin' || userRole === 'masteradmin';
-      // admin module is for 'user' role
+      this.isAdminRole = userRole === 'admin';
       this.isUserRole = userRole === 'user' || this.isAdminRole;
     }
   }

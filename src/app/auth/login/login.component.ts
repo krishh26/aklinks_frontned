@@ -349,16 +349,8 @@ export class LoginComponent {
             }
             if (response.data.user) {
               this.localStorageService.setLogger(response.data.user);
-              
-              // Check user role and redirect accordingly
-              const userRole = response.data.user.role?.toLowerCase();
-              if (userRole === 'master admin' || userRole === 'master_admin' || userRole === 'masteradmin') {
-                // Redirect master admin to user-list page
-                this.router.navigate(['/master-admin/user-list']);
-              } else {
-                // Redirect regular admin to dashboard
-                this.router.navigate(['/admin/dashboard']);
-              }
+              // Redirect to admin dashboard
+              this.router.navigate(['/admin/dashboard']);
             } else {
               // Fallback: Redirect to dashboard if no user data
               this.router.navigate(['/admin/dashboard']);
