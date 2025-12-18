@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { ThemeService, Theme } from '../../../services/theme.service';
-import { LocalStorageService } from '../../../services/local-storage/local-storage.service';
+import { ThemeService, Theme } from '../../services/theme.service';
+import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -59,4 +59,3 @@ export class SidebarComponent implements OnInit {
     this.router.navigate(['/auth/login']);
   }
 }
-

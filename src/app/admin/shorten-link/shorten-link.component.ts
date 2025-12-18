@@ -5,7 +5,7 @@ import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { LinkService, Link } from '../../services/link/link.service';
-import { SidebarComponent } from '../shared/sidebar/sidebar.component';
+import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-shorten-link',

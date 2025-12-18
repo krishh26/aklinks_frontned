@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
-import { SidebarComponent } from '../shared/sidebar/sidebar.component';
+import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 
 interface Withdrawal {
   id: string;

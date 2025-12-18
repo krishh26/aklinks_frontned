@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
-import { SidebarComponent } from '../shared/sidebar/sidebar.component';
+import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-dashboard',
