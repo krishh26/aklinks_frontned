@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ThemeService, Theme } from '../../services/theme.service';
+import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 
 interface User {
   id: string;
@@ -16,7 +18,7 @@ interface User {
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, SidebarComponent],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
@@ -25,10 +27,17 @@ export class UserListComponent implements OnInit {
   isLoading: boolean = false;
   searchTerm: string = '';
   selectedStatus: string = 'all';
+  currentTheme: Theme = 'light';
+  isThemeDropdownOpen = false;
+  isSidebarOpen = true; // Sidebar is open by default
 
-  constructor() {}
+  constructor(private themeService: ThemeService) {}
 
   ngOnInit(): void {
+    this.currentTheme = this.themeService.getCurrentTheme();
+    this.themeService.theme$.subscribe(theme => {
+      this.currentTheme = theme;
+    });
     this.loadUsers();
   }
 
@@ -103,6 +112,36 @@ export class UserListComponent implements OnInit {
     // TODO: Implement toggle user status
     user.status = user.status === 'active' ? 'inactive' : 'active';
     console.log('Toggle status for user:', user.id);
+  }
+
+  getThemeIcon(): string {
+    switch (this.currentTheme) {
+      case 'light':
+        return '☀️';
+      case 'dark':
+        return '🌙';
+      case 'blue':
+        return '🌊';
+      default:
+        return '☀️';
+    }
+  }
+
+  toggleThemeDropdown(): void {
+    this.isThemeDropdownOpen = !this.isThemeDropdownOpen;
+  }
+
+  selectTheme(theme: Theme): void {
+    this.themeService.setTheme(theme);
+    this.isThemeDropdownOpen = false;
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar(): void {
+    this.isSidebarOpen = false;
   }
 }
 

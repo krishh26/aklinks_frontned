@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
@@ -11,14 +11,15 @@ import { LocalStorageService } from '../../services/local-storage/local-storage.
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnChanges {
   @Input() isOpen: boolean = true;
   @Output() sidebarToggle = new EventEmitter<void>();
   
   currentTheme: Theme = 'light';
-  isUserMenuOpen = true;
+  isUserMenuOpen = false;
   isSettingsMenuOpen = false;
-  isMasterRole: boolean = false;
+  isAdminRole: boolean = false; // For master-admin module (admin role)
+  isUserRole: boolean = false; // For admin module (user role)
 
   constructor(
     private router: Router,
@@ -34,11 +35,22 @@ export class SidebarComponent implements OnInit {
     this.checkUserRole();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    // Close user menu when sidebar closes
+    if (changes['isOpen'] && !changes['isOpen'].currentValue) {
+      this.isUserMenuOpen = false;
+      this.isSettingsMenuOpen = false;
+    }
+  }
+
   checkUserRole(): void {
     const user = this.localStorageService.getLogger();
     if (user && user.role) {
       const userRole = user.role.toLowerCase();
-      this.isMasterRole = userRole === 'master admin' || userRole === 'master_admin' || userRole === 'masteradmin';
+      // master-admin module is for 'admin' role
+      this.isAdminRole = userRole === 'admin' || userRole === 'master admin' || userRole === 'master_admin' || userRole === 'masteradmin';
+      // admin module is for 'user' role
+      this.isUserRole = userRole === 'user' || this.isAdminRole;
     }
   }
 

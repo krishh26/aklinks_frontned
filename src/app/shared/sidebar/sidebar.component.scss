@@ -12,6 +12,7 @@
   z-index: 1000;
   transition: transform 0.3s ease, background 0.3s ease;
   transform: translateX(0);
+  overflow: hidden;
 }
 
 .sidebar:not(.open) {
@@ -63,6 +64,8 @@
   border: 1px solid rgba(255, 255, 255, 0.25);
   flex-shrink: 0;
   min-height: auto;
+  position: relative;
+  z-index: 1;
 }
 
 .user-profile-top {
@@ -144,6 +147,8 @@
   overflow: hidden;
   transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease, margin 0.3s ease;
   opacity: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .user-profile-links.collapsed {

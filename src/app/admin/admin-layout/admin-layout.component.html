@@ -1,0 +1,64 @@
+<div class="dashboard-container" [class.sidebar-closed]="!isSidebarOpen" [class]="currentTheme + '-theme'">
+  <!-- Shared Sidebar -->
+  <app-sidebar [isOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-sidebar>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Admin Header -->
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="sidebar-toggle-header-btn" *ngIf="!isSidebarOpen" (click)="toggleSidebar()" title="Open Sidebar">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+      
+      <div class="header-right">
+        <div class="theme-switcher-wrapper">
+          <button class="header-icon theme-toggle" (click)="toggleThemeDropdown()">
+            <span>{{ getThemeIcon() }}</span>
+          </button>
+          <div class="theme-dropdown" [class.active]="isThemeDropdownOpen">
+            <button 
+              class="theme-option" 
+              [class.active]="currentTheme === 'light'"
+              (click)="selectTheme('light')">
+              <span class="theme-icon">☀️</span>
+              <span class="theme-label">Light</span>
+            </button>
+            <button 
+              class="theme-option" 
+              [class.active]="currentTheme === 'dark'"
+              (click)="selectTheme('dark')">
+              <span class="theme-icon">🌙</span>
+              <span class="theme-label">Dark</span>
+            </button>
+            <button 
+              class="theme-option" 
+              [class.active]="currentTheme === 'blue'"
+              (click)="selectTheme('blue')">
+              <span class="theme-icon">🌊</span>
+              <span class="theme-label">Blue</span>
+            </button>
+          </div>
+        </div>
+        <button class="header-icon notifications">
+          <span>🔔</span>
+          <span class="notification-badge">3</span>
+        </button>
+        <button class="header-icon profile">
+          <span>👤</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Content (Router Outlet) -->
+    <div class="dashboard-content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
