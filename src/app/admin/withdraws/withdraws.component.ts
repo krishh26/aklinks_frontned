@@ -41,7 +41,7 @@ interface User {
 export class WithdrawsComponent implements OnInit {
   currentTheme: Theme = 'light';
   isThemeDropdownOpen = false;
-  isSidebarOpen = false;
+  isSidebarOpen = true;
   
   // Admin data
   adminStats = {

@@ -20,6 +20,8 @@ export class SidebarComponent implements OnInit, OnChanges {
   isSettingsMenuOpen = false;
   isAdminRole: boolean = false;
   isUserRole: boolean = false;
+  userName: string = '';
+  userRole: string = '';
 
   constructor(
     private router: Router,
@@ -45,10 +47,21 @@ export class SidebarComponent implements OnInit, OnChanges {
 
   checkUserRole(): void {
     const user = this.localStorageService.getLogger();
-    if (user && user.role) {
-      const userRole = user.role.toLowerCase();
-      this.isAdminRole = userRole === 'admin';
-      this.isUserRole = userRole === 'user' || this.isAdminRole;
+    if (user) {
+      // Set user name and role
+      this.userName = user.name || user.email || 'User';
+      this.userRole = user.role || 'Member';
+      
+      // Check role for permissions
+      if (user.role) {
+        const userRole = user.role.toLowerCase();
+        this.isAdminRole = userRole === 'admin';
+        this.isUserRole = userRole === 'user' || this.isAdminRole;
+      }
+    } else {
+      // Default values if no user data
+      this.userName = 'User';
+      this.userRole = 'Member';
     }
   }
 

@@ -1,8 +1,16 @@
 .dashboard-container {
   display: flex;
+  width: 100%;
   min-height: 100vh;
+  height: 100vh;
   background-color: var(--bg-secondary);
   transition: background-color 0.3s ease;
+  overflow: hidden;
+}
+
+.dashboard-container.sidebar-closed .main-content {
+  margin-left: 0;
+  width: 100%;
 }
 
 /* Sidebar Styles */
@@ -133,8 +141,16 @@
 /* Main Content Styles */
 .main-content {
   flex: 1;
+  width: calc(100% - 280px);
   margin-left: 280px;
   padding: 0;
+  transition: margin-left 0.3s ease;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Admin Header */
@@ -154,26 +170,27 @@
   gap: 1rem;
 }
 
-.hamburger-menu {
-  display: none;
-  flex-direction: column;
-  gap: 4px;
-  background: none;
+.sidebar-toggle-header-btn {
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 4px;
-  transition: background 0.3s ease;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
-.hamburger-menu:hover {
-  background: rgba(255, 255, 255, 0.1);
+.sidebar-toggle-header-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .hamburger-line {
-  width: 20px;
-  height: 2px;
+  width: 22px;
+  height: 3px;
   background: white;
+  border-radius: 2px;
   transition: all 0.3s ease;
 }
 

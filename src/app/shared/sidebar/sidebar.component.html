@@ -15,8 +15,8 @@
         <span>😊</span>
       </div>
       <div class="user-info">
-        <div class="username">Time17</div>
-        <div class="user-role">Member</div>
+        <div class="username">{{ userName }}</div>
+        <div class="user-role">{{ userRole }}</div>
       </div>
       <button class="user-menu-btn" (click)="toggleUserMenu()">
         <span>☰</span>
@@ -93,7 +93,7 @@
     </div>
 
     <!-- ANALYTICS Section -->
-    <div class="nav-section" *ngIf="isAdminRole">
+    <!-- <div class="nav-section" *ngIf="isAdminRole">
       <div class="nav-category">ANALYTICS</div>
       <ul class="nav-list">
         <li class="nav-item">
@@ -115,25 +115,19 @@
           </a>
         </li>
       </ul>
-    </div>
+    </div> -->
 
     <!-- USERS Section -->
     <div class="nav-section" *ngIf="isUserRole || isAdminRole">
       <div class="nav-category">USERS</div>
       <ul class="nav-list">
-        <li class="nav-item">
-          <a routerLink="/admin/users" routerLinkActive="active" class="nav-link">
-            All Users
-            <span class="nav-chevron">›</span>
-          </a>
-        </li>
         <li class="nav-item" *ngIf="isAdminRole">
           <a routerLink="/manage-user-admin/user-list" routerLinkActive="active" class="nav-link">
             User List
             <span class="nav-chevron">›</span>
           </a>
         </li>
-        <li class="nav-item" *ngIf="isAdminRole">
+        <!-- <li class="nav-item" *ngIf="isAdminRole">
           <a routerLink="/admin/users/roles" class="nav-link">
             User Roles
             <span class="nav-chevron">›</span>
@@ -144,7 +138,7 @@
             Activity Log
             <span class="nav-chevron">›</span>
           </a>
-        </li>
+        </li> -->
       </ul>
     </div>
 
@@ -158,12 +152,12 @@
             <span class="nav-chevron">›</span>
           </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a routerLink="/admin/payments" class="nav-link">
             Payments
             <span class="nav-chevron">›</span>
           </a>
-        </li>
+        </li> -->
       </ul>
     </div>
 
@@ -177,12 +171,12 @@
             <span class="nav-chevron">›</span>
           </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a routerLink="/admin/faq" class="nav-link">
             FAQ Management
             <span class="nav-chevron">›</span>
           </a>
-        </li>
+        </li> -->
       </ul>
     </div>
 

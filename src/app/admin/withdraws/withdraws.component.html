@@ -1,4 +1,4 @@
-<div class="dashboard-container" [class]="currentTheme + '-theme'">
+<div class="dashboard-container" [class.sidebar-closed]="!isSidebarOpen" [class]="currentTheme + '-theme'">
   <!-- Shared Sidebar -->
   <app-sidebar [isOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-sidebar>
 
@@ -11,7 +11,7 @@
       <!-- Admin Header -->
       <header class="admin-header">
         <div class="header-left">
-          <button class="hamburger-menu" (click)="toggleSidebar()">
+          <button class="sidebar-toggle-header-btn" *ngIf="!isSidebarOpen" (click)="toggleSidebar()" title="Open Sidebar">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
