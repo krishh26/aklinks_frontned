@@ -165,9 +165,15 @@
     <div class="nav-section">
       <div class="nav-category">SUPPORT</div>
       <ul class="nav-list">
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isAdminRole">
           <a routerLink="/admin/support" routerLinkActive="active" class="nav-link">
             Support Tickets
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="isAdminRole">
+          <a routerLink="/manage-user-admin/support-list" routerLinkActive="active" class="nav-link">
+            Support List
             <span class="nav-chevron">›</span>
           </a>
         </li>

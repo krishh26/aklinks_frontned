@@ -6,6 +6,7 @@ import { Observable } from "rxjs";
 
 export enum SupportEndPoint {
     SUPPORT = '/support',
+    SUPPORT_ALL = '/support/all',
 }
 
 export interface SupportRequest {
@@ -47,6 +48,13 @@ export class SupportService {
     submitSupportRequest(payload: SupportRequest): Observable<any> {
         return this.httpClient
             .post<any>(this.baseUrl + SupportEndPoint.SUPPORT, payload, { headers: this.getHeader() });
+    }
+
+    getSupportList(): Observable<any> {
+        return this.httpClient
+            .get<any>(this.baseUrl + SupportEndPoint.SUPPORT_ALL, { 
+                headers: this.getHeader()
+            });
     }
 }
 
