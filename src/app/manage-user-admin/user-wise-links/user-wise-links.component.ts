@@ -4,6 +4,9 @@ import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ThemeService, Theme } from '../../services/theme.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
+import { LinkService } from '../../services/link/link.service';
+import { UserService } from '../../services/user/user.service';
+import Swal from 'sweetalert2';
 
 interface Link {
   id: string;
@@ -36,7 +39,9 @@ export class UserWiseLinksComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private linkService: LinkService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -52,60 +57,68 @@ export class UserWiseLinksComponent implements OnInit {
   }
 
   loadUserLinks(): void {
+    if (!this.userId) {
+      return;
+    }
+
     this.isLoading = true;
-    // TODO: Implement API call to fetch user links
-    // TODO: Fetch user name based on userId
-    this.userName = 'John Doe'; // Placeholder
-    
-    setTimeout(() => {
-      this.links = [
-        {
-          id: '1',
-          shortUrl: 'bit.ly/abc123',
-          originalUrl: 'https://example.com/very-long-url-1',
-          clicks: 1234,
-          status: 'active',
-          createdAt: '2024-01-15',
-          lastClicked: '2024-01-20'
-        },
-        {
-          id: '2',
-          shortUrl: 'bit.ly/xyz789',
-          originalUrl: 'https://example.com/very-long-url-2',
-          clicks: 567,
-          status: 'active',
-          createdAt: '2024-01-10',
-          lastClicked: '2024-01-19'
+
+    // Fetch user name
+    this.userService.getUserById(this.userId).subscribe({
+      next: (response) => {
+        if (response.status === 'success' && response.data?.user) {
+          this.userName = response.data.user.name;
         }
-      ];
-      this.isLoading = false;
-    }, 500);
+      },
+      error: (error) => {
+        console.error('Error fetching user:', error);
+        this.userName = 'Unknown User';
+      }
+    });
+
+    // Fetch user links with filters
+    const search = this.searchTerm.trim() || undefined;
+    const status = this.selectedStatus !== 'all' ? this.selectedStatus : undefined;
+
+    this.linkService.getUserLinks(this.userId, search, status).subscribe({
+      next: (response) => {
+        if (response.status === 'success' && response.data) {
+          // Map backend response to frontend interface
+          this.links = response.data.map((link: any) => ({
+            id: link.id || link._id,
+            shortUrl: link.shortLink,
+            originalUrl: link.originalLink,
+            clicks: link.clicks || 0,
+            status: link.status || (link.deleted ? 'inactive' : 'active'),
+            createdAt: link.createdAt ? new Date(link.createdAt).toLocaleDateString() : '',
+            lastClicked: link.lastClicked ? new Date(link.lastClicked).toLocaleDateString() : undefined
+          }));
+        } else {
+          this.links = [];
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error fetching user links:', error);
+        this.links = [];
+        this.isLoading = false;
+      }
+    });
   }
 
   get filteredLinks(): Link[] {
-    let filtered = this.links;
-
-    if (this.searchTerm) {
-      const term = this.searchTerm.toLowerCase();
-      filtered = filtered.filter(link =>
-        link.shortUrl.toLowerCase().includes(term) ||
-        link.originalUrl.toLowerCase().includes(term)
-      );
-    }
-
-    if (this.selectedStatus !== 'all') {
-      filtered = filtered.filter(link => link.status === this.selectedStatus);
-    }
-
-    return filtered;
+    // Since filtering is now done on the backend, we just return all links
+    return this.links;
   }
 
   onSearchChange(): void {
-    // Search is handled by the getter
+    // Reload links with search filter
+    this.loadUserLinks();
   }
 
   onStatusChange(): void {
-    // Filtering is handled by the getter
+    // Reload links with status filter
+    this.loadUserLinks();
   }
 
   goBack(): void {
@@ -117,17 +130,118 @@ export class UserWiseLinksComponent implements OnInit {
     console.log('Edit link:', linkId);
   }
 
-  deleteLink(linkId: string): void {
-    // TODO: Implement delete link functionality
-    if (confirm('Are you sure you want to delete this link?')) {
-      console.log('Delete link:', linkId);
+  deleteLink(link: Link): void {
+    if (!link.id) {
+      console.error('Link ID is required');
+      return;
     }
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete this link?\n\nShort URL: ${link.shortUrl}\nOriginal URL: ${link.originalUrl.substring(0, 50)}${link.originalUrl.length > 50 ? '...' : ''}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.isLoading = true;
+        this.linkService.adminDeleteLink(link.id).subscribe({
+          next: (response) => {
+            if (response.status === 'success') {
+              Swal.fire({
+                title: 'Deleted!',
+                text: 'Link has been deleted successfully.',
+                icon: 'success',
+                confirmButtonColor: '#3085d6'
+              });
+              // Reload links after deletion
+              this.loadUserLinks();
+            } else {
+              this.isLoading = false;
+              Swal.fire({
+                title: 'Error!',
+                text: response.message || 'Failed to delete link',
+                icon: 'error',
+                confirmButtonColor: '#3085d6'
+              });
+            }
+          },
+          error: (error) => {
+            this.isLoading = false;
+            console.error('Error deleting link:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: error.error?.message || 'Failed to delete link. Please try again.',
+              icon: 'error',
+              confirmButtonColor: '#3085d6'
+            });
+          }
+        });
+      }
+    });
   }
 
   toggleLinkStatus(link: Link): void {
-    // TODO: Implement toggle link status
-    link.status = link.status === 'active' ? 'inactive' : 'active';
-    console.log('Toggle status for link:', link.id);
+    if (!link.id) {
+      console.error('Link ID is required');
+      return;
+    }
+
+    const newStatus = link.status === 'active' ? 'inactive' : 'active';
+    const action = newStatus === 'active' ? 'activate' : 'deactivate';
+    const actionText = newStatus === 'active' ? 'activate' : 'deactivate';
+    const titleText = newStatus === 'active' ? 'Activate Link?' : 'Deactivate Link?';
+    const confirmText = newStatus === 'active' ? 'Yes, activate it!' : 'Yes, deactivate it!';
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to ${actionText} this link?\n\nShort URL: ${link.shortUrl}\nOriginal URL: ${link.originalUrl.substring(0, 50)}${link.originalUrl.length > 50 ? '...' : ''}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: newStatus === 'active' ? '#16a34a' : '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: confirmText,
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.isLoading = true;
+        this.linkService.toggleLinkStatus(link.id).subscribe({
+          next: (response) => {
+            if (response.status === 'success') {
+              Swal.fire({
+                title: 'Success!',
+                text: `Link has been ${actionText}d successfully.`,
+                icon: 'success',
+                confirmButtonColor: '#3085d6'
+              });
+              // Reload links to ensure data consistency
+              this.loadUserLinks();
+            } else {
+              this.isLoading = false;
+              Swal.fire({
+                title: 'Error!',
+                text: response.message || `Failed to ${actionText} link`,
+                icon: 'error',
+                confirmButtonColor: '#3085d6'
+              });
+            }
+          },
+          error: (error) => {
+            this.isLoading = false;
+            console.error('Error toggling link status:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: error.error?.message || `Failed to ${actionText} link. Please try again.`,
+              icon: 'error',
+              confirmButtonColor: '#3085d6'
+            });
+          }
+        });
+      }
+    });
   }
 
   getThemeIcon(): string {

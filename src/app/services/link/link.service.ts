@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { LocalStorageService } from "../local-storage/local-storage.service";
 import { environment } from "src/environments/environment";
@@ -8,6 +8,8 @@ export enum LinkEndPoint {
     CREATE = '/link/create',
     GET_ALL = '/link/all',
     DELETE = '/link',
+    GET_USER_LINKS = '/link/user',
+    TOGGLE_STATUS = '/link',
 }
 
 export interface Link {
@@ -60,6 +62,36 @@ export class LinkService {
     deleteLink(linkId: string): Observable<any> {
         return this.httpClient
             .delete<any>(this.baseUrl + LinkEndPoint.DELETE + '/' + linkId, { headers: this.getHeader() });
+    }
+
+    getUserLinks(userId: string, search?: string, status?: string): Observable<any> {
+        let params = new HttpParams();
+        if (search) {
+            params = params.set('search', search);
+        }
+        if (status && status !== 'all') {
+            params = params.set('status', status);
+        }
+        
+        return this.httpClient
+            .get<any>(this.baseUrl + LinkEndPoint.GET_USER_LINKS + '/' + userId, { 
+                headers: this.getHeader(),
+                params: params
+            });
+    }
+
+    toggleLinkStatus(linkId: string): Observable<any> {
+        return this.httpClient
+            .put<any>(this.baseUrl + LinkEndPoint.TOGGLE_STATUS + '/' + linkId + '/toggle-status', {}, { 
+                headers: this.getHeader() 
+            });
+    }
+
+    adminDeleteLink(linkId: string): Observable<any> {
+        return this.httpClient
+            .delete<any>(this.baseUrl + LinkEndPoint.DELETE + '/' + linkId + '/admin', { 
+                headers: this.getHeader() 
+            });
     }
 }
 

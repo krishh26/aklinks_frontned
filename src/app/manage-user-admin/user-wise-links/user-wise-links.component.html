@@ -133,14 +133,26 @@
               <td>{{ link.createdAt }}</td>
               <td>{{ link.lastClicked || 'Never' }}</td>
               <td>
-                <button
-                  class="action-btn delete-btn"
-                  (click)="deleteLink(link.id)"
-                  title="Delete Link"
-                >
-                  <span class="delete-icon">🗑️</span>
-                  Delete
-                </button>
+                <div class="action-buttons">
+                  <button
+                    class="action-btn toggle-status-btn"
+                    [class.status-active]="link.status === 'active'"
+                    [class.status-inactive]="link.status === 'inactive'"
+                    (click)="toggleLinkStatus(link)"
+                    [title]="link.status === 'active' ? 'Deactivate Link' : 'Activate Link'"
+                  >
+                    <span class="status-icon">{{ link.status === 'active' ? '✅' : '❌' }}</span>
+                    {{ link.status === 'active' ? 'Deactivate' : 'Activate' }}
+                  </button>
+                  <button
+                    class="action-btn delete-btn"
+                    (click)="deleteLink(link)"
+                    title="Delete Link"
+                  >
+                    <span class="delete-icon">🗑️</span>
+                    Delete
+                  </button>
+                </div>
               </td>
             </tr>
             <tr *ngIf="filteredLinks.length === 0">

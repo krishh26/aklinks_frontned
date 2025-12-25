@@ -92,6 +92,53 @@
             <option value="inactive">Inactive</option>
           </select>
         </div>
+
+        <div class="filter-group">
+          <select
+            id="role-filter"
+            [(ngModel)]="selectedRole"
+            (change)="onRoleChange()"
+            class="form-select"
+          >
+            <option value="all">All Roles</option>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+            <option value="super_admin">Super Admin</option>
+          </select>
+        </div>
+
+        <div class="filter-group date-range-group">
+          <label for="date-from" class="date-label">From:</label>
+          <input
+            type="date"
+            id="date-from"
+            [(ngModel)]="dateFrom"
+            (change)="onDateRangeChange()"
+            class="form-input date-input"
+          />
+        </div>
+
+        <div class="filter-group date-range-group">
+          <label for="date-to" class="date-label">To:</label>
+          <input
+            type="date"
+            id="date-to"
+            [(ngModel)]="dateTo"
+            (change)="onDateRangeChange()"
+            class="form-input date-input"
+          />
+        </div>
+
+        <div class="filter-group">
+          <button
+            type="button"
+            (click)="clearFilters()"
+            class="clear-filters-btn"
+            title="Clear All Filters"
+          >
+            Clear Filters
+          </button>
+        </div>
       </div>
 
       <!-- Users Table -->
@@ -123,15 +170,27 @@
               </td>
               <td>
                 <span
-                  class="status-badge status-active"
+                  class="status-badge"
+                  [class.status-active]="user.status === 'active'"
+                  [class.status-inactive]="user.status === 'inactive'"
                 >
-                  Active
+                  {{ (user.status || 'active') | titlecase }}
                 </span>
               </td>
               <td>{{ formatDate(user.createdAt) }}</td>
               <td>{{ formatDate(user.lastLogin) }}</td>
               <td>
                 <div class="action-buttons">
+                  <button
+                    class="action-btn toggle-status-btn"
+                    [class.status-active]="user.status === 'active'"
+                    [class.status-inactive]="user.status === 'inactive'"
+                    (click)="toggleUserStatus(user)"
+                    [title]="user.status === 'active' ? 'Deactivate User' : 'Activate User'"
+                  >
+                    <span class="status-icon">{{ user.status === 'active' ? '✅' : '❌' }}</span>
+                    {{ user.status === 'active' ? 'Deactivate' : 'Activate' }}
+                  </button>
                   <button
                     class="action-btn view-btn"
                     (click)="viewUserLinks(user)"

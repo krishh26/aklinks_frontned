@@ -276,6 +276,41 @@
 .filter-group {
   display: flex;
   align-items: center;
+
+  &.date-range-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+.date-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.date-input {
+  min-width: 150px;
+}
+
+.clear-filters-btn {
+  padding: 0.875rem 1.5rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--border-color);
+    border-color: var(--gradient-start);
+    color: var(--gradient-start);
+  }
 }
 
 .form-input,
@@ -464,6 +499,36 @@
       background: rgba(102, 126, 234, 0.2);
       border-color: rgba(102, 126, 234, 0.5);
       transform: translateY(-1px);
+    }
+  }
+
+  &.toggle-status-btn {
+    &.status-active {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #dc2626;
+
+      &:hover {
+        background: rgba(239, 68, 68, 0.2);
+        border-color: rgba(239, 68, 68, 0.5);
+        transform: translateY(-1px);
+      }
+    }
+
+    &.status-inactive {
+      background: rgba(34, 197, 94, 0.1);
+      border-color: rgba(34, 197, 94, 0.3);
+      color: #16a34a;
+
+      &:hover {
+        background: rgba(34, 197, 94, 0.2);
+        border-color: rgba(34, 197, 94, 0.5);
+        transform: translateY(-1px);
+      }
+    }
+
+    .status-icon {
+      font-size: 1rem;
     }
   }
 

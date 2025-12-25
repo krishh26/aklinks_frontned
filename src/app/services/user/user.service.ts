@@ -40,10 +40,26 @@ export class UserService {
         return headers;
     }
 
-    getAllUsers(page: number = 1, limit: number = 10): Observable<any> {
+    getAllUsers(page: number = 1, limit: number = 10, search?: string, status?: string, role?: string, dateFrom?: string, dateTo?: string): Observable<any> {
         let params = new HttpParams()
             .set('page', page.toString())
             .set('limit', limit.toString());
+        
+        if (search) {
+            params = params.set('search', search);
+        }
+        if (status && status !== 'all') {
+            params = params.set('status', status);
+        }
+        if (role && role !== 'all') {
+            params = params.set('role', role);
+        }
+        if (dateFrom) {
+            params = params.set('dateFrom', dateFrom);
+        }
+        if (dateTo) {
+            params = params.set('dateTo', dateTo);
+        }
         
         return this.httpClient
             .get<any>(this.baseUrl + UserEndPoint.GET_ALL, { 
@@ -52,9 +68,23 @@ export class UserService {
             });
     }
 
+    toggleUserStatus(userId: string): Observable<any> {
+        return this.httpClient
+            .put<any>(this.baseUrl + '/user/' + userId + '/toggle-status', {}, { 
+                headers: this.getHeader() 
+            });
+    }
+
     deleteUser(userId: string): Observable<any> {
         return this.httpClient
             .delete<any>(this.baseUrl + '/user/' + userId, { 
+                headers: this.getHeader() 
+            });
+    }
+
+    getUserById(userId: string): Observable<any> {
+        return this.httpClient
+            .get<any>(this.baseUrl + '/user/' + userId, { 
                 headers: this.getHeader() 
             });
     }

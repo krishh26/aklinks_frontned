@@ -33,6 +33,9 @@ export class UserListComponent implements OnInit {
   isLoading: boolean = false;
   searchTerm: string = '';
   selectedStatus: string = 'all';
+  selectedRole: string = 'all';
+  dateFrom: string = '';
+  dateTo: string = '';
   currentTheme: Theme = 'light';
   isThemeDropdownOpen = false;
   isSidebarOpen = true;
@@ -57,7 +60,13 @@ export class UserListComponent implements OnInit {
 
   loadUsers(): void {
     this.isLoading = true;
-    this.userService.getAllUsers(this.currentPage, this.limit).subscribe({
+    const search = this.searchTerm.trim() || undefined;
+    const status = this.selectedStatus !== 'all' ? this.selectedStatus : undefined;
+    const role = this.selectedRole !== 'all' ? this.selectedRole : undefined;
+    const dateFrom = this.dateFrom || undefined;
+    const dateTo = this.dateTo || undefined;
+
+    this.userService.getAllUsers(this.currentPage, this.limit, search, status, role, dateFrom, dateTo).subscribe({
       next: (response) => {
         this.isLoading = false;
         if (response.status === 'success' && response.data) {
@@ -97,36 +106,42 @@ export class UserListComponent implements OnInit {
   }
 
   get filteredUsers(): User[] {
-    let filtered = this.users;
-
-    if (this.searchTerm) {
-      const term = this.searchTerm.toLowerCase();
-      filtered = filtered.filter(user =>
-        (user.name && user.name.toLowerCase().includes(term)) ||
-        user.email.toLowerCase().includes(term)
-      );
-    }
-
-    if (this.selectedStatus !== 'all') {
-      filtered = filtered.filter(user => {
-        // If status field exists, use it; otherwise, filter by role or other criteria
-        if (user.status) {
-          return user.status === this.selectedStatus;
-        }
-        // You can add custom logic here if status is not in the API response
-        return true;
-      });
-    }
-
-    return filtered;
+    // Since filtering is now done on the backend, we just return all users
+    return this.users;
   }
 
   onSearchChange(): void {
-    // Search is handled by the getter
+    // Reset to first page and reload with search filter
+    this.currentPage = 1;
+    this.loadUsers();
   }
 
   onStatusChange(): void {
-    // Filtering is handled by the getter
+    // Reset to first page and reload with status filter
+    this.currentPage = 1;
+    this.loadUsers();
+  }
+
+  onRoleChange(): void {
+    // Reset to first page and reload with role filter
+    this.currentPage = 1;
+    this.loadUsers();
+  }
+
+  onDateRangeChange(): void {
+    // Reset to first page and reload with date range filter
+    this.currentPage = 1;
+    this.loadUsers();
+  }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.selectedStatus = 'all';
+    this.selectedRole = 'all';
+    this.dateFrom = '';
+    this.dateTo = '';
+    this.currentPage = 1;
+    this.loadUsers();
   }
 
   viewUserLinks(user: User): void {
@@ -196,9 +211,62 @@ export class UserListComponent implements OnInit {
   }
 
   toggleUserStatus(user: User): void {
-    // TODO: Implement toggle user status
-    user.status = user.status === 'active' ? 'inactive' : 'active';
-    console.log('Toggle status for user:', user._id);
+    if (!user._id) {
+      console.error('User ID is required');
+      return;
+    }
+
+    const newStatus = user.status === 'active' ? 'inactive' : 'active';
+    const action = newStatus === 'active' ? 'activate' : 'deactivate';
+    const actionText = newStatus === 'active' ? 'activate' : 'deactivate';
+    const confirmText = newStatus === 'active' ? 'Yes, activate it!' : 'Yes, deactivate it!';
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to ${actionText} user "${user.name || user.email}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: newStatus === 'active' ? '#16a34a' : '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: confirmText,
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.isLoading = true;
+        this.userService.toggleUserStatus(user._id).subscribe({
+          next: (response) => {
+            if (response.status === 'success') {
+              Swal.fire({
+                title: 'Success!',
+                text: `User has been ${actionText}d successfully.`,
+                icon: 'success',
+                confirmButtonColor: '#3085d6'
+              });
+              // Reload users to ensure data consistency
+              this.loadUsers();
+            } else {
+              this.isLoading = false;
+              Swal.fire({
+                title: 'Error!',
+                text: response.message || `Failed to ${actionText} user`,
+                icon: 'error',
+                confirmButtonColor: '#3085d6'
+              });
+            }
+          },
+          error: (error) => {
+            this.isLoading = false;
+            console.error('Error toggling user status:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: error.error?.message || `Failed to ${actionText} user. Please try again.`,
+              icon: 'error',
+              confirmButtonColor: '#3085d6'
+            });
+          }
+        });
+      }
+    });
   }
 
   getThemeIcon(): string {
