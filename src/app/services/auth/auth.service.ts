@@ -34,7 +34,7 @@ export enum AuthEndPoint {
 
     loginUser(payload: any): Observable<any> {
         return this.httpClient
-          .post<any>(this.baseUrl + AuthEndPoint.LOGIN, payload, { headers: this.getPublicHeader() });
+          .post<any>(this.baseUrl + AuthEndPoint.LOGIN, payload, { headers: this.getPublicHeader(), withCredentials: true });
     }
 
     getPublicHeader(): HttpHeaders {
