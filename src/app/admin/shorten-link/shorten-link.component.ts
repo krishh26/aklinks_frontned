@@ -174,8 +174,8 @@ export class ShortenLinkComponent implements OnInit {
   }
 
   getFullShortLink(shortLink: string): string {
-    // return `${window.location.origin}/${shortLink}`;
-    return `${'http://localhost:3000'}/${shortLink}`;
+    return `${window.location.origin}/${shortLink}`;
+    // return `${'http://localhost:3000'}/${shortLink}`;
   }
 
   formatDate(dateString: string): string {
