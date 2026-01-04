@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +6,7 @@ import { ThemeService, Theme } from '../../services/theme.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { UserService } from '../../services/user/user.service';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 interface User {
   _id: string;
@@ -28,7 +29,7 @@ interface User {
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
   users: User[] = [];
   isLoading: boolean = false;
   searchTerm: string = '';
@@ -38,7 +39,8 @@ export class UserListComponent implements OnInit {
   dateTo: string = '';
   currentTheme: Theme = 'light';
   isThemeDropdownOpen = false;
-  isSidebarOpen = true;
+  isSidebarOpen = false; // Will be set based on screen size
+  private themeSubscription?: Subscription;
   currentPage: number = 1;
   limit: number = 10;
   totalUsers: number = 0;
@@ -48,14 +50,35 @@ export class UserListComponent implements OnInit {
     private router: Router,
     private themeService: ThemeService,
     private userService: UserService
-  ) {}
+  ) {
+    // Initialize sidebar state based on screen size
+    this.checkScreenSize();
+  }
 
   ngOnInit(): void {
     this.currentTheme = this.themeService.getCurrentTheme();
-    this.themeService.theme$.subscribe(theme => {
+    this.themeSubscription = this.themeService.theme$.subscribe(theme => {
       this.currentTheme = theme;
     });
     this.loadUsers();
+  }
+
+  ngOnDestroy(): void {
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    // Close sidebar on mobile (<= 1024px), open on desktop (> 1024px)
+    if (typeof window !== 'undefined') {
+      this.isSidebarOpen = window.innerWidth > 1024;
+    }
   }
 
   loadUsers(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +7,7 @@ import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { LinkService } from '../../services/link/link.service';
 import { UserService } from '../../services/user/user.service';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 interface Link {
   id: string;
@@ -25,7 +26,7 @@ interface Link {
   templateUrl: './user-wise-links.component.html',
   styleUrls: ['./user-wise-links.component.scss']
 })
-export class UserWiseLinksComponent implements OnInit {
+export class UserWiseLinksComponent implements OnInit, OnDestroy {
   userId: string = '';
   userName: string = '';
   links: Link[] = [];
@@ -34,7 +35,8 @@ export class UserWiseLinksComponent implements OnInit {
   selectedStatus: string = 'all';
   currentTheme: Theme = 'light';
   isThemeDropdownOpen = false;
-  isSidebarOpen = true;
+  isSidebarOpen = false; // Will be set based on screen size
+  private themeSubscription?: Subscription;
 
   constructor(
     private router: Router,
@@ -42,11 +44,14 @@ export class UserWiseLinksComponent implements OnInit {
     private themeService: ThemeService,
     private linkService: LinkService,
     private userService: UserService
-  ) {}
+  ) {
+    // Initialize sidebar state based on screen size
+    this.checkScreenSize();
+  }
 
   ngOnInit(): void {
     this.currentTheme = this.themeService.getCurrentTheme();
-    this.themeService.theme$.subscribe(theme => {
+    this.themeSubscription = this.themeService.theme$.subscribe(theme => {
       this.currentTheme = theme;
     });
     
@@ -54,6 +59,24 @@ export class UserWiseLinksComponent implements OnInit {
       this.userId = params['userId'];
       this.loadUserLinks();
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    // Close sidebar on mobile (<= 1024px), open on desktop (> 1024px)
+    if (typeof window !== 'undefined') {
+      this.isSidebarOpen = window.innerWidth > 1024;
+    }
   }
 
   loadUserLinks(): void {
