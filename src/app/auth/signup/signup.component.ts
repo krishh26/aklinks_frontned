@@ -67,13 +67,30 @@ import { environment } from '../../../environments/environment';
             <div class="form-row">
               <div class="form-group">
                 <label for="password">Password</label>
-                <input 
-                  type="password" 
-                  id="password" 
-                  formControlName="password" 
-                  placeholder="Create a password"
-                  [class.error]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
-                >
+                <div class="password-input-wrapper">
+                  <input 
+                    [type]="showPassword ? 'text' : 'password'" 
+                    id="password" 
+                    formControlName="password" 
+                    placeholder="Create a password"
+                    [class.error]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
+                  >
+                  <button 
+                    type="button" 
+                    class="password-toggle-btn" 
+                    (click)="togglePasswordVisibility()"
+                    [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+                  >
+                    <svg *ngIf="!showPassword" class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg *ngIf="showPassword" class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17.94 17.94C16.2306 19.243 14.1491 19.9649 12 20C5 20 1 12 1 12C2.24389 9.68192 3.96914 7.65663 6.06 6.06M9.9 4.24C10.5883 4.0789 11.2931 3.99836 12 4C19 4 23 12 23 12C22.393 13.1356 21.6691 14.2048 20.84 15.19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M1 1L23 23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
                 <div class="error-message" *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
                   Password must be at least 6 characters
                 </div>
@@ -81,13 +98,30 @@ import { environment } from '../../../environments/environment';
 
               <div class="form-group">
                 <label for="confirmPassword">Confirm Password</label>
-                <input 
-                  type="password" 
-                  id="confirmPassword" 
-                  formControlName="confirmPassword" 
-                  placeholder="Confirm your password"
-                  [class.error]="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched"
-                >
+                <div class="password-input-wrapper">
+                  <input 
+                    [type]="showConfirmPassword ? 'text' : 'password'" 
+                    id="confirmPassword" 
+                    formControlName="confirmPassword" 
+                    placeholder="Confirm your password"
+                    [class.error]="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched"
+                  >
+                  <button 
+                    type="button" 
+                    class="password-toggle-btn" 
+                    (click)="toggleConfirmPasswordVisibility()"
+                    [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
+                  >
+                    <svg *ngIf="!showConfirmPassword" class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg *ngIf="showConfirmPassword" class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17.94 17.94C16.2306 19.243 14.1491 19.9649 12 20C5 20 1 12 1 12C2.24389 9.68192 3.96914 7.65663 6.06 6.06M9.9 4.24C10.5883 4.0789 11.2931 3.99836 12 4C19 4 23 12 23 12C22.393 13.1356 21.6691 14.2048 20.84 15.19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M1 1L23 23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
                 <div class="error-message" *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched">
                   Passwords do not match
                 </div>
@@ -260,6 +294,53 @@ import { environment } from '../../../environments/environment';
       border-color: #e74c3c;
     }
 
+    .password-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-input-wrapper input {
+      padding-right: 3rem;
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 0.6rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease;
+      z-index: 1;
+    }
+
+    .password-toggle-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .password-toggle-btn:focus {
+      outline: none;
+    }
+
+    .eye-icon {
+      width: 20px;
+      height: 20px;
+      color: #666;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s ease;
+    }
+
+    .password-toggle-btn:hover .eye-icon {
+      color: #667eea;
+    }
+
     .error-message {
       color: #e74c3c;
       font-size: 0.8rem;
@@ -361,6 +442,8 @@ export class SignupComponent {
   signupForm: FormGroup;
   isLoading: boolean = false;
   errorMessage: string = '';
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -375,6 +458,14 @@ export class SignupComponent {
       confirmPassword: ['', [Validators.required]],
       agreeTerms: [false, [Validators.requiredTrue]]
     }, { validators: this.passwordMatchValidator });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   passwordMatchValidator(form: FormGroup) {
