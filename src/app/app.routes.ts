@@ -7,6 +7,7 @@ import { PaymentRulesComponent } from './payment-rules/payment-rules.component';
 import { BlogComponent } from './blog/blog.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { CallbackComponent } from './auth/callback/callback.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'blog', component: BlogComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: 'auth/signup', component: SignupComponent },
+  { path: 'auth/callback', component: CallbackComponent },
   { 
     path: 'admin', 
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) 

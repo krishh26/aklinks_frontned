@@ -48,4 +48,9 @@ export enum AuthEndPoint {
         return this.httpClient
           .post<any>(this.baseUrl + AuthEndPoint.REGISTER, payload, { headers: this.getPublicHeader() });
     }
+
+    getUserProfile(): Observable<any> {
+        return this.httpClient
+          .get<any>(this.baseUrl + AuthEndPoint.LOGIN.replace('/login', '/profile'), { headers: this.getHeader() });
+    }
   }
