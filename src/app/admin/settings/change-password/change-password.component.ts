@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../../services/theme.service';
 import { LocalStorageService } from '../../../services/local-storage/local-storage.service';
+import { UserService } from '../../../services/user/user.service';
 import { SidebarComponent } from '../../../shared/sidebar/sidebar.component';
 import { Subscription } from 'rxjs';
 
@@ -29,11 +30,13 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   showCurrentPassword = false;
   showNewPassword = false;
   showConfirmPassword = false;
+  isLoading = false;
 
   constructor(
     private router: Router,
     private themeService: ThemeService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private userService: UserService
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
@@ -52,7 +55,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onResize(): void {
     this.checkScreenSize();
   }
@@ -122,24 +125,43 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Handle password change here
-    console.log('Password change requested:', {
-      currentPassword: this.passwordForm.currentPassword,
+    // Get user ID from localStorage
+    const user = this.localStorageService.getLogger();
+    if (!user || (!user.id && !user._id)) {
+      alert('User information not found. Please login again.');
+      return;
+    }
+
+    const userId = user.id || user._id;
+    this.isLoading = true;
+
+    // Call change password API
+    const payload = {
+      oldPassword: this.passwordForm.currentPassword,
       newPassword: this.passwordForm.newPassword
-    });
-    
-    // You can add API call here to change the password
-    alert('Password changed successfully!');
-    
-    // Reset form
-    this.passwordForm = {
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: ''
     };
-    this.showCurrentPassword = false;
-    this.showNewPassword = false;
-    this.showConfirmPassword = false;
+
+    this.userService.changePassword(userId, payload).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        alert('Password changed successfully!');
+        
+        // Reset form
+        this.passwordForm = {
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        };
+        this.showCurrentPassword = false;
+        this.showNewPassword = false;
+        this.showConfirmPassword = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Error changing password:', error);
+        alert(error?.error?.message || 'Failed to change password. Please try again.');
+      }
+    });
   }
 }
 

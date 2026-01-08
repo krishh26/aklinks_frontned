@@ -7,6 +7,7 @@ import { Observable } from "rxjs";
 export enum AuthEndPoint {
     LOGIN = '/auth/login',
     REGISTER = '/auth/register',
+    RESET_PASSWORD = '/auth/reset-password',
 }
 
 @Injectable({
@@ -52,5 +53,10 @@ export enum AuthEndPoint {
     getUserProfile(): Observable<any> {
         return this.httpClient
           .get<any>(this.baseUrl + AuthEndPoint.LOGIN.replace('/login', '/profile'), { headers: this.getHeader() });
+    }
+
+    resetPassword(payload: { token: string; newPassword: string }): Observable<any> {
+        return this.httpClient
+          .post<any>(this.baseUrl + AuthEndPoint.RESET_PASSWORD, payload, { headers: this.getPublicHeader() });
     }
   }

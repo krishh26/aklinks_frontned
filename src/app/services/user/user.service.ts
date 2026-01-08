@@ -88,6 +88,13 @@ export class UserService {
                 headers: this.getHeader() 
             });
     }
+
+    changePassword(userId: string, payload: { oldPassword: string; newPassword: string }): Observable<any> {
+        return this.httpClient
+            .put<any>(this.baseUrl + '/user/password/' + userId, payload, { 
+                headers: this.getHeader() 
+            });
+    }
 }
 
 
