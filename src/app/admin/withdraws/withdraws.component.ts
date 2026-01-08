@@ -2,9 +2,8 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { ThemeService, Theme } from '../../services/theme.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
-import { Subscription } from 'rxjs';
+import { AdminHeaderComponent } from '../../shared/admin-header/admin-header.component';
 
 interface Withdrawal {
   id: string;
@@ -35,15 +34,12 @@ interface User {
 @Component({
   selector: 'app-withdraws',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SidebarComponent],
+  imports: [CommonModule, FormsModule, RouterModule, SidebarComponent, AdminHeaderComponent],
   templateUrl: './withdraws.component.html',
   styleUrls: ['./withdraws.component.scss']
 })
 export class WithdrawsComponent implements OnInit, OnDestroy {
-  currentTheme: Theme = 'light';
-  isThemeDropdownOpen = false;
   isSidebarOpen = false; // Will be set based on screen size
-  private themeSubscription?: Subscription;
   
   // Admin data
   adminStats = {
@@ -176,24 +172,16 @@ export class WithdrawsComponent implements OnInit, OnDestroy {
   showFilters = false;
 
   constructor(
-    private router: Router,
-    private themeService: ThemeService
+    private router: Router
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
   }
 
   ngOnInit(): void {
-    this.currentTheme = this.themeService.getCurrentTheme();
-    this.themeSubscription = this.themeService.theme$.subscribe(theme => {
-      this.currentTheme = theme;
-    });
   }
 
   ngOnDestroy(): void {
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -305,29 +293,6 @@ export class WithdrawsComponent implements OnInit, OnDestroy {
     return this.withdrawals
       .filter(w => w.status === status)
       .reduce((sum, w) => sum + w.amount, 0);
-  }
-
-  // Theme methods
-  getThemeIcon(): string {
-    switch (this.currentTheme) {
-      case 'light':
-        return '☀️';
-      case 'dark':
-        return '🌙';
-      case 'blue':
-        return '🌊';
-      default:
-        return '☀️';
-    }
-  }
-
-  toggleThemeDropdown(): void {
-    this.isThemeDropdownOpen = !this.isThemeDropdownOpen;
-  }
-
-  selectTheme(theme: Theme): void {
-    this.themeService.setTheme(theme);
-    this.isThemeDropdownOpen = false;
   }
 
   // Sidebar methods

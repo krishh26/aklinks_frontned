@@ -2,10 +2,9 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { ThemeService, Theme } from '../../services/theme.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
-import { Subscription } from 'rxjs';
+import { AdminHeaderComponent } from '../../shared/admin-header/admin-header.component';
 
 interface TrafficSource {
   id: number;
@@ -17,15 +16,12 @@ interface TrafficSource {
 @Component({
   selector: 'app-traffic-source',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, SidebarComponent],
+  imports: [CommonModule, RouterModule, FormsModule, SidebarComponent, AdminHeaderComponent],
   templateUrl: './traffic-source.component.html',
   styleUrls: ['./traffic-source.component.scss']
 })
 export class TrafficSourceComponent implements OnInit, OnDestroy {
-  currentTheme: Theme = 'light';
-  isThemeDropdownOpen = false;
   isSidebarOpen = false; // Will be set based on screen size
-  private themeSubscription?: Subscription;
   isAddSourceFormOpen = false;
 
   trafficSources: TrafficSource[] = [
@@ -44,7 +40,6 @@ export class TrafficSourceComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private themeService: ThemeService,
     private localStorageService: LocalStorageService
   ) {
     // Initialize sidebar state based on screen size
@@ -52,16 +47,9 @@ export class TrafficSourceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.currentTheme = this.themeService.getCurrentTheme();
-    this.themeSubscription = this.themeService.theme$.subscribe(theme => {
-      this.currentTheme = theme;
-    });
   }
 
   ngOnDestroy(): void {
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -74,28 +62,6 @@ export class TrafficSourceComponent implements OnInit, OnDestroy {
     if (typeof window !== 'undefined') {
       this.isSidebarOpen = window.innerWidth > 1024;
     }
-  }
-
-  getThemeIcon(): string {
-    switch (this.currentTheme) {
-      case 'light':
-        return '☀️';
-      case 'dark':
-        return '🌙';
-      case 'blue':
-        return '🌊';
-      default:
-        return '☀️';
-    }
-  }
-
-  toggleThemeDropdown(): void {
-    this.isThemeDropdownOpen = !this.isThemeDropdownOpen;
-  }
-
-  selectTheme(theme: Theme): void {
-    this.themeService.setTheme(theme);
-    this.isThemeDropdownOpen = false;
   }
 
   toggleSidebar(): void {

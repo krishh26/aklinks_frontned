@@ -2,25 +2,21 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { ThemeService, Theme } from '../../services/theme.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
+import { AdminHeaderComponent } from '../../shared/admin-header/admin-header.component';
 import { SupportService } from '../../services/support/support.service';
 import { ToastService } from '../../services/toast/toast.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-support',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SidebarComponent],
+  imports: [CommonModule, FormsModule, RouterModule, SidebarComponent, AdminHeaderComponent],
   templateUrl: './support.component.html',
   styleUrl: './support.component.scss'
 })
 export class SupportComponent implements OnInit, OnDestroy {
-  currentTheme: Theme = 'light';
-  isThemeDropdownOpen = false;
   isSidebarOpen = false; // Will be set based on screen size
-  private themeSubscription?: Subscription;
 
   contactForm = {
     name: '',
@@ -36,7 +32,6 @@ export class SupportComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private themeService: ThemeService,
     private localStorageService: LocalStorageService,
     private supportService: SupportService,
     private toastService: ToastService
@@ -46,16 +41,9 @@ export class SupportComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.currentTheme = this.themeService.getCurrentTheme();
-    this.themeSubscription = this.themeService.theme$.subscribe(theme => {
-      this.currentTheme = theme;
-    });
   }
 
   ngOnDestroy(): void {
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
   }
 
   @HostListener('window:resize')
@@ -68,28 +56,6 @@ export class SupportComponent implements OnInit, OnDestroy {
     if (typeof window !== 'undefined') {
       this.isSidebarOpen = window.innerWidth > 1024;
     }
-  }
-
-  getThemeIcon(): string {
-    switch (this.currentTheme) {
-      case 'light':
-        return '☀️';
-      case 'dark':
-        return '🌙';
-      case 'blue':
-        return '🌊';
-      default:
-        return '☀️';
-    }
-  }
-
-  toggleThemeDropdown(): void {
-    this.isThemeDropdownOpen = !this.isThemeDropdownOpen;
-  }
-
-  selectTheme(theme: Theme): void {
-    this.themeService.setTheme(theme);
-    this.isThemeDropdownOpen = false;
   }
 
   toggleSidebar(): void {

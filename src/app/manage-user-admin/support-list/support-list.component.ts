@@ -2,12 +2,11 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ThemeService, Theme } from '../../services/theme.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
+import { AdminHeaderComponent } from '../../shared/admin-header/admin-header.component';
 import { SupportService } from '../../services/support/support.service';
 import { ToastService } from '../../services/toast/toast.service';
 import Swal from 'sweetalert2';
-import { Subscription } from 'rxjs';
 
 interface SupportTicket {
   _id: string;
@@ -25,7 +24,7 @@ interface SupportTicket {
 @Component({
   selector: 'app-support-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, SidebarComponent],
+  imports: [CommonModule, RouterModule, FormsModule, SidebarComponent, AdminHeaderComponent],
   templateUrl: './support-list.component.html',
   styleUrls: ['./support-list.component.scss']
 })
@@ -34,10 +33,7 @@ export class SupportListComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   searchTerm: string = '';
   selectedStatus: string = 'all';
-  currentTheme: Theme = 'light';
-  isThemeDropdownOpen = false;
   isSidebarOpen = false; // Will be set based on screen size
-  private themeSubscription?: Subscription;
   currentPage: number = 1;
   limit: number = 10;
   totalTickets: number = 0;
@@ -45,7 +41,6 @@ export class SupportListComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private themeService: ThemeService,
     private supportService: SupportService,
     private toastService: ToastService
   ) {
@@ -54,17 +49,10 @@ export class SupportListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.currentTheme = this.themeService.getCurrentTheme();
-    this.themeSubscription = this.themeService.theme$.subscribe(theme => {
-      this.currentTheme = theme;
-    });
     this.loadSupportTickets();
   }
 
   ngOnDestroy(): void {
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -290,28 +278,6 @@ export class SupportListComponent implements OnInit, OnDestroy {
 
   get totalFilteredPages(): number {
     return Math.ceil(this.totalFilteredTickets / this.limit);
-  }
-
-  getThemeIcon(): string {
-    switch (this.currentTheme) {
-      case 'light':
-        return '☀️';
-      case 'dark':
-        return '🌙';
-      case 'blue':
-        return '🌊';
-      default:
-        return '☀️';
-    }
-  }
-
-  toggleThemeDropdown(): void {
-    this.isThemeDropdownOpen = !this.isThemeDropdownOpen;
-  }
-
-  selectTheme(theme: Theme): void {
-    this.themeService.setTheme(theme);
-    this.isThemeDropdownOpen = false;
   }
 
   toggleSidebar(): void {

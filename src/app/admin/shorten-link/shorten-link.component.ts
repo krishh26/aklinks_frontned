@@ -2,25 +2,21 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { ThemeService, Theme } from '../../services/theme.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { LinkService, Link } from '../../services/link/link.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
+import { AdminHeaderComponent } from '../../shared/admin-header/admin-header.component';
 import { ToastService } from '../../services/toast/toast.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-shorten-link',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, SidebarComponent],
+  imports: [CommonModule, RouterModule, FormsModule, SidebarComponent, AdminHeaderComponent],
   templateUrl: './shorten-link.component.html',
   styleUrls: ['./shorten-link.component.scss']
 })
 export class ShortenLinkComponent implements OnInit, OnDestroy {
-  currentTheme: Theme = 'light';
-  isThemeDropdownOpen = false;
   isSidebarOpen = false; // Will be set based on screen size
-  private themeSubscription?: Subscription;
   
   originalLink: string = '';
   isLoading: boolean = false;
@@ -30,7 +26,6 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private themeService: ThemeService,
     private localStorageService: LocalStorageService,
     private linkService: LinkService,
     private toastService: ToastService
@@ -40,17 +35,10 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.currentTheme = this.themeService.getCurrentTheme();
-    this.themeSubscription = this.themeService.theme$.subscribe(theme => {
-      this.currentTheme = theme;
-    });
     this.loadLinks();
   }
 
   ngOnDestroy(): void {
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -63,28 +51,6 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
     if (typeof window !== 'undefined') {
       this.isSidebarOpen = window.innerWidth > 1024;
     }
-  }
-
-  getThemeIcon(): string {
-    switch (this.currentTheme) {
-      case 'light':
-        return '☀️';
-      case 'dark':
-        return '🌙';
-      case 'blue':
-        return '🌊';
-      default:
-        return '☀️';
-    }
-  }
-
-  toggleThemeDropdown(): void {
-    this.isThemeDropdownOpen = !this.isThemeDropdownOpen;
-  }
-
-  selectTheme(theme: Theme): void {
-    this.themeService.setTheme(theme);
-    this.isThemeDropdownOpen = false;
   }
 
   toggleSidebar(): void {

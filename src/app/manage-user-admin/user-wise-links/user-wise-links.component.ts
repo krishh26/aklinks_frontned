@@ -2,12 +2,11 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ThemeService, Theme } from '../../services/theme.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
+import { AdminHeaderComponent } from '../../shared/admin-header/admin-header.component';
 import { LinkService } from '../../services/link/link.service';
 import { UserService } from '../../services/user/user.service';
 import { ToastService } from '../../services/toast/toast.service';
-import { Subscription } from 'rxjs';
 
 interface Link {
   id: string;
@@ -22,7 +21,7 @@ interface Link {
 @Component({
   selector: 'app-user-wise-links',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, SidebarComponent],
+  imports: [CommonModule, RouterModule, FormsModule, SidebarComponent, AdminHeaderComponent],
   templateUrl: './user-wise-links.component.html',
   styleUrls: ['./user-wise-links.component.scss']
 })
@@ -33,15 +32,11 @@ export class UserWiseLinksComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   searchTerm: string = '';
   selectedStatus: string = 'all';
-  currentTheme: Theme = 'light';
-  isThemeDropdownOpen = false;
   isSidebarOpen = false; // Will be set based on screen size
-  private themeSubscription?: Subscription;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private themeService: ThemeService,
     private linkService: LinkService,
     private userService: UserService,
     private toastService: ToastService
@@ -51,10 +46,6 @@ export class UserWiseLinksComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.currentTheme = this.themeService.getCurrentTheme();
-    this.themeSubscription = this.themeService.theme$.subscribe(theme => {
-      this.currentTheme = theme;
-    });
     
     this.route.params.subscribe(params => {
       this.userId = params['userId'];
@@ -63,9 +54,6 @@ export class UserWiseLinksComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -211,28 +199,6 @@ export class UserWiseLinksComponent implements OnInit, OnDestroy {
         }
       });
     }
-  }
-
-  getThemeIcon(): string {
-    switch (this.currentTheme) {
-      case 'light':
-        return '☀️';
-      case 'dark':
-        return '🌙';
-      case 'blue':
-        return '🌊';
-      default:
-        return '☀️';
-    }
-  }
-
-  toggleThemeDropdown(): void {
-    this.isThemeDropdownOpen = !this.isThemeDropdownOpen;
-  }
-
-  selectTheme(theme: Theme): void {
-    this.themeService.setTheme(theme);
-    this.isThemeDropdownOpen = false;
   }
 
   toggleSidebar(): void {
