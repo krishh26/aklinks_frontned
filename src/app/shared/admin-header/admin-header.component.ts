@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, HostListener, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
+import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -48,13 +49,29 @@ import { Subscription } from 'rxjs';
             </button>
           </div>
         </div>
-        <button class="header-icon notifications">
+        <!-- <button class="header-icon notifications">
           <span>🔔</span>
           <span class="notification-badge">3</span>
-        </button>
-        <button class="header-icon profile">
-          <span>👤</span>
-        </button>
+        </button> -->
+        <div class="profile-wrapper">
+          <button class="header-icon profile" (click)="toggleProfileDropdown()">
+            <span>👤</span>
+          </button>
+          <div class="profile-dropdown" [class.active]="isProfileDropdownOpen">
+            <button 
+              class="profile-option" 
+              (click)="navigateToProfile()">
+              <span class="profile-icon">👤</span>
+              <span class="profile-label">Profile</span>
+            </button>
+            <button 
+              class="profile-option logout-option" 
+              (click)="logout()">
+              <span class="profile-icon">🚪</span>
+              <span class="profile-label">Logout</span>
+            </button>
+          </div>
+        </div>
       </div>
     </header>
   `,
@@ -66,9 +83,14 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
   
   currentTheme: Theme = 'light';
   isThemeDropdownOpen = false;
+  isProfileDropdownOpen = false;
   private themeSubscription?: Subscription;
 
-  constructor(private themeService: ThemeService) {}
+  constructor(
+    private themeService: ThemeService,
+    private router: Router,
+    private localStorageService: LocalStorageService
+  ) {}
 
   ngOnInit(): void {
     this.currentTheme = this.themeService.getCurrentTheme();
@@ -98,6 +120,10 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
 
   toggleThemeDropdown(): void {
     this.isThemeDropdownOpen = !this.isThemeDropdownOpen;
+    // Close profile dropdown when opening theme dropdown
+    if (this.isThemeDropdownOpen) {
+      this.isProfileDropdownOpen = false;
+    }
   }
 
   selectTheme(theme: Theme): void {
@@ -105,7 +131,36 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
     this.isThemeDropdownOpen = false;
   }
 
+  toggleProfileDropdown(): void {
+    this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
+    // Close theme dropdown when opening profile dropdown
+    if (this.isProfileDropdownOpen) {
+      this.isThemeDropdownOpen = false;
+    }
+  }
+
+  navigateToProfile(): void {
+    this.isProfileDropdownOpen = false;
+    this.router.navigate(['/admin/settings/profile']);
+  }
+
+  logout(): void {
+    this.isProfileDropdownOpen = false;
+    this.localStorageService.clearStorage();
+    this.router.navigate(['/auth/login']);
+  }
+
   onSidebarToggle(): void {
     this.sidebarToggle.emit();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    // Close dropdowns if clicking outside
+    if (!target.closest('.theme-switcher-wrapper') && !target.closest('.profile-wrapper')) {
+      this.isThemeDropdownOpen = false;
+      this.isProfileDropdownOpen = false;
+    }
   }
 }
