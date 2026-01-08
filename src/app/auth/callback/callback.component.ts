@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
+import { ToastService } from '../../services/toast/toast.service';
 
 @Component({
   selector: 'app-callback',
@@ -120,7 +121,8 @@ export class CallbackComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -135,9 +137,11 @@ export class CallbackComponent implements OnInit {
 
       if (error || success === 'false') {
         this.isLoading = false;
-        this.errorMessage = error === 'google_auth_failed' 
+        const errorMsg = error === 'google_auth_failed' 
           ? 'Google authentication failed. Please try again.' 
           : 'Authentication failed. Please try again.';
+        this.errorMessage = errorMsg;
+        this.toastService.showError(errorMsg);
         return;
       }
 
@@ -150,6 +154,7 @@ export class CallbackComponent implements OnInit {
       } else {
         this.isLoading = false;
         this.errorMessage = 'Invalid authentication response. Please try again.';
+        this.toastService.showError(this.errorMessage);
       }
     });
   }
@@ -166,12 +171,14 @@ export class CallbackComponent implements OnInit {
           this.router.navigate(['/admin/dashboard']);
         } else {
           this.errorMessage = 'Failed to fetch user profile. Please try again.';
+          this.toastService.showError(this.errorMessage);
         }
       },
       error: (error) => {
         this.isLoading = false;
         console.error('Error fetching user profile:', error);
         this.errorMessage = 'Failed to fetch user profile. Please try logging in again.';
+        this.toastService.showError(this.errorMessage);
       }
     });
   }

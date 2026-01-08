@@ -6,7 +6,7 @@ import { ThemeService, Theme } from '../../services/theme.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { LinkService } from '../../services/link/link.service';
 import { UserService } from '../../services/user/user.service';
-import Swal from 'sweetalert2';
+import { ToastService } from '../../services/toast/toast.service';
 import { Subscription } from 'rxjs';
 
 interface Link {
@@ -43,7 +43,8 @@ export class UserWiseLinksComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private themeService: ThemeService,
     private linkService: LinkService,
-    private userService: UserService
+    private userService: UserService,
+    private toastService: ToastService
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
@@ -159,52 +160,26 @@ export class UserWiseLinksComponent implements OnInit, OnDestroy {
       return;
     }
 
-    Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to delete this link?\n\nShort URL: ${link.shortUrl}\nOriginal URL: ${link.originalUrl.substring(0, 50)}${link.originalUrl.length > 50 ? '...' : ''}`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.isLoading = true;
-        this.linkService.adminDeleteLink(link.id).subscribe({
-          next: (response) => {
-            if (response.status === 'success') {
-              Swal.fire({
-                title: 'Deleted!',
-                text: 'Link has been deleted successfully.',
-                icon: 'success',
-                confirmButtonColor: '#3085d6'
-              });
-              // Reload links after deletion
-              this.loadUserLinks();
-            } else {
-              this.isLoading = false;
-              Swal.fire({
-                title: 'Error!',
-                text: response.message || 'Failed to delete link',
-                icon: 'error',
-                confirmButtonColor: '#3085d6'
-              });
-            }
-          },
-          error: (error) => {
+    if (confirm(`Are you sure you want to delete this link?\n\nShort URL: ${link.shortUrl}\nOriginal URL: ${link.originalUrl.substring(0, 50)}${link.originalUrl.length > 50 ? '...' : ''}`)) {
+      this.isLoading = true;
+      this.linkService.adminDeleteLink(link.id).subscribe({
+        next: (response) => {
+          if (response.status === 'success') {
+            this.toastService.showSuccess('Link has been deleted successfully.');
+            // Reload links after deletion
+            this.loadUserLinks();
+          } else {
             this.isLoading = false;
-            console.error('Error deleting link:', error);
-            Swal.fire({
-              title: 'Error!',
-              text: error.error?.message || 'Failed to delete link. Please try again.',
-              icon: 'error',
-              confirmButtonColor: '#3085d6'
-            });
+            this.toastService.showError(response.message || 'Failed to delete link');
           }
-        });
-      }
-    });
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Error deleting link:', error);
+          this.toastService.showError(error.error?.message || 'Failed to delete link. Please try again.');
+        }
+      });
+    }
   }
 
   toggleLinkStatus(link: Link): void {
@@ -214,57 +189,28 @@ export class UserWiseLinksComponent implements OnInit, OnDestroy {
     }
 
     const newStatus = link.status === 'active' ? 'inactive' : 'active';
-    const action = newStatus === 'active' ? 'activate' : 'deactivate';
     const actionText = newStatus === 'active' ? 'activate' : 'deactivate';
-    const titleText = newStatus === 'active' ? 'Activate Link?' : 'Deactivate Link?';
-    const confirmText = newStatus === 'active' ? 'Yes, activate it!' : 'Yes, deactivate it!';
 
-    Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to ${actionText} this link?\n\nShort URL: ${link.shortUrl}\nOriginal URL: ${link.originalUrl.substring(0, 50)}${link.originalUrl.length > 50 ? '...' : ''}`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: newStatus === 'active' ? '#16a34a' : '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: confirmText,
-      cancelButtonText: 'Cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.isLoading = true;
-        this.linkService.toggleLinkStatus(link.id).subscribe({
-          next: (response) => {
-            if (response.status === 'success') {
-              Swal.fire({
-                title: 'Success!',
-                text: `Link has been ${actionText}d successfully.`,
-                icon: 'success',
-                confirmButtonColor: '#3085d6'
-              });
-              // Reload links to ensure data consistency
-              this.loadUserLinks();
-            } else {
-              this.isLoading = false;
-              Swal.fire({
-                title: 'Error!',
-                text: response.message || `Failed to ${actionText} link`,
-                icon: 'error',
-                confirmButtonColor: '#3085d6'
-              });
-            }
-          },
-          error: (error) => {
+    if (confirm(`Do you want to ${actionText} this link?\n\nShort URL: ${link.shortUrl}\nOriginal URL: ${link.originalUrl.substring(0, 50)}${link.originalUrl.length > 50 ? '...' : ''}`)) {
+      this.isLoading = true;
+      this.linkService.toggleLinkStatus(link.id).subscribe({
+        next: (response) => {
+          if (response.status === 'success') {
+            this.toastService.showSuccess(`Link has been ${actionText}d successfully.`);
+            // Reload links to ensure data consistency
+            this.loadUserLinks();
+          } else {
             this.isLoading = false;
-            console.error('Error toggling link status:', error);
-            Swal.fire({
-              title: 'Error!',
-              text: error.error?.message || `Failed to ${actionText} link. Please try again.`,
-              icon: 'error',
-              confirmButtonColor: '#3085d6'
-            });
+            this.toastService.showError(response.message || `Failed to ${actionText} link`);
           }
-        });
-      }
-    });
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Error toggling link status:', error);
+          this.toastService.showError(error.error?.message || `Failed to ${actionText} link. Please try again.`);
+        }
+      });
+    }
   }
 
   getThemeIcon(): string {

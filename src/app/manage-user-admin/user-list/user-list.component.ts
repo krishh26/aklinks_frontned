@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ThemeService, Theme } from '../../services/theme.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { UserService } from '../../services/user/user.service';
-import Swal from 'sweetalert2';
+import { ToastService } from '../../services/toast/toast.service';
 import { Subscription } from 'rxjs';
 
 interface User {
@@ -49,7 +49,8 @@ export class UserListComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private themeService: ThemeService,
-    private userService: UserService
+    private userService: UserService,
+    private toastService: ToastService
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
@@ -123,7 +124,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         console.error('Error loading users:', error);
         this.users = [];
-        // You can show an error message to the user here
+        this.toastService.showError(error.error?.message || 'Failed to load users. Please try again.');
       }
     });
   }
@@ -177,49 +178,23 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   deleteUser(user: User): void {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to delete user "${user.name || user.email}"?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.userService.deleteUser(user._id).subscribe({
-          next: (response) => {
-            if (response.status === 'success') {
-              Swal.fire({
-                title: 'Deleted!',
-                text: 'User has been deleted successfully.',
-                icon: 'success',
-                confirmButtonColor: '#3085d6'
-              });
-              // Reload users after deletion
-              this.loadUsers();
-            } else {
-              Swal.fire({
-                title: 'Error!',
-                text: response.message || 'Failed to delete user',
-                icon: 'error',
-                confirmButtonColor: '#3085d6'
-              });
-            }
-          },
-          error: (error) => {
-            console.error('Error deleting user:', error);
-            Swal.fire({
-              title: 'Error!',
-              text: error.error?.message || 'Failed to delete user. Please try again.',
-              icon: 'error',
-              confirmButtonColor: '#3085d6'
-            });
+    if (confirm(`Are you sure you want to delete user "${user.name || user.email}"?`)) {
+      this.userService.deleteUser(user._id).subscribe({
+        next: (response) => {
+          if (response.status === 'success') {
+            this.toastService.showSuccess('User has been deleted successfully.');
+            // Reload users after deletion
+            this.loadUsers();
+          } else {
+            this.toastService.showError(response.message || 'Failed to delete user');
           }
-        });
-      }
-    });
+        },
+        error: (error) => {
+          console.error('Error deleting user:', error);
+          this.toastService.showError(error.error?.message || 'Failed to delete user. Please try again.');
+        }
+      });
+    }
   }
 
   formatDate(dateString: string | undefined): string {
@@ -240,56 +215,28 @@ export class UserListComponent implements OnInit, OnDestroy {
     }
 
     const newStatus = user.status === 'active' ? 'inactive' : 'active';
-    const action = newStatus === 'active' ? 'activate' : 'deactivate';
     const actionText = newStatus === 'active' ? 'activate' : 'deactivate';
-    const confirmText = newStatus === 'active' ? 'Yes, activate it!' : 'Yes, deactivate it!';
 
-    Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to ${actionText} user "${user.name || user.email}"?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: newStatus === 'active' ? '#16a34a' : '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: confirmText,
-      cancelButtonText: 'Cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.isLoading = true;
-        this.userService.toggleUserStatus(user._id).subscribe({
-          next: (response) => {
-            if (response.status === 'success') {
-              Swal.fire({
-                title: 'Success!',
-                text: `User has been ${actionText}d successfully.`,
-                icon: 'success',
-                confirmButtonColor: '#3085d6'
-              });
-              // Reload users to ensure data consistency
-              this.loadUsers();
-            } else {
-              this.isLoading = false;
-              Swal.fire({
-                title: 'Error!',
-                text: response.message || `Failed to ${actionText} user`,
-                icon: 'error',
-                confirmButtonColor: '#3085d6'
-              });
-            }
-          },
-          error: (error) => {
+    if (confirm(`Do you want to ${actionText} user "${user.name || user.email}"?`)) {
+      this.isLoading = true;
+      this.userService.toggleUserStatus(user._id).subscribe({
+        next: (response) => {
+          if (response.status === 'success') {
+            this.toastService.showSuccess(`User has been ${actionText}d successfully.`);
+            // Reload users to ensure data consistency
+            this.loadUsers();
+          } else {
             this.isLoading = false;
-            console.error('Error toggling user status:', error);
-            Swal.fire({
-              title: 'Error!',
-              text: error.error?.message || `Failed to ${actionText} user. Please try again.`,
-              icon: 'error',
-              confirmButtonColor: '#3085d6'
-            });
+            this.toastService.showError(response.message || `Failed to ${actionText} user`);
           }
-        });
-      }
-    });
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Error toggling user status:', error);
+          this.toastService.showError(error.error?.message || `Failed to ${actionText} user. Please try again.`);
+        }
+      });
+    }
   }
 
   getThemeIcon(): string {

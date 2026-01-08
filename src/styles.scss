@@ -6,6 +6,9 @@
 /* SweetAlert2 Styles */
 @import 'sweetalert2/dist/sweetalert2.css';
 
+/* Toastr Styles */
+@import 'ngx-toastr/toastr';
+
 /* Theme Variables */
 :root, body.light-theme {
   --bg-primary: #ffffff;

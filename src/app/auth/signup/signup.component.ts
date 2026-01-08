@@ -4,6 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
+import { ToastService } from '../../services/toast/toast.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -449,7 +450,8 @@ export class SignupComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.signupForm = this.fb.group({
       fullName: ['', [Validators.required]],
@@ -506,19 +508,19 @@ export class SignupComponent {
             if (response.data.user) {
               this.localStorageService.setLogger(response.data.user);
             }
+            this.toastService.showSuccess('Registration successful!');
             // Redirect to dashboard or home page
             this.router.navigate(['/admin/dashboard']);
           } else {
             this.errorMessage = response.message || 'Registration failed. Please try again.';
+            this.toastService.showError(this.errorMessage);
           }
         },
         error: (error) => {
           this.isLoading = false;
-          if (error.error && error.error.message) {
-            this.errorMessage = error.error.message;
-          } else {
-            this.errorMessage = 'Registration failed. Please try again.';
-          }
+          const errorMsg = error.error?.message || 'Registration failed. Please try again.';
+          this.errorMessage = errorMsg;
+          this.toastService.showError(errorMsg);
           console.error('Registration error:', error);
         }
       });

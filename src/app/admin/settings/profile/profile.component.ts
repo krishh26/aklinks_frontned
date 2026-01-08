@@ -5,6 +5,7 @@ import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../../services/theme.service';
 import { LocalStorageService } from '../../../services/local-storage/local-storage.service';
 import { SidebarComponent } from '../../../shared/sidebar/sidebar.component';
+import { ToastService } from '../../../services/toast/toast.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -65,7 +66,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private themeService: ThemeService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private toastService: ToastService
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
@@ -158,14 +160,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (!this.profileForm.username || !this.profileForm.email) {
-      alert('Please fill in required fields (Username and Email).');
+      this.toastService.showError('Please fill in required fields (Username and Email).');
       return;
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.profileForm.email)) {
-      alert('Please enter a valid email address.');
+      this.toastService.showError('Please enter a valid email address.');
       return;
     }
 
@@ -181,7 +183,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     console.log('Profile update requested:', this.profileForm);
     
     // You can add API call here to update the profile
-    alert('Profile updated successfully!');
+    this.toastService.showSuccess('Profile updated successfully!');
   }
 
   onCancel(): void {

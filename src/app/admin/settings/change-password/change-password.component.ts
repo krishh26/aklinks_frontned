@@ -6,6 +6,7 @@ import { ThemeService, Theme } from '../../../services/theme.service';
 import { LocalStorageService } from '../../../services/local-storage/local-storage.service';
 import { UserService } from '../../../services/user/user.service';
 import { SidebarComponent } from '../../../shared/sidebar/sidebar.component';
+import { ToastService } from '../../../services/toast/toast.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -36,7 +37,8 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
     private router: Router,
     private themeService: ThemeService,
     private localStorageService: LocalStorageService,
-    private userService: UserService
+    private userService: UserService,
+    private toastService: ToastService
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
@@ -111,24 +113,24 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (!this.passwordForm.currentPassword || !this.passwordForm.newPassword || !this.passwordForm.confirmPassword) {
-      alert('Please fill in all fields.');
+      this.toastService.showError('Please fill in all fields.');
       return;
     }
 
     if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {
-      alert('New password and confirm password do not match.');
+      this.toastService.showError('New password and confirm password do not match.');
       return;
     }
 
     if (this.passwordForm.newPassword.length < 6) {
-      alert('New password must be at least 6 characters long.');
+      this.toastService.showError('New password must be at least 6 characters long.');
       return;
     }
 
     // Get user ID from localStorage
     const user = this.localStorageService.getLogger();
     if (!user || (!user.id && !user._id)) {
-      alert('User information not found. Please login again.');
+      this.toastService.showError('User information not found. Please login again.');
       return;
     }
 
@@ -144,7 +146,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
     this.userService.changePassword(userId, payload).subscribe({
       next: (response) => {
         this.isLoading = false;
-        alert('Password changed successfully!');
+        this.toastService.showSuccess('Password changed successfully!');
         
         // Reset form
         this.passwordForm = {
@@ -159,7 +161,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       error: (error) => {
         this.isLoading = false;
         console.error('Error changing password:', error);
-        alert(error?.error?.message || 'Failed to change password. Please try again.');
+        this.toastService.showError(error?.error?.message || 'Failed to change password. Please try again.');
       }
     });
   }

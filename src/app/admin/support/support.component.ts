@@ -6,6 +6,7 @@ import { ThemeService, Theme } from '../../services/theme.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { SupportService } from '../../services/support/support.service';
+import { ToastService } from '../../services/toast/toast.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -37,7 +38,8 @@ export class SupportComponent implements OnInit, OnDestroy {
     private router: Router,
     private themeService: ThemeService,
     private localStorageService: LocalStorageService,
-    private supportService: SupportService
+    private supportService: SupportService,
+    private toastService: ToastService
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
@@ -116,26 +118,26 @@ export class SupportComponent implements OnInit, OnDestroy {
       Object.keys(form.controls).forEach(key => {
         form.controls[key].markAsTouched();
       });
-      this.submitError = 'Please fill in all required fields correctly.';
+      this.toastService.showError('Please fill in all required fields correctly.');
       return;
     }
 
     // Check if consent is checked
     if (!this.contactForm.consent) {
-      this.submitError = 'Please accept the consent to proceed.';
+      this.toastService.showError('Please accept the consent to proceed.');
       return;
     }
 
     // Check if all fields are filled
     if (!this.contactForm.name || !this.contactForm.subject || !this.contactForm.email || !this.contactForm.message) {
-      this.submitError = 'Please fill in all required fields.';
+      this.toastService.showError('Please fill in all required fields.');
       return;
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.contactForm.email)) {
-      this.submitError = 'Please enter a valid email address.';
+      this.toastService.showError('Please enter a valid email address.');
       return;
     }
 
@@ -154,7 +156,7 @@ export class SupportComponent implements OnInit, OnDestroy {
     this.supportService.submitSupportRequest(payload).subscribe({
       next: (response) => {
         this.isSubmitting = false;
-        this.submitSuccess = true;
+        this.toastService.showSuccess('Support request submitted successfully! We will get back to you soon.');
         console.log('Support request submitted successfully:', response);
         
         // Reset form after successful submission
@@ -166,16 +168,13 @@ export class SupportComponent implements OnInit, OnDestroy {
           consent: false
         };
         form.resetForm();
-
-        // Hide success message after 5 seconds
-        setTimeout(() => {
-          this.submitSuccess = false;
-        }, 5000);
       },
       error: (error) => {
         this.isSubmitting = false;
         console.error('Error submitting support request:', error);
-        this.submitError = error.error?.message || error.message || 'Failed to submit support request. Please try again.';
+        const errorMsg = error.error?.message || error.message || 'Failed to submit support request. Please try again.';
+        this.submitError = errorMsg;
+        this.toastService.showError(errorMsg);
       }
     });
   }

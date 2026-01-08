@@ -6,6 +6,7 @@ import { ThemeService, Theme } from '../../services/theme.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { LinkService, Link } from '../../services/link/link.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
+import { ToastService } from '../../services/toast/toast.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -31,7 +32,8 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
     private router: Router,
     private themeService: ThemeService,
     private localStorageService: LocalStorageService,
-    private linkService: LinkService
+    private linkService: LinkService,
+    private toastService: ToastService
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
@@ -99,8 +101,7 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
     // Check if user is authenticated
     const token = this.localStorageService.getLoggerToken();
     if (!token || token === 'null' || token === 'undefined') {
-      this.errorMessage = 'Please login to shorten links';
-      this.successMessage = '';
+      this.toastService.showError('Please login to shorten links');
       setTimeout(() => {
         this.router.navigate(['/auth/login']);
       }, 2000);
@@ -108,8 +109,7 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
     }
 
     if (!this.originalLink.trim()) {
-      this.errorMessage = 'Please enter a valid URL';
-      this.successMessage = '';
+      this.toastService.showError('Please enter a valid URL');
       return;
     }
 
@@ -121,8 +121,7 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
       if (!this.originalLink.startsWith('http://') && !this.originalLink.startsWith('https://')) {
         this.originalLink = 'https://' + this.originalLink;
       } else {
-        this.errorMessage = 'Please enter a valid URL';
-        this.successMessage = '';
+        this.toastService.showError('Please enter a valid URL');
         return;
       }
     }
@@ -134,25 +133,28 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
     this.linkService.createLink(this.originalLink).subscribe({
       next: (response) => {
         if (response.status === 'success') {
-          this.successMessage = 'Link shortened successfully!';
+          this.toastService.showSuccess('Link shortened successfully!');
           this.originalLink = '';
           this.loadLinks(); // Reload the list
         } else {
-          this.errorMessage = response.message || 'Failed to shorten link';
+          const errorMsg = response.message || 'Failed to shorten link';
+          this.errorMessage = errorMsg;
+          this.toastService.showError(errorMsg);
         }
         this.isLoading = false;
       },
       error: (error) => {
         if (error.status === 401 || error.status === 403) {
-          this.errorMessage = 'Session expired. Please login again.';
+          this.toastService.showError('Session expired. Please login again.');
           setTimeout(() => {
             this.localStorageService.clearStorage();
             this.router.navigate(['/auth/login']);
           }, 2000);
         } else {
-          this.errorMessage = error.error?.message || 'Failed to shorten link. Please try again.';
+          const errorMsg = error.error?.message || 'Failed to shorten link. Please try again.';
+          this.errorMessage = errorMsg;
+          this.toastService.showError(errorMsg);
         }
-        this.successMessage = '';
         this.isLoading = false;
       }
     });
@@ -187,12 +189,9 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
     // const fullShortLink = `${window.location.origin}/${shortLink}`;
     const fullShortLink = `${'http://localhost:3000'}/${shortLink}`;
     navigator.clipboard.writeText(fullShortLink).then(() => {
-      this.successMessage = 'Link copied to clipboard!';
-      setTimeout(() => {
-        this.successMessage = '';
-      }, 3000);
+      this.toastService.showSuccess('Link copied to clipboard!');
     }).catch(() => {
-      this.errorMessage = 'Failed to copy link';
+      this.toastService.showError('Failed to copy link');
     });
   }
 
@@ -220,27 +219,27 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
       this.linkService.deleteLink(link._id).subscribe({
         next: (response) => {
           if (response.status === 'success') {
-            this.successMessage = 'Link deleted successfully!';
+            this.toastService.showSuccess('Link deleted successfully!');
             this.loadLinks(); // Reload the list
-            setTimeout(() => {
-              this.successMessage = '';
-            }, 3000);
           } else {
-            this.errorMessage = response.message || 'Failed to delete link';
+            const errorMsg = response.message || 'Failed to delete link';
+            this.errorMessage = errorMsg;
+            this.toastService.showError(errorMsg);
           }
           this.isLoading = false;
         },
         error: (error) => {
           if (error.status === 401 || error.status === 403) {
-            this.errorMessage = 'Session expired. Please login again.';
+            this.toastService.showError('Session expired. Please login again.');
             setTimeout(() => {
               this.localStorageService.clearStorage();
               this.router.navigate(['/auth/login']);
             }, 2000);
           } else {
-            this.errorMessage = error.error?.message || 'Failed to delete link. Please try again.';
+            const errorMsg = error.error?.message || 'Failed to delete link. Please try again.';
+            this.errorMessage = errorMsg;
+            this.toastService.showError(errorMsg);
           }
-          this.successMessage = '';
           this.isLoading = false;
         }
       });

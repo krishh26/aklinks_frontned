@@ -4,6 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
+import { ToastService } from '../../services/toast/toast.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -382,7 +383,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private toastService: ToastService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -418,23 +420,24 @@ export class LoginComponent {
             }
             if (response.data.user) {
               this.localStorageService.setLogger(response.data.user);
+              this.toastService.showSuccess('Login successful!');
               // Redirect to admin dashboard
               this.router.navigate(['/admin/dashboard']);
             } else {
               // Fallback: Redirect to dashboard if no user data
+              this.toastService.showSuccess('Login successful!');
               this.router.navigate(['/admin/dashboard']);
             }
           } else {
             this.errorMessage = response.message || 'Login failed. Please try again.';
+            this.toastService.showError(this.errorMessage);
           }
         },
         error: (error) => {
           this.isLoading = false;
-          if (error.error && error.error.message) {
-            this.errorMessage = error.error.message;
-          } else {
-            this.errorMessage = 'Login failed. Please check your credentials and try again.';
-          }
+          const errorMsg = error.error?.message || 'Login failed. Please check your credentials and try again.';
+          this.errorMessage = errorMsg;
+          this.toastService.showError(errorMsg);
           console.error('Login error:', error);
         }
       });

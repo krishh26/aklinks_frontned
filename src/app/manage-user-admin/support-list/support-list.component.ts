@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ThemeService, Theme } from '../../services/theme.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { SupportService } from '../../services/support/support.service';
+import { ToastService } from '../../services/toast/toast.service';
 import Swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
 
@@ -45,7 +46,8 @@ export class SupportListComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private themeService: ThemeService,
-    private supportService: SupportService
+    private supportService: SupportService,
+    private toastService: ToastService
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
@@ -108,12 +110,7 @@ export class SupportListComponent implements OnInit, OnDestroy {
         this.supportTickets = [];
         this.totalTickets = 0;
         this.totalPages = 0;
-        Swal.fire({
-          title: 'Error!',
-          text: error.error?.message || 'Failed to load support tickets. Please try again.',
-          icon: 'error',
-          confirmButtonColor: '#3085d6'
-        });
+        this.toastService.showError(error.error?.message || 'Failed to load support tickets. Please try again.');
       }
     });
   }
@@ -261,29 +258,13 @@ export class SupportListComponent implements OnInit, OnDestroy {
   }
 
   deleteTicket(ticket: SupportTicket): void {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to delete support ticket "${ticket.subject}"?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // TODO: Implement delete support ticket API call
-        // For now, just remove from local array
-        this.supportTickets = this.supportTickets.filter(t => t._id !== ticket._id);
-        Swal.fire({
-          title: 'Deleted!',
-          text: 'Support ticket has been deleted successfully.',
-          icon: 'success',
-          confirmButtonColor: '#3085d6'
-        });
-        this.loadSupportTickets();
-      }
-    });
+    if (confirm(`Are you sure you want to delete support ticket "${ticket.subject}"?`)) {
+      // TODO: Implement delete support ticket API call
+      // For now, just remove from local array
+      this.supportTickets = this.supportTickets.filter(t => t._id !== ticket._id);
+      this.toastService.showSuccess('Support ticket has been deleted successfully.');
+      this.loadSupportTickets();
+    }
   }
 
   formatDate(dateString: string | undefined): string {
