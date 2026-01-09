@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { LocalStorageService } from '../../../services/local-storage/local-storage.service';
+import { CurrencyService } from '../../../services/currency.service';
 import { SidebarComponent } from '../../../shared/sidebar/sidebar.component';
 import { AdminHeaderComponent } from '../../../shared/admin-header/admin-header.component';
 import { ToastService } from '../../../services/toast/toast.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -34,35 +36,38 @@ export class ProfileComponent implements OnInit, OnDestroy {
   profileImageUrl: string | ArrayBuffer | null = null;
 
   withdrawalMethods = [
-    { method: 'Paytm', minAmount: '$1.0000' },
-    { method: 'UPI-Id', minAmount: '$1.0000' },
-    { method: 'Phone Pe', minAmount: '$1.0000' },
-    { method: 'GPay - India', minAmount: '$1.0000' },
-    { method: 'Payeer', minAmount: '$5.0000' },
-    { method: 'PayPal', minAmount: '$5.0000' },
-    { method: 'EasyPaisa - Pakistan', minAmount: '$5.0000' },
-    { method: 'Jazzcash - Pakistan', minAmount: '$5.0000' },
-    { method: 'Nepal - eSewa', minAmount: '$5.0000' },
-    { method: 'Bkash - Bangladesh', minAmount: '$5.0000' },
-    { method: 'Nagad - Bangladesh', minAmount: '$5.0000' },
-    { method: 'Faucet Pay', minAmount: '$5.0000' },
-    { method: 'Google Gift Card', minAmount: '$5.0000' },
-    { method: 'Amazon Gift Card', minAmount: '$5.0000' },
-    { method: 'Airtm', minAmount: '$5.0000' },
-    { method: 'Crypto USDT, BTC, XRP, ETH', minAmount: '$10.0000' },
-    { method: 'All Bank Account', minAmount: '$10.0000' },
-    { method: 'Vodafone Cash', minAmount: '$10.0000' },
-    { method: 'Orange Money', minAmount: '$10.0000' },
-    { method: 'Perfect Money', minAmount: '$10.0000' }
+    { method: 'Paytm', minAmountUSD: 1.0000 },
+    { method: 'UPI-Id', minAmountUSD: 1.0000 },
+    { method: 'Phone Pe', minAmountUSD: 1.0000 },
+    { method: 'GPay - India', minAmountUSD: 1.0000 },
+    { method: 'Payeer', minAmountUSD: 5.0000 },
+    { method: 'PayPal', minAmountUSD: 5.0000 },
+    { method: 'EasyPaisa - Pakistan', minAmountUSD: 5.0000 },
+    { method: 'Jazzcash - Pakistan', minAmountUSD: 5.0000 },
+    { method: 'Nepal - eSewa', minAmountUSD: 5.0000 },
+    { method: 'Bkash - Bangladesh', minAmountUSD: 5.0000 },
+    { method: 'Nagad - Bangladesh', minAmountUSD: 5.0000 },
+    { method: 'Faucet Pay', minAmountUSD: 5.0000 },
+    { method: 'Google Gift Card', minAmountUSD: 5.0000 },
+    { method: 'Amazon Gift Card', minAmountUSD: 5.0000 },
+    { method: 'Airtm', minAmountUSD: 5.0000 },
+    { method: 'Crypto USDT, BTC, XRP, ETH', minAmountUSD: 10.0000 },
+    { method: 'All Bank Account', minAmountUSD: 10.0000 },
+    { method: 'Vodafone Cash', minAmountUSD: 10.0000 },
+    { method: 'Orange Money', minAmountUSD: 10.0000 },
+    { method: 'Perfect Money', minAmountUSD: 10.0000 }
   ];
 
   selectedWithdrawalMethod: string = '';
   withdrawalAccountDetails: string = '';
 
+  private currencySubscription?: Subscription;
+
   constructor(
     private router: Router,
     private localStorageService: LocalStorageService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private currencyService: CurrencyService
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
@@ -71,9 +76,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Load user profile data (you can fetch from API/localStorage)
     this.loadProfileData();
+    
+    this.currencySubscription = this.currencyService.currency$.subscribe(() => {
+      // Component will re-render when currency changes
+    });
   }
 
   ngOnDestroy(): void {
+    if (this.currencySubscription) {
+      this.currencySubscription.unsubscribe();
+    }
+  }
+
+  formatCurrency(usdAmount: number): string {
+    return this.currencyService.format(usdAmount, 4);
   }
 
   @HostListener('window:resize', ['$event'])

@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { AdminHeaderComponent } from '../../shared/admin-header/admin-header.component';
+import { CurrencyService } from '../../services/currency.service';
+import { Subscription } from 'rxjs';
 
 interface Withdrawal {
   id: string;
@@ -171,17 +173,26 @@ export class WithdrawsComponent implements OnInit, OnDestroy {
   activeTab = 'withdrawals';
   showFilters = false;
 
+  private currencySubscription?: Subscription;
+
   constructor(
-    private router: Router
+    private router: Router,
+    private currencyService: CurrencyService
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
   }
 
   ngOnInit(): void {
+    this.currencySubscription = this.currencyService.currency$.subscribe(() => {
+      // Component will re-render when currency changes
+    });
   }
 
   ngOnDestroy(): void {
+    if (this.currencySubscription) {
+      this.currencySubscription.unsubscribe();
+    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -274,7 +285,7 @@ export class WithdrawsComponent implements OnInit, OnDestroy {
   }
 
   formatCurrency(amount: number): string {
-    return `$${amount.toFixed(2)}`;
+    return this.currencyService.format(amount);
   }
 
   formatDate(dateString: string): string {

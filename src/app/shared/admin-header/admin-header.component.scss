@@ -70,6 +70,72 @@
   transform: translateY(-1px);
 }
 
+/* Currency Switcher Styles */
+.currency-switcher-wrapper {
+  position: relative;
+}
+
+.currency-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px var(--shadow);
+  padding: 0.5rem;
+  min-width: 180px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  border: 1px solid var(--border-color);
+}
+
+.currency-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.currency-option {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.8875rem;
+  font-family: inherit;
+}
+
+.currency-option:hover {
+  background: var(--hover-bg);
+}
+
+.currency-option.active {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: white;
+}
+
+.currency-icon {
+  font-size: 1.1375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  font-weight: 600;
+}
+
+.currency-label {
+  font-weight: 500;
+}
+
 /* Theme Switcher Styles */
 .theme-switcher-wrapper {
   position: relative;

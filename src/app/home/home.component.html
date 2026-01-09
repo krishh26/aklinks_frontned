@@ -71,7 +71,7 @@
         <div class="feature-icon">
           <img src="assets/images/minimum-payout.svg" alt="Minimum $1 Payout" class="feature-image">
         </div>
-        <h3>Minimum $1 Payout</h3>
+        <h3>Minimum {{ formatCurrency(1) }} Payout</h3>
       </div>
       <div class="feature-item">
         <div class="feature-icon">
@@ -92,7 +92,7 @@
   <div class="container">
     <div class="section-header">
       <h2>We bring solutions to make life easier for our members.</h2>
-      <p>AKLinks is the best solution for publishers who want to earn more money with easier shortlink pages, AKLinks doesn't contain any pop ups , captcha and fake ads. We provide flat 6$ to 8$ CPM to All Countries..</p>
+      <p>AKLinks is the best solution for publishers who want to earn more money with easier shortlink pages, AKLinks doesn't contain any pop ups , captcha and fake ads. We provide flat {{ formatCurrency(6) }} to {{ formatCurrency(8) }} CPM to All Countries..</p>
     </div>
     
     <div class="solutions-grid">
@@ -147,7 +147,7 @@
       
       <div class="testimonial-card">
         <div class="testimonial-content">
-          <p>"Highly recommend....!!! Best site to earn money using shorten links. Its pay $5 - $20 per 1000 visit according to the country. Highly recommend this site, if you try to earn using shorten links."</p>
+          <p>"Highly recommend....!!! Best site to earn money using shorten links. Its pay {{ formatCurrency(5) }} - {{ formatCurrency(20) }} per 1000 visit according to the country. Highly recommend this site, if you try to earn using shorten links."</p>
         </div>
         <div class="testimonial-author">
           <div class="author-info">
@@ -159,7 +159,7 @@
       
       <div class="testimonial-card">
         <div class="testimonial-content">
-          <p>"Amount received : 8$ AKLinks is one of the best URL Shortener can support Daily Payment So there are no worries about money and can focus on work (make money)"</p>
+          <p>"Amount received : {{ formatCurrency(8) }} AKLinks is one of the best URL Shortener can support Daily Payment So there are no worries about money and can focus on work (make money)"</p>
         </div>
         <div class="testimonial-author">
           <div class="author-info">
@@ -218,7 +218,7 @@
               <div class="app-content">
                 <div class="link-input">Paste your link here...</div>
                 <div class="shorten-btn">Shorten Link</div>
-                <div class="earnings">Earnings: $0.00</div>
+                <div class="earnings">Earnings: {{ formatCurrency(0) }}</div>
               </div>
             </div>
           </div>
