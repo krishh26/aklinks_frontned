@@ -169,7 +169,7 @@
                   <tbody>
                     <tr *ngFor="let method of withdrawalMethods">
                       <td>{{ method.method }}</td>
-                      <td>{{ method.minAmount }}</td>
+                      <td>{{ formatCurrency(method.minAmountUSD) }}</td>
                     </tr>
                   </tbody>
                 </table>

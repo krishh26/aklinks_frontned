@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CurrencyService, Currency } from '../services/currency.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-publisher-rates',
@@ -20,7 +22,7 @@ import { CommonModule } from '@angular/common';
           <div class="rates-grid">
             <div class="rate-card">
               <h3>Basic Plan</h3>
-              <div class="rate-amount">$0.50</div>
+              <div class="rate-amount">{{ formatCurrency(0.50) }}</div>
               <div class="rate-per">per 1000 clicks</div>
               <ul class="rate-features">
                 <li>Up to 10,000 clicks/month</li>
@@ -31,7 +33,7 @@ import { CommonModule } from '@angular/common';
             
             <div class="rate-card featured">
               <h3>Pro Plan</h3>
-              <div class="rate-amount">$0.75</div>
+              <div class="rate-amount">{{ formatCurrency(0.75) }}</div>
               <div class="rate-per">per 1000 clicks</div>
               <ul class="rate-features">
                 <li>Up to 100,000 clicks/month</li>
@@ -43,7 +45,7 @@ import { CommonModule } from '@angular/common';
             
             <div class="rate-card">
               <h3>Enterprise</h3>
-              <div class="rate-amount">$1.00</div>
+              <div class="rate-amount">{{ formatCurrency(1.00) }}</div>
               <div class="rate-per">per 1000 clicks</div>
               <ul class="rate-features">
                 <li>Unlimited clicks</li>
@@ -74,7 +76,7 @@ import { CommonModule } from '@angular/common';
               <ul>
                 <li>Weekly payments for Pro+ plans</li>
                 <li>Monthly payments for Basic plan</li>
-                <li>Minimum payout: $10</li>
+                <li>Minimum payout: {{ formatCurrency(10) }}</li>
                 <li>Automatic payments</li>
               </ul>
             </div>
@@ -242,6 +244,26 @@ import { CommonModule } from '@angular/common';
     }
   `]
 })
-export class PublisherRatesComponent {
+export class PublisherRatesComponent implements OnInit, OnDestroy {
+  private currencySubscription?: Subscription;
+
+  constructor(private currencyService: CurrencyService) {}
+
+  ngOnInit(): void {
+    // Subscribe to currency changes to trigger change detection
+    this.currencySubscription = this.currencyService.currency$.subscribe(() => {
+      // Component will re-render when currency changes
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.currencySubscription) {
+      this.currencySubscription.unsubscribe();
+    }
+  }
+
+  formatCurrency(usdAmount: number): string {
+    return this.currencyService.format(usdAmount);
+  }
 }
 

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, HostListener, Input, Output, EventEmitter
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
+import { CurrencyService, Currency } from '../../services/currency.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { Subscription } from 'rxjs';
 
@@ -21,6 +22,27 @@ import { Subscription } from 'rxjs';
       </div>
       
       <div class="header-right">
+        <div class="currency-switcher-wrapper">
+          <button class="header-icon currency-toggle" (click)="toggleCurrencyDropdown()">
+            <span>{{ getCurrencyIcon() }}</span>
+          </button>
+          <div class="currency-dropdown" [class.active]="isCurrencyDropdownOpen">
+            <button 
+              class="currency-option" 
+              [class.active]="currentCurrency === 'USD'"
+              (click)="selectCurrency('USD')">
+              <span class="currency-icon">$</span>
+              <span class="currency-label">USD</span>
+            </button>
+            <button 
+              class="currency-option" 
+              [class.active]="currentCurrency === 'INR'"
+              (click)="selectCurrency('INR')">
+              <span class="currency-icon">₹</span>
+              <span class="currency-label">INR</span>
+            </button>
+          </div>
+        </div>
         <div class="theme-switcher-wrapper">
           <button class="header-icon theme-toggle" (click)="toggleThemeDropdown()">
             <span>{{ getThemeIcon() }}</span>
@@ -82,12 +104,16 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
   @Output() sidebarToggle = new EventEmitter<void>();
   
   currentTheme: Theme = 'light';
+  currentCurrency: Currency = 'USD';
   isThemeDropdownOpen = false;
+  isCurrencyDropdownOpen = false;
   isProfileDropdownOpen = false;
   private themeSubscription?: Subscription;
+  private currencySubscription?: Subscription;
 
   constructor(
     private themeService: ThemeService,
+    private currencyService: CurrencyService,
     private router: Router,
     private localStorageService: LocalStorageService
   ) {}
@@ -97,11 +123,19 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
     this.themeSubscription = this.themeService.theme$.subscribe(theme => {
       this.currentTheme = theme;
     });
+    
+    this.currentCurrency = this.currencyService.getCurrentCurrency();
+    this.currencySubscription = this.currencyService.currency$.subscribe(currency => {
+      this.currentCurrency = currency;
+    });
   }
 
   ngOnDestroy(): void {
     if (this.themeSubscription) {
       this.themeSubscription.unsubscribe();
+    }
+    if (this.currencySubscription) {
+      this.currencySubscription.unsubscribe();
     }
   }
 
@@ -118,10 +152,29 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  getCurrencyIcon(): string {
+    return this.currentCurrency === 'USD' ? '$' : '₹';
+  }
+
+  toggleCurrencyDropdown(): void {
+    this.isCurrencyDropdownOpen = !this.isCurrencyDropdownOpen;
+    // Close other dropdowns when opening currency dropdown
+    if (this.isCurrencyDropdownOpen) {
+      this.isThemeDropdownOpen = false;
+      this.isProfileDropdownOpen = false;
+    }
+  }
+
+  selectCurrency(currency: Currency): void {
+    this.currencyService.setCurrency(currency);
+    this.isCurrencyDropdownOpen = false;
+  }
+
   toggleThemeDropdown(): void {
     this.isThemeDropdownOpen = !this.isThemeDropdownOpen;
-    // Close profile dropdown when opening theme dropdown
+    // Close other dropdowns when opening theme dropdown
     if (this.isThemeDropdownOpen) {
+      this.isCurrencyDropdownOpen = false;
       this.isProfileDropdownOpen = false;
     }
   }
@@ -133,9 +186,10 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
 
   toggleProfileDropdown(): void {
     this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
-    // Close theme dropdown when opening profile dropdown
+    // Close other dropdowns when opening profile dropdown
     if (this.isProfileDropdownOpen) {
       this.isThemeDropdownOpen = false;
+      this.isCurrencyDropdownOpen = false;
     }
   }
 
@@ -158,7 +212,10 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     // Close dropdowns if clicking outside
-    if (!target.closest('.theme-switcher-wrapper') && !target.closest('.profile-wrapper')) {
+    if (!target.closest('.currency-switcher-wrapper') && 
+        !target.closest('.theme-switcher-wrapper') && 
+        !target.closest('.profile-wrapper')) {
+      this.isCurrencyDropdownOpen = false;
       this.isThemeDropdownOpen = false;
       this.isProfileDropdownOpen = false;
     }

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CurrencyService } from '../services/currency.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-payment-proof',
@@ -21,7 +23,7 @@ import { CommonModule } from '@angular/common';
             <div class="proof-card">
               <div class="proof-header">
                 <h4>Weekly Payment #2024-001</h4>
-                <span class="amount">$1,250.00</span>
+                <span class="amount">{{ formatCurrency(1250.00) }}</span>
               </div>
               <div class="proof-details">
                 <p><strong>Date:</strong> January 15, 2024</p>
@@ -34,7 +36,7 @@ import { CommonModule } from '@angular/common';
             <div class="proof-card">
               <div class="proof-header">
                 <h4>Weekly Payment #2024-002</h4>
-                <span class="amount">$1,480.00</span>
+                <span class="amount">{{ formatCurrency(1480.00) }}</span>
               </div>
               <div class="proof-details">
                 <p><strong>Date:</strong> January 22, 2024</p>
@@ -47,7 +49,7 @@ import { CommonModule } from '@angular/common';
             <div class="proof-card">
               <div class="proof-header">
                 <h4>Weekly Payment #2024-003</h4>
-                <span class="amount">$1,320.00</span>
+                <span class="amount">{{ formatCurrency(1320.00) }}</span>
               </div>
               <div class="proof-details">
                 <p><strong>Date:</strong> January 29, 2024</p>
@@ -65,7 +67,7 @@ import { CommonModule } from '@angular/common';
             <div class="stat-card">
               <div class="stat-icon">💰</div>
               <div class="stat-content">
-                <h3>$2.5M+</h3>
+                <h3>{{ formatCurrency(2500000) }}+</h3>
                 <p>Total Paid to Publishers</p>
               </div>
             </div>
@@ -116,7 +118,7 @@ import { CommonModule } from '@angular/common';
               <p>Direct deposit to your bank account</p>
               <ul>
                 <li>1-3 business days</li>
-                <li>No fees for amounts over $50</li>
+                <li>No fees for amounts over {{ formatCurrency(50) }}</li>
                 <li>Available in 40+ countries</li>
               </ul>
             </div>
@@ -139,7 +141,7 @@ import { CommonModule } from '@angular/common';
           <div class="testimonials">
             <div class="testimonial">
               <div class="testimonial-content">
-                <p>"AKLinks has been a game-changer for my affiliate marketing. The payments are always on time and the rates are competitive. I've earned over $5,000 in the past 6 months!"</p>
+                <p>"AKLinks has been a game-changer for my affiliate marketing. The payments are always on time and the rates are competitive. I've earned over {{ formatCurrency(5000) }} in the past 6 months!"</p>
               </div>
               <div class="testimonial-author">
                 <strong>Sarah Johnson</strong>
@@ -370,6 +372,25 @@ import { CommonModule } from '@angular/common';
     }
   `]
 })
-export class PaymentProofComponent {
+export class PaymentProofComponent implements OnInit, OnDestroy {
+  private currencySubscription?: Subscription;
+
+  constructor(private currencyService: CurrencyService) {}
+
+  ngOnInit(): void {
+    this.currencySubscription = this.currencyService.currency$.subscribe(() => {
+      // Component will re-render when currency changes
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.currencySubscription) {
+      this.currencySubscription.unsubscribe();
+    }
+  }
+
+  formatCurrency(usdAmount: number): string {
+    return this.currencyService.format(usdAmount);
+  }
 }
 
