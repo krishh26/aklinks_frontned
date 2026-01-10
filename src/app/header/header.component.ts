@@ -147,7 +147,7 @@ import { Subscription } from 'rxjs';
       display: flex;
       align-items: center;
       gap: 1rem;
-      margin-left: 2rem;
+      margin-left: 0;
     }
     
     .currency-selector-wrapper {
@@ -158,7 +158,7 @@ import { Subscription } from 'rxjs';
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.5rem 1rem;
+      padding: 0.625rem 1rem;
       background: white;
       border: 1px solid #e0e0e0;
       border-radius: 6px;
@@ -166,6 +166,8 @@ import { Subscription } from 'rxjs';
       font-weight: 500;
       color: #333;
       transition: all 0.3s ease;
+      height: 40px;
+      line-height: 1;
     }
     
     .currency-toggle:hover {
@@ -175,15 +177,22 @@ import { Subscription } from 'rxjs';
     
     .currency-icon {
       font-size: 1rem;
+      display: flex;
+      align-items: center;
+      line-height: 1;
     }
     
     .currency-text {
       font-size: 0.9rem;
+      line-height: 1;
     }
     
     .currency-arrow {
       font-size: 0.7rem;
       transition: transform 0.3s ease;
+      line-height: 1;
+      display: flex;
+      align-items: center;
     }
     
     .currency-dropdown {
@@ -241,6 +250,65 @@ import { Subscription } from 'rxjs';
       font-size: 0.9rem;
     }
     
+    .auth-buttons {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .btn-login {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1rem;
+      height: 40px;
+      line-height: 1;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 1px solid #e0e0e0;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    
+    .btn-login:hover {
+      color: #667eea;
+      background-color: #e9ecef;
+      border-color: #667eea;
+    }
+    
+    .btn-signup {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.5rem;
+      height: 40px;
+      line-height: 1;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-signup:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      color: white;
+    }
+    
+    .btn-icon {
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      line-height: 1;
+    }
+    
     .mobile-currency-selector {
       width: 100%;
       margin-bottom: 1rem;
@@ -266,7 +334,18 @@ import { Subscription } from 'rxjs';
       }
       
       .currency-toggle {
-        padding: 0.4rem 0.8rem;
+        padding: 0.5rem 0.8rem;
+        height: 36px;
+      }
+      
+      .btn-login,
+      .btn-signup {
+        height: 36px;
+        padding: 0.5rem 0.9rem;
+      }
+      
+      .nav {
+        gap: 1rem;
       }
     }
   `]

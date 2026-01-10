@@ -116,7 +116,7 @@ import { environment } from '../../../environments/environment';
       align-items: center;
       justify-content: center;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 2rem;
+      padding: 2rem 1rem;
     }
 
     .auth-card {
@@ -124,13 +124,13 @@ import { environment } from '../../../environments/environment';
       border-radius: 16px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 400px;
+      max-width: 450px;
       overflow: hidden;
     }
 
     .auth-header {
-      text-align: center;
-      padding: 2rem 2rem 1rem 2rem;
+      text-align: left;
+      padding: 2.5rem 2rem 1.5rem 2rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
     }
@@ -138,16 +138,21 @@ import { environment } from '../../../environments/environment';
     .auth-header h1 {
       font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      margin: 0 0 0.75rem 0;
+      line-height: 1.2;
+      text-align: left;
     }
 
     .auth-header p {
       opacity: 0.9;
       margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      text-align: left;
     }
 
     .auth-content {
-      padding: 2rem;
+      padding: 2.5rem 2rem;
     }
 
     .google-signin-btn {
@@ -156,15 +161,16 @@ import { environment } from '../../../environments/environment';
       align-items: center;
       justify-content: center;
       gap: 0.75rem;
-      padding: 0.75rem 1rem;
+      padding: 0.875rem 1rem;
       border: 2px solid #ddd;
       border-radius: 8px;
       background: white;
       color: #333;
       font-weight: 500;
+      font-size: 0.95rem;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
     }
 
     .google-signin-btn:hover {
@@ -179,7 +185,7 @@ import { environment } from '../../../environments/environment';
 
     .divider {
       text-align: center;
-      margin: 1.5rem 0;
+      margin: 1.75rem 0;
       position: relative;
     }
 
@@ -202,30 +208,39 @@ import { environment } from '../../../environments/environment';
 
     .login-form h2 {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin: 0 0 1.75rem 0;
       color: #333;
       font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.3;
     }
 
     .form-group {
       margin-bottom: 1.5rem;
     }
 
+    .form-group:last-of-type {
+      margin-bottom: 1.25rem;
+    }
+
     .form-group label {
       display: block;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.625rem;
       color: #333;
       font-weight: 500;
+      font-size: 0.95rem;
+      line-height: 1.4;
     }
 
     .form-group input {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.875rem 1rem;
       border: 2px solid #ddd;
       border-radius: 8px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       transition: border-color 0.3s ease;
       box-sizing: border-box;
+      line-height: 1.5;
     }
 
     .form-group input:focus {
@@ -294,7 +309,8 @@ import { environment } from '../../../environments/environment';
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
+      gap: 1rem;
     }
 
     .checkbox-container {
@@ -303,16 +319,25 @@ import { environment } from '../../../environments/environment';
       cursor: pointer;
       font-size: 0.9rem;
       color: #666;
+      line-height: 1.5;
+      margin: 0;
     }
 
     .checkbox-container input {
-      margin-right: 0.5rem;
+      margin: 0 0.5rem 0 0;
+      width: auto;
+      cursor: pointer;
+      flex-shrink: 0;
     }
 
     .forgot-password {
       color: #667eea;
       text-decoration: none;
       font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+      line-height: 1.5;
+      transition: color 0.3s ease;
     }
 
     .forgot-password:hover {
@@ -324,12 +349,14 @@ import { environment } from '../../../environments/environment';
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
-      padding: 0.75rem;
+      padding: 0.875rem 1rem;
       border-radius: 8px;
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
+      line-height: 1.5;
+      margin-bottom: 0;
     }
 
     .signin-btn:hover:not(:disabled) {
@@ -344,18 +371,27 @@ import { environment } from '../../../environments/environment';
 
     .auth-footer {
       text-align: center;
-      margin-top: 1.5rem;
+      margin-top: 1.75rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #f0f0f0;
     }
 
     .auth-footer p {
       color: #666;
       margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.5;
     }
 
     .auth-footer a {
       color: #667eea;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    
+    .auth-footer a:hover {
+      color: #764ba2;
     }
 
     .auth-footer a:hover {
@@ -364,11 +400,24 @@ import { environment } from '../../../environments/environment';
 
     @media (max-width: 480px) {
       .auth-container {
-        padding: 1rem;
+        padding: 1rem 0.75rem;
       }
 
       .auth-content {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
+      }
+      
+      .auth-header {
+        padding: 2rem 1.5rem 1.25rem 1.5rem;
+        text-align: left;
+      }
+      
+      .auth-header h1 {
+        font-size: 1.75rem;
+      }
+      
+      .login-form h2 {
+        font-size: 1.25rem;
       }
     }
   `]
