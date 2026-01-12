@@ -572,9 +572,67 @@
 /* Stats Grid */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Chart Section */
+.chart-section {
+  margin-bottom: 2rem;
+}
+
+.chart-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px var(--shadow);
+  overflow: hidden;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chart-card .card-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: border-color 0.3s ease;
+}
+
+.chart-card .card-title {
+  font-size: 1.1875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.chart-card .card-content {
+  padding: 1.5rem;
+  height: 400px;
+  position: relative;
+}
+
+.chart-card canvas {
+  max-height: 100%;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .chart-card .card-content {
+    height: 300px;
+    padding: 1rem;
+  }
 }
 
 .stat-card {
@@ -588,13 +646,6 @@
   transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
 }
 
-.stat-card-left {
-  grid-column: 1 / 11;
-}
-
-.stat-card-right {
-  grid-column: 1 / 11;
-}
 
 .stat-card:hover {
   transform: translateY(-2px);
@@ -969,16 +1020,8 @@
   }
 
   .stats-grid {
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-  }
-
-  .stat-card-left {
-    grid-column: 1 / 6;
-  }
-
-  .stat-card-right {
-    grid-column: 6 / 11;
   }
 
   .actions-grid {
@@ -1065,14 +1108,9 @@
 
   /* Stats Cards - Stack on mobile */
   .stats-grid {
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: 1fr;
     gap: 1rem;
     margin-bottom: 1.5rem;
-  }
-
-  .stat-card-left,
-  .stat-card-right {
-    grid-column: 1 / 11;
   }
 
   .stat-card {
