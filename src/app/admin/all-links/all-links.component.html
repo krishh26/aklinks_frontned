@@ -1,0 +1,83 @@
+<div class="dashboard-container" [class.sidebar-closed]="!isSidebarOpen">
+  <!-- Shared Sidebar -->
+  <app-sidebar [isOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-sidebar>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Admin Header -->
+    <app-admin-header [isSidebarOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-admin-header>
+
+    <!-- All Links Content -->
+    <section class="links-section">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs">
+        <a routerLink="/admin/dashboard" class="breadcrumb-link">Home</a>
+        <span class="breadcrumb-separator">></span>
+        <span class="breadcrumb-current">All Links</span>
+      </nav>
+
+      <!-- Page Title -->
+      <h1 class="page-title">All Links</h1>
+
+      <!-- Loading State -->
+      <div class="loading-container" *ngIf="isLoading">
+        <p>Loading links...</p>
+      </div>
+
+      <!-- Error Message -->
+      <div class="error-message" *ngIf="errorMessage && !isLoading">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Links Listing -->
+      <div class="links-container">
+        <div class="table-container" *ngIf="links.length > 0 && !isLoading">
+          <table class="links-table">
+            <thead>
+              <tr>
+                <th>Original Link</th>
+                <th>Short Link</th>
+                <th>Clicks</th>
+                <th>Created Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let link of links">
+                <td class="link-cell">
+                  <a [href]="link.originalLink" target="_blank" class="original-link">
+                    {{ link.originalLink.length > 50 ? (link.originalLink | slice:0:50) + '...' : link.originalLink }}
+                  </a>
+                </td>
+                <td class="link-cell">
+                  <span class="short-link">{{ getFullShortLink(link.shortLink) }}</span>
+                </td>
+                <td>{{ link.clicks }}</td>
+                <td>{{ formatDate(link.createdAt) }}</td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="copy-btn" (click)="copyToClipboard(link.shortLink)" title="Copy Link">
+                      <span class="copy-icon">📋</span>
+                      Copy
+                    </button>
+                    <button class="delete-btn" (click)="deleteLink(link)" title="Delete Link">
+                      <span class="delete-icon">🗑️</span>
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state" *ngIf="links.length === 0 && !isLoading && !errorMessage">
+          <p>No links found. Create your first shortened link!</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

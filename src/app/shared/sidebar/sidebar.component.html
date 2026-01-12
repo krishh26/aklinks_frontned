@@ -92,6 +92,25 @@
       </ul>
     </div>
 
+    <!-- MANAGE LINKS Section (for user role) -->
+    <div class="nav-section" *ngIf="isUserRole && !isAdminRole">
+      <div class="nav-category">MANAGE LINKS</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a routerLink="/admin/all-links" routerLinkActive="active" class="nav-link">
+            All Links
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/hidden-links" routerLinkActive="active" class="nav-link">
+            Hidden Links
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
     <!-- ANALYTICS Section -->
     <!-- <div class="nav-section" *ngIf="isAdminRole">
       <div class="nav-category">ANALYTICS</div>

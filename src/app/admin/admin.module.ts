@@ -8,6 +8,8 @@ import { ShortenLinkComponent } from "./shorten-link/shorten-link.component";
 import { SupportComponent } from "./support/support.component";
 import { ChangePasswordComponent } from "./settings/change-password/change-password.component";
 import { ProfileComponent } from "./settings/profile/profile.component";
+import { AllLinksComponent } from "./all-links/all-links.component";
+import { HiddenLinksComponent } from "./hidden-links/hidden-links.component";
 
 @NgModule({
   declarations: [],
@@ -20,6 +22,8 @@ import { ProfileComponent } from "./settings/profile/profile.component";
     SupportComponent,
     ChangePasswordComponent,
     ProfileComponent,
+    AllLinksComponent,
+    HiddenLinksComponent,
     RouterModule.forChild([
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
@@ -28,7 +32,9 @@ import { ProfileComponent } from "./settings/profile/profile.component";
       { path: 'shorten-link', component: ShortenLinkComponent },
       { path: 'support', component: SupportComponent },
       { path: 'settings/profile', component: ProfileComponent },
-      { path: 'settings/change-password', component: ChangePasswordComponent }
+      { path: 'settings/change-password', component: ChangePasswordComponent },
+      { path: 'all-links', component: AllLinksComponent },
+      { path: 'hidden-links', component: HiddenLinksComponent }
     ])
   ],
   exports: [],

@@ -1,0 +1,48 @@
+@import '../shorten-link/shorten-link.component.scss';
+
+.links-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  transition: color 0.3s ease, background 0.3s ease;
+  min-height: calc(100vh - 80px);
+}
+
+.loading-container {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+  box-shadow: 0 4px 12px var(--shadow);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .links-section {
+    padding: 1rem;
+  }
+
+  .links-table {
+    font-size: 0.8125rem;
+
+    th, td {
+      padding: 0.625rem 0.375rem;
+    }
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .copy-btn,
+  .delete-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
