@@ -1,0 +1,86 @@
+<div class="dashboard-container" [class.sidebar-closed]="!isSidebarOpen">
+  <!-- Shared Sidebar -->
+  <app-sidebar [isOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-sidebar>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Admin Header -->
+    <app-admin-header [isSidebarOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-admin-header>
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <h1 class="page-title">Currency Settings</h1>
+        <p class="page-subtitle">Manage the currency exchange rate for USD to INR conversion.</p>
+      </div>
+    </header>
+
+    <!-- Currency Settings Content -->
+    <div class="dashboard-content">
+      <div class="settings-container">
+        <form (ngSubmit)="onSubmit()" class="settings-form">
+          <div class="settings-form-wrapper">
+            <h2 class="section-title">Exchange Rate Configuration</h2>
+            <p class="section-description">
+              Set the exchange rate for converting 1 US Dollar (USD) to Indian Rupees (INR).
+              This rate will be used throughout the application for currency conversions.
+            </p>
+
+            <div class="form-group">
+              <label for="exchangeRate">1 USD = ? INR *</label>
+              <input 
+                type="number" 
+                id="exchangeRate" 
+                name="exchangeRate" 
+                [(ngModel)]="exchangeRate"
+                class="form-input"
+                required
+                min="0.01"
+                step="0.01"
+                placeholder="Enter exchange rate (e.g., 80)"
+                [disabled]="isLoading || isSaving"
+              />
+              <small class="form-hint">
+                Current exchange rate: 1 USD = {{ exchangeRate }} INR
+              </small>
+            </div>
+
+            <div class="info-box">
+              <h3 class="info-title">ℹ️ Information</h3>
+              <ul class="info-list">
+                <li>The default exchange rate is set to 80 INR per 1 USD.</li>
+                <li>This rate affects all currency conversions throughout the application.</li>
+                <li>Only administrators can modify this setting.</li>
+                <li>Changes will be reflected immediately after saving.</li>
+              </ul>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+              <button 
+                type="submit" 
+                class="submit-button"
+                [disabled]="isLoading || isSaving"
+              >
+                <span *ngIf="!isSaving">Save Changes</span>
+                <span *ngIf="isSaving">Saving...</span>
+              </button>
+              <button 
+                type="button" 
+                class="cancel-button" 
+                (click)="onCancel()"
+                [disabled]="isLoading || isSaving"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+

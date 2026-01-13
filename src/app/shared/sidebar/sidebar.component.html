@@ -225,6 +225,11 @@
                 Change Password
               </a>
             </li>
+            <li class="nav-item" *ngIf="isAdminRole">
+              <a routerLink="/admin/settings/currency" routerLinkActive="active" class="nav-link submenu-link">
+                Currency Settings
+              </a>
+            </li>
           </ul>
         </li>
       </ul>

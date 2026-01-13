@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { SettingsService } from './settings/settings.service';
 
 export type Currency = 'USD' | 'INR';
 
@@ -8,14 +9,47 @@ export type Currency = 'USD' | 'INR';
 })
 export class CurrencyService {
   private readonly CURRENCY_KEY = 'app-currency';
-  private readonly EXCHANGE_RATE = 80; // 1 USD = 80 INR
+  private readonly DEFAULT_EXCHANGE_RATE = 80; // Default fallback: 1 USD = 80 INR
+  private exchangeRateSubject: BehaviorSubject<number>;
+  public exchangeRate$: Observable<number>;
   private currencySubject: BehaviorSubject<Currency>;
   public currency$: Observable<Currency>;
 
-  constructor() {
+  constructor(private settingsService: SettingsService) {
     const savedCurrency = this.getSavedCurrency();
     this.currencySubject = new BehaviorSubject<Currency>(savedCurrency);
     this.currency$ = this.currencySubject.asObservable();
+    
+    // Initialize exchange rate with default, then fetch from backend
+    this.exchangeRateSubject = new BehaviorSubject<number>(this.DEFAULT_EXCHANGE_RATE);
+    this.exchangeRate$ = this.exchangeRateSubject.asObservable();
+    
+    // Load exchange rate from backend
+    this.loadExchangeRate();
+  }
+
+  /**
+   * Load exchange rate from backend
+   */
+  private loadExchangeRate(): void {
+    this.settingsService.getCurrencyExchangeRate().subscribe({
+      next: (response) => {
+        if (response.status === 'success' && response.data?.exchangeRate) {
+          this.exchangeRateSubject.next(response.data.exchangeRate);
+        }
+      },
+      error: (error) => {
+        console.error('Failed to load exchange rate from backend, using default:', error);
+        // Keep default value if API call fails
+      }
+    });
+  }
+
+  /**
+   * Refresh exchange rate from backend
+   */
+  refreshExchangeRate(): void {
+    this.loadExchangeRate();
   }
 
   private getSavedCurrency(): Currency {
@@ -49,7 +83,8 @@ export class CurrencyService {
   convert(usdAmount: number): number {
     const currentCurrency = this.getCurrentCurrency();
     if (currentCurrency === 'INR') {
-      return usdAmount * this.EXCHANGE_RATE;
+      const exchangeRate = this.exchangeRateSubject.value;
+      return usdAmount * exchangeRate;
     }
     return usdAmount;
   }
@@ -81,6 +116,13 @@ export class CurrencyService {
    * Get exchange rate
    */
   getExchangeRate(): number {
-    return this.EXCHANGE_RATE;
+    return this.exchangeRateSubject.value;
+  }
+
+  /**
+   * Get exchange rate as Observable
+   */
+  getExchangeRate$(): Observable<number> {
+    return this.exchangeRate$;
   }
 }

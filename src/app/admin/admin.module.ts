@@ -8,6 +8,7 @@ import { ShortenLinkComponent } from "./shorten-link/shorten-link.component";
 import { SupportComponent } from "./support/support.component";
 import { ChangePasswordComponent } from "./settings/change-password/change-password.component";
 import { ProfileComponent } from "./settings/profile/profile.component";
+import { CurrencyComponent } from "./settings/currency/currency.component";
 import { AllLinksComponent } from "./all-links/all-links.component";
 import { HiddenLinksComponent } from "./hidden-links/hidden-links.component";
 
@@ -22,6 +23,7 @@ import { HiddenLinksComponent } from "./hidden-links/hidden-links.component";
     SupportComponent,
     ChangePasswordComponent,
     ProfileComponent,
+    CurrencyComponent,
     AllLinksComponent,
     HiddenLinksComponent,
     RouterModule.forChild([
@@ -33,6 +35,7 @@ import { HiddenLinksComponent } from "./hidden-links/hidden-links.component";
       { path: 'support', component: SupportComponent },
       { path: 'settings/profile', component: ProfileComponent },
       { path: 'settings/change-password', component: ChangePasswordComponent },
+      { path: 'settings/currency', component: CurrencyComponent },
       { path: 'all-links', component: AllLinksComponent },
       { path: 'hidden-links', component: HiddenLinksComponent }
     ])
