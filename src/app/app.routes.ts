@@ -5,6 +5,9 @@ import { PaymentProofComponent } from './payment-proof/payment-proof.component';
 import { PaymentSystemComponent } from './payment-system/payment-system.component';
 import { PaymentRulesComponent } from './payment-rules/payment-rules.component';
 import { BlogComponent } from './blog/blog.component';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { CallbackComponent } from './auth/callback/callback.component';
@@ -16,6 +19,9 @@ export const routes: Routes = [
   { path: 'payment-system', component: PaymentSystemComponent },
   { path: 'payment-rules', component: PaymentRulesComponent },
   { path: 'blog', component: BlogComponent },
+  { path: 'about-us', component: AboutUsComponent },
+  { path: 'contact-us', component: ContactUsComponent },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: 'auth/signup', component: SignupComponent },
   { path: 'auth/callback', component: CallbackComponent },

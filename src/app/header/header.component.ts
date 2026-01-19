@@ -30,6 +30,9 @@ import { Subscription } from 'rxjs';
                 <div class="dropdown-menu">
                   <a routerLink="/payment-system">Payment System</a>
                   <a routerLink="/payment-rules">Payment Rules</a>
+                  <a routerLink="/about-us">About Us</a>
+                  <a routerLink="/contact-us">Contact Us</a>
+                  <a routerLink="/privacy-policy">Privacy Policy</a>
                 </div>
               </li>
             </ul>
@@ -96,6 +99,9 @@ import { Subscription } from 'rxjs';
               <div class="mobile-dropdown-menu" [class.active]="isMobileDropdownOpen">
                 <a routerLink="/payment-system" (click)="closeMobileMenu()">Payment System</a>
                 <a routerLink="/payment-rules" (click)="closeMobileMenu()">Payment Rules</a>
+                <a routerLink="/about-us" (click)="closeMobileMenu()">About Us</a>
+                <a routerLink="/contact-us" (click)="closeMobileMenu()">Contact Us</a>
+                <a routerLink="/privacy-policy" (click)="closeMobileMenu()">Privacy Policy</a>
               </div>
             </li>
           </ul>

@@ -2,15 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HeaderComponent],
+  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent],
   template: `
     <app-header></app-header>
     <router-outlet></router-outlet>
+    <app-footer></app-footer>
   `
 })
 export class AppComponent implements OnInit {
@@ -34,7 +36,7 @@ export class AppComponent implements OnInit {
     // This prevents redirect when refreshing admin pages like /admin/withdraws
     if (token && !isAdminRoute) {
       // Define public routes that should redirect to dashboard
-      const publicRoutes = ['/', '/auth/login', '/auth/signup', '/publisher-rates', '/payment-proof', '/payment-system', '/payment-rules', '/blog'];
+      const publicRoutes = ['/', '/auth/login', '/auth/signup', '/publisher-rates', '/payment-proof', '/payment-system', '/payment-rules', '/blog', '/about-us', '/contact-us', '/privacy-policy'];
       const isPublicRoute = publicRoutes.some(route => currentUrl === route || currentUrl.startsWith(route + '/'));
       
       if (isPublicRoute) {
