@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
         <div class="footer-content">
           <div class="footer-section">
             <h4>About AKLinks</h4>
-            <p>AKLinks is a free service providing an easy way to earn money by sharing shortened links with your followers. With our simple platform, you can quickly monetize your content and make money online.</p>
+            <p>AKLinks is a free URL shortening and link management platform that helps users organize links, analyze traffic, and monetize eligible visits.</p>
           </div>
           
           <div class="footer-section">
