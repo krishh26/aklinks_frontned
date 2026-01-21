@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /manage-user-admin/
+Disallow: /auth/
+
+Sitemap: https://aklinks.in/sitemap.xml
