@@ -124,12 +124,13 @@
                       <div class="email">{{ user.email }}</div>
                     </div>
                   </td>
-                  <td class="referrer-id">{{ user.referredBy }}</td>
+                  <td class="referrer-id">{{ user.referredBy || '-' }}</td>
                   <td class="referrer-info">
-                    <div class="user-details">
+                    <div class="user-details" *ngIf="user.referrerUsername">
                       <div class="username">{{ user.referrerUsername }}</div>
                       <div class="email">{{ user.referrerEmail }}</div>
                     </div>
+                    <span *ngIf="!user.referrerUsername">-</span>
                   </td>
                   <td class="referral-code">{{ user.referralCode }}</td>
                   <td class="date">{{ formatDate(user.joinDate) }}</td>

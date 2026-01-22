@@ -8,6 +8,8 @@ export enum SettingsEndPoint {
     GET_CURRENCY_EXCHANGE_RATE = '/settings/currency-exchange-rate',
     UPDATE_CURRENCY_EXCHANGE_RATE = '/settings/currency-exchange-rate',
     GET_ALL_SETTINGS = '/settings/all',
+    GET_REFER_AMOUNT = '/settings/refer-amount',
+    UPDATE_REFER_AMOUNT = '/settings/refer-amount',
 }
 
 @Injectable({
@@ -74,6 +76,27 @@ export class SettingsService {
             .get<any>(this.baseUrl + SettingsEndPoint.GET_ALL_SETTINGS, { 
                 headers: this.getHeader() 
             });
+    }
+
+    /**
+     * Get refer amount (public endpoint)
+     */
+    getReferAmount(): Observable<any> {
+        return this.httpClient
+            .get<any>(this.baseUrl + SettingsEndPoint.GET_REFER_AMOUNT, { 
+                headers: this.getPublicHeader() 
+            });
+    }
+
+    /**
+     * Update refer amount (admin only)
+     */
+    updateReferAmount(referAmount: number): Observable<any> {
+        return this.httpClient
+            .put<any>(this.baseUrl + SettingsEndPoint.UPDATE_REFER_AMOUNT, 
+                { referAmount }, 
+                { headers: this.getHeader() }
+            );
     }
 }
 

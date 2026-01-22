@@ -114,7 +114,7 @@
       <div class="statistics-section">
         <div class="statistics-header">
           <h2 class="statistics-title">Referral Management</h2>
-          <div class="statistics-tabs">
+          <div class="statistics-tabs" *ngIf="isAdmin">
             <button 
               class="tab-button" 
               [class.active]="activeTab === 'referrals'"
@@ -128,11 +128,17 @@
               Earnings
             </button>
           </div>
+          <div class="statistics-tabs" *ngIf="!isAdmin">
+            <button 
+              class="tab-button active">
+              My Referrals History
+            </button>
+          </div>
         </div>
         
         <div class="statistics-content">
-          <!-- Referrals Tab -->
-          <div *ngIf="activeTab === 'referrals'" class="tab-content-wrapper">
+          <!-- Referrals Tab - Only for Admin -->
+          <div *ngIf="activeTab === 'referrals' && isAdmin" class="tab-content-wrapper">
             <!-- Filters and Search -->
             <div class="filters-section">
               <div class="search-box">
@@ -208,8 +214,8 @@
             </div>
           </div>
 
-          <!-- Earnings Tab -->
-          <div *ngIf="activeTab === 'earnings'" class="tab-content-wrapper">
+          <!-- Earnings Tab - For Admin and Regular Users -->
+          <div *ngIf="activeTab === 'earnings' || !isAdmin" class="tab-content-wrapper">
             <!-- Filters and Search -->
             <div class="filters-section">
               <div class="search-box">

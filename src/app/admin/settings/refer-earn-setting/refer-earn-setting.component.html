@@ -23,142 +23,37 @@
       <div class="settings-container">
         <form (ngSubmit)="onSubmit()" class="settings-form">
           <div class="settings-form-wrapper">
-            <h2 class="section-title">Referral Program Configuration</h2>
+            <h2 class="section-title">Refer & Earn Settings</h2>
             <p class="section-description">
-              Manage your referral program settings including commission rates, bonuses, and payout thresholds.
-              These settings will affect how users earn from referrals.
+              Configure the amount that will be credited to users when someone signs up using their referral link.
             </p>
 
-            <!-- Enable/Disable Referral Program -->
+            <!-- Refer Amount -->
             <div class="form-group">
-              <div class="toggle-group">
-                <label for="enableReferralProgram" class="toggle-label">
-                  Enable Referral Program
-                </label>
-                <label class="switch">
-                  <input 
-                    type="checkbox" 
-                    id="enableReferralProgram"
-                    [(ngModel)]="referralSettings.enableReferralProgram"
-                    name="enableReferralProgram"
-                    [disabled]="isLoading || isSaving"
-                  />
-                  <span class="slider"></span>
-                </label>
-              </div>
-              <small class="form-hint">
-                Toggle to enable or disable the referral program for all users.
-              </small>
-            </div>
-
-            <!-- Commission Rate -->
-            <div class="form-group">
-              <label for="commissionRate">Commission Rate (%) *</label>
+              <label for="referAmount">Refer Amount (USD) *</label>
               <input 
                 type="number" 
-                id="commissionRate" 
-                name="commissionRate" 
-                [(ngModel)]="referralSettings.commissionRate"
-                class="form-input"
-                required
-                min="0"
-                max="100"
-                step="0.1"
-                placeholder="Enter commission rate (e.g., 10)"
-                [disabled]="isLoading || isSaving || !referralSettings.enableReferralProgram"
-              />
-              <small class="form-hint">
-                Percentage of referred user's earnings that will be paid as commission (0-100%).
-              </small>
-            </div>
-
-            <!-- Minimum Payout -->
-            <div class="form-group">
-              <label for="minimumPayout">Minimum Payout (USD) *</label>
-              <input 
-                type="number" 
-                id="minimumPayout" 
-                name="minimumPayout" 
-                [(ngModel)]="referralSettings.minimumPayout"
+                id="referAmount" 
+                name="referAmount" 
+                [(ngModel)]="referAmount"
                 class="form-input"
                 required
                 min="0"
                 step="0.01"
-                placeholder="Enter minimum payout (e.g., 10.00)"
-                [disabled]="isLoading || isSaving || !referralSettings.enableReferralProgram"
+                placeholder="Enter refer amount (e.g., 5.00)"
+                [disabled]="isLoading || isSaving"
               />
               <small class="form-hint">
-                Minimum amount required before referral earnings can be withdrawn.
-              </small>
-            </div>
-
-            <!-- Referral Bonus -->
-            <div class="form-group">
-              <label for="referralBonus">Referral Bonus (USD) *</label>
-              <input 
-                type="number" 
-                id="referralBonus" 
-                name="referralBonus" 
-                [(ngModel)]="referralSettings.referralBonus"
-                class="form-input"
-                required
-                min="0"
-                step="0.01"
-                placeholder="Enter referral bonus (e.g., 5.00)"
-                [disabled]="isLoading || isSaving || !referralSettings.enableReferralProgram"
-              />
-              <small class="form-hint">
-                One-time bonus amount given to the referrer when a new user signs up.
-              </small>
-            </div>
-
-            <!-- Max Referrals Per User -->
-            <div class="form-group">
-              <label for="maxReferralsPerUser">Max Referrals Per User *</label>
-              <input 
-                type="number" 
-                id="maxReferralsPerUser" 
-                name="maxReferralsPerUser" 
-                [(ngModel)]="referralSettings.maxReferralsPerUser"
-                class="form-input"
-                required
-                min="0"
-                step="1"
-                placeholder="Enter max referrals (0 for unlimited)"
-                [disabled]="isLoading || isSaving || !referralSettings.enableReferralProgram"
-              />
-              <small class="form-hint">
-                Maximum number of referrals allowed per user. Set to 0 for unlimited referrals.
-              </small>
-            </div>
-
-            <!-- Referral Link Prefix -->
-            <div class="form-group">
-              <label for="referralLinkPrefix">Referral Link Prefix *</label>
-              <input 
-                type="text" 
-                id="referralLinkPrefix" 
-                name="referralLinkPrefix" 
-                [(ngModel)]="referralSettings.referralLinkPrefix"
-                class="form-input"
-                required
-                placeholder="https://aklinks.com/signup?ref="
-                [disabled]="isLoading || isSaving || !referralSettings.enableReferralProgram"
-              />
-              <small class="form-hint">
-                Base URL for referral links. The referral code will be appended to this prefix.
+                Amount that will be credited to the referrer's wallet when a new user signs up using their referral code.
               </small>
             </div>
 
             <div class="info-box">
               <h3 class="info-title">ℹ️ Information</h3>
               <ul class="info-list">
-                <li>Commission rate determines the percentage of earnings shared with referrers.</li>
-                <li>Minimum payout is the threshold before users can withdraw referral earnings.</li>
-                <li>Referral bonus is a one-time reward when someone signs up using your link.</li>
-                <li>Setting max referrals to 0 allows unlimited referrals per user.</li>
+                <li>The refer amount is credited to the referrer's wallet immediately when a new user registers using their referral link.</li>
                 <li>Changes will be applied immediately after saving.</li>
-                <li>Only administrators can modify these settings.</li>
+                <li>Only administrators can modify this setting.</li>
               </ul>
             </div>
 
@@ -167,7 +62,7 @@
               <button 
                 type="submit" 
                 class="submit-button"
-                [disabled]="isLoading || isSaving || !referralSettings.enableReferralProgram"
+                [disabled]="isLoading || isSaving"
               >
                 <span *ngIf="!isSaving">Save Changes</span>
                 <span *ngIf="isSaving">Saving...</span>

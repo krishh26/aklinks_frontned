@@ -22,14 +22,7 @@ export class ReferEarnSettingComponent implements OnInit, OnDestroy {
   isSaving = false;
 
   // Refer & Earn Settings
-  referralSettings = {
-    commissionRate: 10,
-    minimumPayout: 10.00,
-    referralBonus: 5.00,
-    enableReferralProgram: true,
-    maxReferralsPerUser: 0, // 0 means unlimited
-    referralLinkPrefix: 'https://aklinks.com/signup?ref='
-  };
+  referAmount: number = 0;
 
   private settingsSubscription?: Subscription;
 
@@ -74,71 +67,43 @@ export class ReferEarnSettingComponent implements OnInit, OnDestroy {
 
   loadReferralSettings(): void {
     this.isLoading = true;
-    // TODO: Replace with actual API call when backend is ready
-    // this.settingsService.getReferralSettings().subscribe({
-    //   next: (response) => {
-    //     if (response.status === 'success' && response.data) {
-    //       this.referralSettings = { ...this.referralSettings, ...response.data };
-    //     }
-    //     this.isLoading = false;
-    //   },
-    //   error: (error) => {
-    //     console.error('Failed to load referral settings:', error);
-    //     this.toastService.showError('Failed to load referral settings');
-    //     this.isLoading = false;
-    //   }
-    // });
-    
-    // Simulate loading for now
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 500);
+    this.settingsService.getReferAmount().subscribe({
+      next: (response) => {
+        if (response.status === 'success' && response.data) {
+          this.referAmount = response.data.referAmount || 0;
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Failed to load refer amount:', error);
+        this.toastService.showError('Failed to load refer amount');
+        this.isLoading = false;
+      }
+    });
   }
 
   onSubmit(): void {
     // Validation
-    if (this.referralSettings.commissionRate < 0 || this.referralSettings.commissionRate > 100) {
-      this.toastService.showError('Commission rate must be between 0 and 100');
-      return;
-    }
-
-    if (this.referralSettings.minimumPayout < 0) {
-      this.toastService.showError('Minimum payout must be a positive number');
-      return;
-    }
-
-    if (this.referralSettings.referralBonus < 0) {
-      this.toastService.showError('Referral bonus must be a positive number');
-      return;
-    }
-
-    if (this.referralSettings.maxReferralsPerUser < 0) {
-      this.toastService.showError('Max referrals per user must be 0 (unlimited) or a positive number');
+    if (this.referAmount < 0) {
+      this.toastService.showError('Refer amount must be a non-negative number');
       return;
     }
 
     this.isSaving = true;
-    // TODO: Replace with actual API call when backend is ready
-    // this.settingsService.updateReferralSettings(this.referralSettings).subscribe({
-    //   next: (response) => {
-    //     if (response.status === 'success') {
-    //       this.toastService.showSuccess('Referral settings updated successfully');
-    //     }
-    //     this.isSaving = false;
-    //   },
-    //   error: (error) => {
-    //     console.error('Failed to update referral settings:', error);
-    //     const errorMessage = error.error?.message || 'Failed to update referral settings';
-    //     this.toastService.showError(errorMessage);
-    //     this.isSaving = false;
-    //   }
-    // });
-
-    // Simulate saving for now
-    setTimeout(() => {
-      this.toastService.showSuccess('Referral settings updated successfully');
-      this.isSaving = false;
-    }, 1000);
+    this.settingsService.updateReferAmount(this.referAmount).subscribe({
+      next: (response) => {
+        if (response.status === 'success') {
+          this.toastService.showSuccess('Refer amount updated successfully');
+        }
+        this.isSaving = false;
+      },
+      error: (error) => {
+        console.error('Failed to update refer amount:', error);
+        const errorMessage = error.error?.message || 'Failed to update refer amount';
+        this.toastService.showError(errorMessage);
+        this.isSaving = false;
+      }
+    });
   }
 
   onCancel(): void {

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
@@ -439,18 +439,20 @@ import { environment } from '../../../environments/environment';
     }
   `]
 })
-export class SignupComponent {
+export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   isLoading: boolean = false;
   errorMessage: string = '';
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
+  referralCode: string = '';
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private localStorageService: LocalStorageService,
     private router: Router,
+    private route: ActivatedRoute,
     private toastService: ToastService
   ) {
     this.signupForm = this.fb.group({
@@ -460,6 +462,15 @@ export class SignupComponent {
       confirmPassword: ['', [Validators.required]],
       agreeTerms: [false, [Validators.requiredTrue]]
     }, { validators: this.passwordMatchValidator });
+  }
+
+  ngOnInit(): void {
+    // Get referral code from URL query parameter
+    this.route.queryParams.subscribe(params => {
+      if (params['ref']) {
+        this.referralCode = params['ref'];
+      }
+    });
   }
 
   togglePasswordVisibility() {
@@ -488,11 +499,16 @@ export class SignupComponent {
       this.errorMessage = '';
       
       // Prepare payload - map fullName to name for backend
-      const payload = {
+      const payload: any = {
         name: this.signupForm.value.fullName,
         email: this.signupForm.value.email,
         password: this.signupForm.value.password
       };
+
+      // Add referral code if present
+      if (this.referralCode) {
+        payload.referralCode = this.referralCode;
+      }
 
       // this.router.navigate(['/admin/dashboard']);
       // return;
