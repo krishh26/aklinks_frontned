@@ -9,8 +9,11 @@ import { SupportComponent } from "./support/support.component";
 import { ChangePasswordComponent } from "./settings/change-password/change-password.component";
 import { ProfileComponent } from "./settings/profile/profile.component";
 import { CurrencyComponent } from "./settings/currency/currency.component";
+import { ReferEarnSettingComponent } from "./settings/refer-earn-setting/refer-earn-setting.component";
 import { AllLinksComponent } from "./all-links/all-links.component";
 import { HiddenLinksComponent } from "./hidden-links/hidden-links.component";
+import { ReferralEarningComponent } from "./referral-earning/referral-earning.component";
+import { ReferWiseTotalUsersComponent } from "./refer-wise-total-users/refer-wise-total-users.component";
 
 @NgModule({
   declarations: [],
@@ -24,8 +27,11 @@ import { HiddenLinksComponent } from "./hidden-links/hidden-links.component";
     ChangePasswordComponent,
     ProfileComponent,
     CurrencyComponent,
+    ReferEarnSettingComponent,
     AllLinksComponent,
     HiddenLinksComponent,
+    ReferralEarningComponent,
+    ReferWiseTotalUsersComponent,
     RouterModule.forChild([
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
@@ -36,8 +42,11 @@ import { HiddenLinksComponent } from "./hidden-links/hidden-links.component";
       { path: 'settings/profile', component: ProfileComponent },
       { path: 'settings/change-password', component: ChangePasswordComponent },
       { path: 'settings/currency', component: CurrencyComponent },
+      { path: 'settings/refer-earn-setting', component: ReferEarnSettingComponent },
       { path: 'all-links', component: AllLinksComponent },
-      { path: 'hidden-links', component: HiddenLinksComponent }
+      { path: 'hidden-links', component: HiddenLinksComponent },
+      { path: 'referral-earning', component: ReferralEarningComponent },
+      { path: 'refer-wise-total-users', component: ReferWiseTotalUsersComponent }
     ])
   ],
   exports: [],

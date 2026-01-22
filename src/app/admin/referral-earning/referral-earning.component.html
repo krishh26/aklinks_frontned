@@ -1,0 +1,344 @@
+<div class="dashboard-container" [class.sidebar-closed]="!isSidebarOpen">
+  <!-- Shared Sidebar -->
+  <app-sidebar [isOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-sidebar>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Admin Header -->
+    <app-admin-header [isSidebarOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-admin-header>
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <h1 class="page-title">Referral Earnings</h1>
+        <p class="page-subtitle">Manage and track referral earnings and commissions</p>
+      </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-content">
+            <h3 class="stat-number">{{ referralStats.totalReferrals }}</h3>
+            <p class="stat-label">Total Referrals</p>
+            <span class="stat-change positive">{{ referralStats.activeReferrals }} active</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-content">
+            <h3 class="stat-number">{{ formatCurrency(referralStats.totalEarnings) }}</h3>
+            <p class="stat-label">Total Earnings</p>
+            <span class="stat-change positive">{{ formatCurrency(referralStats.paidEarnings) }} paid</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-content">
+            <h3 class="stat-number">{{ formatCurrency(referralStats.pendingEarnings) }}</h3>
+            <p class="stat-label">Pending Earnings</p>
+            <span class="stat-change positive">Awaiting payment</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-content">
+            <h3 class="stat-number">{{ formatCurrency(referralStats.paidEarnings) }}</h3>
+            <p class="stat-label">Paid Earnings</p>
+            <span class="stat-change positive">Successfully paid</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Referral Code Link Section -->
+      <div class="referral-link-section">
+        <div class="referral-link-card">
+          <div class="card-header">
+            <h3 class="card-title">Your Referral Link</h3>
+            <p class="card-subtitle">Share this link with others to earn referral commissions</p>
+          </div>
+          <div class="card-content">
+            <div class="referral-code-section">
+              <div class="referral-code-item">
+                <label>Referral Code:</label>
+                <div class="code-display">
+                  <span class="code-text">{{ referralCode }}</span>
+                  <button class="copy-btn" (click)="copyReferralCode()" [class.success]="copyCodeSuccess">
+                    <span *ngIf="!copyCodeSuccess">📋 Copy Code</span>
+                    <span *ngIf="copyCodeSuccess">✓ Copied!</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="referral-link-item">
+                <label>Referral Link:</label>
+                <div class="link-display">
+                  <input 
+                    type="text" 
+                    [value]="referralLink" 
+                    readonly 
+                    class="link-input"
+                    #referralLinkInput>
+                  <button class="copy-btn" (click)="copyReferralLink()" [class.success]="copyLinkSuccess">
+                    <span *ngIf="!copyLinkSuccess">📋 Copy Link</span>
+                    <span *ngIf="copyLinkSuccess">✓ Copied!</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="referral-info">
+              <div class="info-item">
+                <span class="info-icon">💡</span>
+                <span class="info-text">Earn commissions when someone signs up using your referral link</span>
+              </div>
+              <div class="info-item">
+                <span class="info-icon">💰</span>
+                <span class="info-text">Commission rate: 10% of referred user's earnings</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Section -->
+      <div class="statistics-section">
+        <div class="statistics-header">
+          <h2 class="statistics-title">Referral Management</h2>
+          <div class="statistics-tabs">
+            <button 
+              class="tab-button" 
+              [class.active]="activeTab === 'referrals'"
+              (click)="activeTab = 'referrals'">
+              Referrals
+            </button>
+            <button 
+              class="tab-button" 
+              [class.active]="activeTab === 'earnings'"
+              (click)="activeTab = 'earnings'">
+              Earnings
+            </button>
+          </div>
+        </div>
+        
+        <div class="statistics-content">
+          <!-- Referrals Tab -->
+          <div *ngIf="activeTab === 'referrals'" class="tab-content-wrapper">
+            <!-- Filters and Search -->
+            <div class="filters-section">
+              <div class="search-box">
+                <input 
+                  type="text" 
+                  [(ngModel)]="searchTerm"
+                  (input)="onSearch()"
+                  placeholder="Search by ID, username, email, or referral code..."
+                  class="search-input">
+                <span class="search-icon">🔍</span>
+              </div>
+              
+              <div class="filter-controls">
+                <select [(ngModel)]="statusFilter" class="filter-select">
+                  <option value="all">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+                
+                <button class="clear-filters-btn" (click)="clearFilters()">
+                  Clear Filters
+                </button>
+              </div>
+            </div>
+
+            <!-- Referrals Table -->
+            <div class="table-container">
+              <table class="statistics-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Referral Code</th>
+                    <th>Total Referrals</th>
+                    <th>Active</th>
+                    <th>Total Earnings</th>
+                    <th>Pending</th>
+                    <th>Paid</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let referral of filteredReferrals">
+                    <td class="referral-id">{{ referral.id }}</td>
+                    <td class="user-info">
+                      <div class="user-details">
+                        <div class="username">{{ referral.username }}</div>
+                        <div class="email">{{ referral.email }}</div>
+                      </div>
+                    </td>
+                    <td class="referral-code">{{ referral.referralCode }}</td>
+                    <td>{{ referral.totalReferrals }}</td>
+                    <td>{{ referral.activeReferrals }}</td>
+                    <td class="amount">{{ formatCurrency(referral.totalEarnings) }}</td>
+                    <td class="amount">{{ formatCurrency(referral.pendingEarnings) }}</td>
+                    <td class="amount">{{ formatCurrency(referral.paidEarnings) }}</td>
+                    <td>
+                      <span class="status-badge" [class]="getStatusClass(referral.status)">
+                        {{ getStatusText(referral.status) }}
+                      </span>
+                    </td>
+                    <td class="actions">
+                      <button 
+                        class="action-btn view-btn" 
+                        (click)="viewReferral(referral)">
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Earnings Tab -->
+          <div *ngIf="activeTab === 'earnings'" class="tab-content-wrapper">
+            <!-- Filters and Search -->
+            <div class="filters-section">
+              <div class="search-box">
+                <input 
+                  type="text" 
+                  [(ngModel)]="searchTerm"
+                  (input)="onSearch()"
+                  placeholder="Search by ID, username, or referred by..."
+                  class="search-input">
+                <span class="search-icon">🔍</span>
+              </div>
+              
+              <div class="filter-controls">
+                <select [(ngModel)]="statusFilter" class="filter-select">
+                  <option value="all">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="paid">Paid</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+                
+                <button class="clear-filters-btn" (click)="clearFilters()">
+                  Clear Filters
+                </button>
+              </div>
+            </div>
+
+            <!-- Earnings Table -->
+            <div class="table-container">
+              <table class="statistics-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Referred By</th>
+                    <th>Amount</th>
+                    <th>Commission Rate</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Paid Date</th>
+                    <th>Transaction ID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let earning of filteredEarnings">
+                    <td class="earning-id">{{ earning.id }}</td>
+                    <td class="user-info">
+                      <div class="user-details">
+                        <div class="username">{{ earning.username }}</div>
+                      </div>
+                    </td>
+                    <td>{{ earning.referredBy }}</td>
+                    <td class="amount">{{ formatCurrency(earning.earningAmount) }}</td>
+                    <td>{{ earning.commissionRate }}%</td>
+                    <td>
+                      <span class="status-badge" [class]="getStatusClass(earning.status)">
+                        {{ getStatusText(earning.status) }}
+                      </span>
+                    </td>
+                    <td class="date">{{ formatDate(earning.date) }}</td>
+                    <td class="date" *ngIf="earning.paidDate">{{ formatDate(earning.paidDate) }}</td>
+                    <td class="date" *ngIf="!earning.paidDate">-</td>
+                    <td class="transaction-id" *ngIf="earning.transactionId">{{ earning.transactionId }}</td>
+                    <td class="transaction-id" *ngIf="!earning.transactionId">-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Referral Details Modal -->
+<div class="modal-overlay" *ngIf="showReferralModal" (click)="showReferralModal = false">
+  <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="selectedReferral">
+    <div class="modal-header">
+      <h2>Referral Details - {{ selectedReferral.id }}</h2>
+      <button class="close-btn" (click)="showReferralModal = false">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="details-grid">
+        <div class="detail-item">
+          <label>User:</label>
+          <span>{{ selectedReferral.username }} ({{ selectedReferral.email }})</span>
+        </div>
+        <div class="detail-item">
+          <label>Referral Code:</label>
+          <span class="referral-code">{{ selectedReferral.referralCode }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Total Referrals:</label>
+          <span>{{ selectedReferral.totalReferrals }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Active Referrals:</label>
+          <span>{{ selectedReferral.activeReferrals }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Total Earnings:</label>
+          <span class="amount">{{ formatCurrency(selectedReferral.totalEarnings) }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Pending Earnings:</label>
+          <span class="amount">{{ formatCurrency(selectedReferral.pendingEarnings) }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Paid Earnings:</label>
+          <span class="amount">{{ formatCurrency(selectedReferral.paidEarnings) }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Join Date:</label>
+          <span>{{ formatDate(selectedReferral.joinDate) }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Last Activity:</label>
+          <span>{{ formatDate(selectedReferral.lastActivity) }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Status:</label>
+          <span>
+            <span class="status-badge" [class]="getStatusClass(selectedReferral.status)">
+              {{ getStatusText(selectedReferral.status) }}
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

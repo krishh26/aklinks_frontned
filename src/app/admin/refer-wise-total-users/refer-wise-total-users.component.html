@@ -1,0 +1,217 @@
+<div class="dashboard-container" [class.sidebar-closed]="!isSidebarOpen">
+  <!-- Shared Sidebar -->
+  <app-sidebar [isOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-sidebar>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Admin Header -->
+    <app-admin-header [isSidebarOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-admin-header>
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <h1 class="page-title">Refer-Wise Total Users</h1>
+        <p class="page-subtitle">View all users and their referral relationships</p>
+      </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-content">
+            <h3 class="stat-number">{{ referralStats.totalReferredUsers }}</h3>
+            <p class="stat-label">Total Referred Users</p>
+            <span class="stat-change positive">{{ referralStats.activeReferredUsers }} active</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">👤</div>
+          <div class="stat-content">
+            <h3 class="stat-number">{{ referralStats.totalReferrers }}</h3>
+            <p class="stat-label">Total Referrers</p>
+            <span class="stat-change positive">Unique referrers</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-content">
+            <h3 class="stat-number">{{ formatCurrency(referralStats.totalReferralEarnings) }}</h3>
+            <p class="stat-label">Total Referral Earnings</p>
+            <span class="stat-change positive">From all referrals</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">📊</div>
+          <div class="stat-content">
+            <h3 class="stat-number">{{ filteredUsers.length }}</h3>
+            <p class="stat-label">Filtered Results</p>
+            <span class="stat-change positive">Currently showing</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Section -->
+      <div class="statistics-section">
+        <div class="statistics-header">
+          <h2 class="statistics-title">Referred Users List</h2>
+        </div>
+        
+        <div class="statistics-content">
+          <!-- Filters and Search -->
+          <div class="filters-section">
+            <div class="search-box">
+              <input 
+                type="text" 
+                [(ngModel)]="searchTerm"
+                (input)="onSearch()"
+                placeholder="Search by user ID, username, email, or referrer..."
+                class="search-input">
+              <span class="search-icon">🔍</span>
+            </div>
+            
+            <div class="filter-controls">
+              <select [(ngModel)]="statusFilter" class="filter-select">
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              
+              <select [(ngModel)]="referrerFilter" class="filter-select">
+                <option value="all">All Referrers</option>
+                <option *ngFor="let referrer of uniqueReferrers" [value]="referrer">
+                  {{ referrer }}
+                </option>
+              </select>
+              
+              <button class="clear-filters-btn" (click)="clearFilters()">
+                Clear Filters
+              </button>
+            </div>
+          </div>
+
+          <!-- Users Table -->
+          <div class="table-container">
+            <table class="statistics-table">
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>User</th>
+                  <th>Referred By</th>
+                  <th>Referrer</th>
+                  <th>Referral Code</th>
+                  <th>Join Date</th>
+                  <th>Total Earnings</th>
+                  <th>Total Referrals</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of filteredUsers">
+                  <td class="user-id">{{ user.id }}</td>
+                  <td class="user-info">
+                    <div class="user-details">
+                      <div class="username">{{ user.username }}</div>
+                      <div class="email">{{ user.email }}</div>
+                    </div>
+                  </td>
+                  <td class="referrer-id">{{ user.referredBy }}</td>
+                  <td class="referrer-info">
+                    <div class="user-details">
+                      <div class="username">{{ user.referrerUsername }}</div>
+                      <div class="email">{{ user.referrerEmail }}</div>
+                    </div>
+                  </td>
+                  <td class="referral-code">{{ user.referralCode }}</td>
+                  <td class="date">{{ formatDate(user.joinDate) }}</td>
+                  <td class="amount">{{ formatCurrency(user.totalEarnings) }}</td>
+                  <td>{{ user.totalReferrals }}</td>
+                  <td>
+                    <span class="status-badge" [class]="getStatusClass(user.status)">
+                      {{ getStatusText(user.status) }}
+                    </span>
+                  </td>
+                  <td class="actions">
+                    <button 
+                      class="action-btn view-btn" 
+                      (click)="viewUser(user)">
+                      View
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- User Details Modal -->
+<div class="modal-overlay" *ngIf="showUserModal" (click)="showUserModal = false">
+  <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="selectedUser">
+    <div class="modal-header">
+      <h2>User Details - {{ selectedUser.id }}</h2>
+      <button class="close-btn" (click)="showUserModal = false">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="details-grid">
+        <div class="detail-item">
+          <label>User:</label>
+          <span>{{ selectedUser.username }} ({{ selectedUser.email }})</span>
+        </div>
+        <div class="detail-item">
+          <label>User ID:</label>
+          <span class="user-id">{{ selectedUser.id }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Referred By ID:</label>
+          <span class="referrer-id">{{ selectedUser.referredBy }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Referrer:</label>
+          <span>{{ selectedUser.referrerUsername }} ({{ selectedUser.referrerEmail }})</span>
+        </div>
+        <div class="detail-item">
+          <label>Referral Code:</label>
+          <span class="referral-code">{{ selectedUser.referralCode }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Join Date:</label>
+          <span>{{ formatDate(selectedUser.joinDate) }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Last Activity:</label>
+          <span>{{ formatDate(selectedUser.lastActivity) }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Total Earnings:</label>
+          <span class="amount">{{ formatCurrency(selectedUser.totalEarnings) }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Total Referrals:</label>
+          <span>{{ selectedUser.totalReferrals }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Status:</label>
+          <span>
+            <span class="status-badge" [class]="getStatusClass(selectedUser.status)">
+              {{ getStatusText(selectedUser.status) }}
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -146,6 +146,12 @@
             <span class="nav-chevron">›</span>
           </a>
         </li>
+        <li class="nav-item" *ngIf="isAdminRole">
+          <a routerLink="/admin/refer-wise-total-users" routerLinkActive="active" class="nav-link">
+            Refer-Wise Total Users
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
         <!-- <li class="nav-item" *ngIf="isAdminRole">
           <a routerLink="/admin/users/roles" class="nav-link">
             User Roles
@@ -168,6 +174,12 @@
         <li class="nav-item">
           <a routerLink="/admin/withdraws" routerLinkActive="active" class="nav-link">
             Withdrawals
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/referral-earning" routerLinkActive="active" class="nav-link">
+            Referral Earnings
             <span class="nav-chevron">›</span>
           </a>
         </li>
@@ -228,6 +240,11 @@
             <li class="nav-item" *ngIf="isAdminRole">
               <a routerLink="/admin/settings/currency" routerLinkActive="active" class="nav-link submenu-link">
                 Currency Settings
+              </a>
+            </li>
+            <li class="nav-item" *ngIf="isAdminRole">
+              <a routerLink="/admin/settings/refer-earn-setting" routerLinkActive="active" class="nav-link submenu-link">
+                Refer & Earn Settings
               </a>
             </li>
           </ul>
