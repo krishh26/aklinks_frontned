@@ -11,6 +11,8 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { CallbackComponent } from './auth/callback/callback.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,6 +25,8 @@ export const routes: Routes = [
   { path: 'contact-us', component: ContactUsComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'auth/login', component: LoginComponent },
+  { path: 'auth/forgot-password', component: ForgotPasswordComponent },
+  { path: 'auth/reset-password', component: ResetPasswordComponent },
   { path: 'auth/signup', component: SignupComponent },
   { path: 'auth/callback', component: CallbackComponent },
   { 
