@@ -1,0 +1,196 @@
+.payment-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.proof-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.proof-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.proof-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.proof-header h4 {
+  color: #333;
+  margin: 0;
+}
+
+.amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #28a745;
+}
+
+.proof-details p {
+  margin: 0.5rem 0;
+  color: #666;
+}
+
+.status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status.completed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.stat-content h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 0.5rem;
+}
+
+.stat-content p {
+  color: #666;
+  margin: 0;
+}
+
+.payment-methods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.method-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.method-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.method-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.method-card h4 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.method-card p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.method-card ul {
+  list-style: none;
+  text-align: left;
+}
+
+.method-card li {
+  padding: 0.25rem 0;
+  color: #666;
+}
+
+.method-card li:before {
+  content: "✓";
+  color: #28a745;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.testimonials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.testimonial {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.testimonial:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-content {
+  margin-bottom: 1rem;
+}
+
+.testimonial-content p {
+  color: #666;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.testimonial-author strong {
+  color: #333;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.testimonial-author span {
+  color: #667eea;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .payment-proof-grid,
+  .stats-grid,
+  .payment-methods,
+  .testimonials {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,132 @@
+<header class="header" *ngIf="!isAdminRoute">
+  <div class="container">
+    <div class="header-content">
+      <a routerLink="/" class="logo">AKLinks</a>
+      
+      <nav class="nav">
+        <ul class="nav-links">
+          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+          <li><a routerLink="/publisher-rates" routerLinkActive="active">Publisher Rates</a></li>
+          <li><a routerLink="/payment-proof" routerLinkActive="active">Payment Proof</a></li>
+          <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
+          
+          <li class="dropdown">
+            <button class="dropdown-toggle">
+              Important Pages
+              <span>▼</span>
+            </button>
+            <div class="dropdown-menu">
+              <a routerLink="/payment-system">Payment System</a>
+              <a routerLink="/payment-rules">Payment Rules</a>
+              <a routerLink="/about-us">About Us</a>
+              <a routerLink="/contact-us">Contact Us</a>
+              <a routerLink="/privacy-policy">Privacy Policy</a>
+            </div>
+          </li>
+        </ul>
+        
+        <div class="header-actions">
+          <div class="currency-selector-wrapper">
+            <button class="currency-toggle" (click)="toggleCurrencyDropdown()">
+              <span class="currency-icon">💱</span>
+              <span class="currency-text">{{ currentCurrency }}</span>
+              <span class="currency-arrow">▼</span>
+            </button>
+            <div class="currency-dropdown" [class.active]="isCurrencyDropdownOpen">
+              <button 
+                class="currency-option" 
+                [class.active]="currentCurrency === 'USD'"
+                (click)="selectCurrency('USD')">
+                <span class="currency-symbol">$</span>
+                <span class="currency-label">USD</span>
+              </button>
+              <button 
+                class="currency-option" 
+                [class.active]="currentCurrency === 'INR'"
+                (click)="selectCurrency('INR')">
+                <span class="currency-symbol">₹</span>
+                <span class="currency-label">INR</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="auth-buttons">
+            <a routerLink="/auth/login" class="btn-login">
+              <span class="btn-icon">🔑</span>
+              Login
+            </a>
+            <a routerLink="/auth/signup" class="btn-signup">
+              <span class="btn-icon">👤</span>
+              Sign Up
+            </a>
+          </div>
+        </div>
+        
+        <button class="mobile-menu-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </nav>
+    </div>
+  </div>
+  
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" [class.active]="isMobileMenuOpen" (click)="closeMobileMenu()">
+    <div class="mobile-menu" (click)="$event.stopPropagation()">
+      <ul class="mobile-nav-links">
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Home</a></li>
+        <li><a routerLink="/publisher-rates" routerLinkActive="active" (click)="closeMobileMenu()">Publisher Rates</a></li>
+        <li><a routerLink="/payment-proof" routerLinkActive="active" (click)="closeMobileMenu()">Payment Proof</a></li>
+        <li><a routerLink="/blog" routerLinkActive="active" (click)="closeMobileMenu()">Blog</a></li>
+        <li class="mobile-dropdown">
+          <button class="mobile-dropdown-toggle" (click)="toggleMobileDropdown()">
+            Important Pages
+            <span [class.rotated]="isMobileDropdownOpen">▼</span>
+          </button>
+          <div class="mobile-dropdown-menu" [class.active]="isMobileDropdownOpen">
+            <a routerLink="/payment-system" (click)="closeMobileMenu()">Payment System</a>
+            <a routerLink="/payment-rules" (click)="closeMobileMenu()">Payment Rules</a>
+            <a routerLink="/about-us" (click)="closeMobileMenu()">About Us</a>
+            <a routerLink="/contact-us" (click)="closeMobileMenu()">Contact Us</a>
+            <a routerLink="/privacy-policy" (click)="closeMobileMenu()">Privacy Policy</a>
+          </div>
+        </li>
+      </ul>
+      
+      <div class="mobile-auth-buttons">
+        <div class="mobile-currency-selector">
+          <button class="currency-toggle" (click)="toggleMobileCurrencyDropdown()">
+            <span class="currency-icon">💱</span>
+            <span class="currency-text">{{ currentCurrency }}</span>
+            <span class="currency-arrow" [class.rotated]="isMobileCurrencyDropdownOpen">▼</span>
+          </button>
+          <div class="mobile-currency-dropdown" [class.active]="isMobileCurrencyDropdownOpen">
+            <button 
+              class="currency-option" 
+              [class.active]="currentCurrency === 'USD'"
+              (click)="selectCurrency('USD'); closeMobileMenu()">
+              <span class="currency-symbol">$</span>
+              <span class="currency-label">USD</span>
+            </button>
+            <button 
+              class="currency-option" 
+              [class.active]="currentCurrency === 'INR'"
+              (click)="selectCurrency('INR'); closeMobileMenu()">
+              <span class="currency-symbol">₹</span>
+              <span class="currency-label">INR</span>
+            </button>
+          </div>
+        </div>
+        <a routerLink="/auth/login" class="btn-login" (click)="closeMobileMenu()">
+          <span class="btn-icon">🔑</span>
+          Login
+        </a>
+        <a routerLink="/auth/signup" class="btn-signup" (click)="closeMobileMenu()">
+          <span class="btn-icon">👤</span>
+          Sign Up
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

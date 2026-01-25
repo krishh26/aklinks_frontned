@@ -1,0 +1,78 @@
+<div class="page-content">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Blog</h1>
+        <p class="hero-subtitle">Latest insights, tips, and updates about URL shortening and digital marketing</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="blog-content">
+      <div class="section-header">
+        <span class="section-badge">Articles</span>
+        <h2>Latest Posts</h2>
+        <p class="section-description">Discover expert insights and strategies to enhance your link management and marketing efforts</p>
+      </div>
+
+      <div class="blog-posts">
+        @for (post of blogPosts; track post.id) {
+          <article class="blog-post" [class.featured]="post.id === 1">
+            <div class="post-icon-wrapper">
+              <div class="post-icon">{{ post.icon }}</div>
+              <span class="post-category-badge">{{ post.category }}</span>
+            </div>
+            <div class="post-content">
+              <div class="post-meta">
+                <span class="post-date">{{ post.date }}</span>
+                <span class="post-stats">{{ post.readTime }} • {{ post.views }}</span>
+              </div>
+              <h2 class="post-title">
+                <a href="#" (click)="openModal(post.id - 1); $event.preventDefault()">{{ post.title }}</a>
+              </h2>
+              <p class="post-excerpt">{{ post.excerpt }}</p>
+              <div class="post-footer">
+                <a href="#" (click)="openModal(post.id - 1); $event.preventDefault()" class="read-more-btn">
+                  <span>Read More</span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Blog Modal -->
+<div class="modal-overlay" [class.active]="isModalOpen" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="selectedPost">
+    <button class="modal-close" (click)="closeModal()">×</button>
+    <div class="modal-header">
+      <div class="modal-image">
+        <div class="placeholder-image">{{ selectedPost.icon }}</div>
+      </div>
+      <div class="modal-meta">
+        <div class="post-meta">
+          <span class="post-date">{{ selectedPost.date }}</span>
+          <span class="post-category">{{ selectedPost.category }}</span>
+        </div>
+        <h1>{{ selectedPost.title }}</h1>
+        <div class="post-stats">
+          <span>{{ selectedPost.readTime }}</span>
+          <span class="divider">•</span>
+          <span>{{ selectedPost.views }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div [innerHTML]="selectedPost.fullContent"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="callback-container">
+  <div class="callback-card">
+    <div class="spinner-container" *ngIf="isLoading">
+      <div class="spinner"></div>
+      <p>Completing authentication...</p>
+    </div>
+    <div class="error-container" *ngIf="errorMessage">
+      <div class="error-icon">⚠️</div>
+      <h2>Authentication Failed</h2>
+      <p>{{ errorMessage }}</p>
+      <button class="retry-btn" (click)="redirectToLogin()">Return to Login</button>
+    </div>
+  </div>
+</div>
