@@ -7,6 +7,7 @@ import { AdminHeaderComponent } from '../../shared/admin-header/admin-header.com
 import { CurrencyService } from '../../services/currency.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { ToastService } from '../../services/toast/toast.service';
+import { ReferralService } from '../../services/referral/referral.service';
 import { Subscription } from 'rxjs';
 
 interface ReferredUser {
@@ -180,7 +181,8 @@ export class ReferWiseTotalUsersComponent implements OnInit, OnDestroy {
     private router: Router,
     private currencyService: CurrencyService,
     private localStorageService: LocalStorageService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private referralService: ReferralService
   ) {
     this.checkScreenSize();
     this.checkAdminRole();
@@ -190,6 +192,42 @@ export class ReferWiseTotalUsersComponent implements OnInit, OnDestroy {
     this.checkAdminRole();
     this.currencySubscription = this.currencyService.currency$.subscribe(() => {
       // Component will re-render when currency changes
+    });
+    this.loadReferWiseUsers();
+  }
+
+  loadReferWiseUsers(): void {
+    this.referralService.getReferWiseTotalUsers().subscribe({
+      next: (response) => {
+        if (response.status === 'success' && response.data) {
+          this.referredUsers = response.data.users?.map((user: any) => ({
+            id: user.id,
+            username: user.name,
+            email: user.email,
+            referredBy: user.referredBy?.id || '',
+            referrerUsername: user.referredBy?.name || '',
+            referrerEmail: user.referredBy?.email || '',
+            referralCode: user.referralCode || '',
+            joinDate: user.joinDate,
+            status: 'active',
+            totalEarnings: user.totalEarned || 0,
+            totalReferrals: user.totalReferrals || 0,
+            lastActivity: user.joinDate
+          })) || [];
+          
+          // Update stats
+          this.referralStats = {
+            totalReferredUsers: this.referredUsers.length,
+            activeReferredUsers: this.referredUsers.filter((u: any) => u.status === 'active').length,
+            totalReferrers: this.referredUsers.filter((u: any) => u.totalReferrals > 0).length,
+            totalReferralEarnings: this.referredUsers.reduce((sum: number, u: any) => sum + (u.totalEarnings || 0), 0)
+          };
+        }
+      },
+      error: (error) => {
+        console.error('Failed to load refer-wise users:', error);
+        this.toastService.showError('Failed to load refer-wise users');
+      }
     });
   }
 

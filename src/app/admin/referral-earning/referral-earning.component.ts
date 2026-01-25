@@ -5,6 +5,9 @@ import { RouterModule, Router } from '@angular/router';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { AdminHeaderComponent } from '../../shared/admin-header/admin-header.component';
 import { CurrencyService } from '../../services/currency.service';
+import { ReferralService } from '../../services/referral/referral.service';
+import { LocalStorageService } from '../../services/local-storage/local-storage.service';
+import { ToastService } from '../../services/toast/toast.service';
 import { Subscription } from 'rxjs';
 
 interface Referral {
@@ -200,25 +203,149 @@ export class ReferralEarningComponent implements OnInit, OnDestroy {
   selectedReferral: Referral | null = null;
   showReferralModal = false;
   
-  // Referral code link (static)
-  referralCode = 'AKLINKS2024';
-  referralLink = 'https://aklinks.com/signup?ref=AKLINKS2024';
+  // Referral code link
+  referralCode = '';
+  referralLink = '';
   copyCodeSuccess = false;
   copyLinkSuccess = false;
+  isAdmin = false;
+  isLoadingData = false;
 
   private currencySubscription?: Subscription;
 
   constructor(
     private router: Router,
-    private currencyService: CurrencyService
+    private currencyService: CurrencyService,
+    private referralService: ReferralService,
+    private localStorageService: LocalStorageService,
+    private toastService: ToastService
   ) {
     this.checkScreenSize();
+    this.checkUserRole();
   }
 
   ngOnInit(): void {
     this.currencySubscription = this.currencyService.currency$.subscribe(() => {
       // Component will re-render when currency changes
     });
+    this.loadReferralData();
+  }
+
+  checkUserRole(): void {
+    const user = this.localStorageService.getLogger();
+    if (user && user.role) {
+      this.isAdmin = user.role.toLowerCase() === 'admin' || user.role.toLowerCase() === 'super_admin';
+    }
+  }
+
+  loadReferralData(): void {
+    this.isLoadingData = true;
+    if (this.isAdmin) {
+      // Load all referral data for admin - show all referral history
+      this.referralService.getAllReferralData().subscribe({
+        next: (response) => {
+          if (response.status === 'success' && response.data) {
+            this.referralStats = {
+              totalReferrals: response.data.stats?.totalReferrals || 0,
+              activeReferrals: response.data.stats?.totalReferrals || 0,
+              totalEarnings: response.data.stats?.totalEarned || 0,
+              pendingEarnings: 0,
+              paidEarnings: response.data.stats?.totalEarned || 0,
+              totalUsers: 0
+            };
+            
+            // Map referrals for the referrals tab (showing referrers and their stats)
+            const referralMap = new Map();
+            response.data.referrals?.forEach((ref: any) => {
+              const referrerId = ref.referrer?.id;
+              if (referrerId) {
+                if (!referralMap.has(referrerId)) {
+                  referralMap.set(referrerId, {
+                    id: referrerId,
+                    username: ref.referrer?.name || '',
+                    email: ref.referrer?.email || '',
+                    referralCode: ref.referrer?.referralCode || '',
+                    totalReferrals: 0,
+                    activeReferrals: 0,
+                    totalEarnings: 0,
+                    pendingEarnings: 0,
+                    paidEarnings: 0,
+                    joinDate: '',
+                    lastActivity: '',
+                    status: 'active'
+                  });
+                }
+                const referral = referralMap.get(referrerId);
+                referral.totalReferrals++;
+                referral.activeReferrals++;
+                referral.totalEarnings += ref.amount || 0;
+                referral.paidEarnings += ref.amount || 0;
+              }
+            });
+            this.referrals = Array.from(referralMap.values());
+            
+            // Map earnings for the earnings tab
+            this.earnings = response.data.referrals?.map((ref: any) => ({
+              id: ref.id,
+              referralId: ref.referrer?.id || '',
+              username: ref.referredUser?.name || '',
+              referredBy: ref.referrer?.name || '',
+              earningAmount: ref.amount,
+              commissionRate: 0,
+              status: ref.status === 'credited' ? 'paid' : ref.status,
+              date: ref.createdAt,
+              paidDate: ref.status === 'credited' ? ref.createdAt : undefined
+            })) || [];
+          }
+          this.isLoadingData = false;
+        },
+        error: (error) => {
+          console.error('Failed to load referral data:', error);
+          this.toastService.showError('Failed to load referral data');
+          this.isLoadingData = false;
+        }
+      });
+    } else {
+      // Load user's own referral data - only show earnings, not referrals list
+      this.referralService.getMyReferralData().subscribe({
+        next: (response) => {
+          if (response.status === 'success' && response.data) {
+            this.referralCode = response.data.referralCode || '';
+            this.referralLink = response.data.referralLink || 
+              `${window.location.origin}/auth/signup?ref=${this.referralCode}`;
+            this.referralStats = {
+              totalReferrals: response.data.totalReferrals || 0,
+              activeReferrals: response.data.totalReferrals || 0,
+              totalEarnings: response.data.totalEarned || 0,
+              pendingEarnings: 0,
+              paidEarnings: response.data.totalEarned || 0,
+              totalUsers: 0
+            };
+            // Clear referrals list for regular users - they should only see earnings
+            this.referrals = [];
+            // Set active tab to earnings for regular users
+            this.activeTab = 'earnings';
+            this.earnings = response.data.referrals?.map((ref: any) => ({
+              id: ref.id,
+              referralId: '',
+              username: ref.referredUser?.name || '',
+              referredBy: '',
+              earningAmount: ref.amount,
+              commissionRate: 0,
+              status: ref.status === 'credited' ? 'paid' : ref.status,
+              date: ref.createdAt,
+              paidDate: ref.status === 'credited' ? ref.createdAt : undefined
+            })) || [];
+          }
+          this.isLoadingData = false;
+        },
+        error: (error) => {
+          console.error('Failed to load referral data:', error);
+          this.toastService.showError('Failed to load referral data');
+          this.isLoadingData = false;
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {
