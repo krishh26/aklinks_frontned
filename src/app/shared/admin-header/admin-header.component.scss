@@ -8,8 +8,32 @@
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 2px 10px var(--shadow);
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.04),
+    transparent
+  );
+  animation: headerShine 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes headerShine {
+  0%, 100% { left: -100%; }
+  50% { left: 100%; }
 }
 
 .header-left {
@@ -32,6 +56,11 @@
 
 .sidebar-toggle-header-btn:hover {
   background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.02);
+}
+
+.sidebar-toggle-header-btn:active {
+  transform: scale(0.98);
 }
 
 .hamburger-line {
@@ -39,7 +68,7 @@
   height: 3px;
   background: white;
   border-radius: 2px;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
 .header-right {
@@ -67,7 +96,12 @@
 
 .header-icon:hover {
   background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header-icon:active {
+  transform: translateY(0) scale(0.98);
 }
 
 /* Currency Switcher Styles */
@@ -86,8 +120,9 @@
   min-width: 180px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
+  transform: translateY(-8px) scale(0.95);
+  transform-origin: top right;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
   z-index: 1000;
   border: 1px solid var(--border-color);
 }
@@ -95,7 +130,7 @@
 .currency-dropdown.active {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .currency-option {
@@ -116,6 +151,8 @@
 
 .currency-option:hover {
   background: var(--hover-bg);
+  transform: translateX(4px);
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .currency-option.active {
@@ -152,8 +189,9 @@
   min-width: 180px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
+  transform: translateY(-8px) scale(0.95);
+  transform-origin: top right;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
   z-index: 1000;
   border: 1px solid var(--border-color);
 }
@@ -161,7 +199,7 @@
 .theme-dropdown.active {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .theme-option {
@@ -182,6 +220,8 @@
 
 .theme-option:hover {
   background: var(--hover-bg);
+  transform: translateX(4px);
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .theme-option.active {
@@ -242,8 +282,9 @@
   min-width: 180px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
+  transform: translateY(-8px) scale(0.95);
+  transform-origin: top right;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
   z-index: 1000;
   border: 1px solid var(--border-color);
 }
@@ -251,7 +292,7 @@
 .profile-dropdown.active {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .profile-option {
@@ -272,6 +313,8 @@
 
 .profile-option:hover {
   background: var(--hover-bg);
+  transform: translateX(4px);
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .profile-option.logout-option {

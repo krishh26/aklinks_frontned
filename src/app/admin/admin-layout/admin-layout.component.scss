@@ -217,6 +217,13 @@
   overflow-y: auto;
 }
 
+.page-view {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+}
+
 @media (max-width: 1024px) {
   .main-content {
     margin-left: 0;
