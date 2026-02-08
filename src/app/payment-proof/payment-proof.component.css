@@ -1,3 +1,32 @@
+.page-content {
+  background: #f8f9fa;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.content-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.content-section h2 {
+  color: #333;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.content-section > p {
+  color: #666;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
 .payment-proof-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -56,7 +85,7 @@
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
   margin: 2rem 0;
 }
@@ -85,6 +114,17 @@
   font-weight: 700;
   color: #667eea;
   margin-bottom: 0.5rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.plus-sign {
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .stat-content p {
@@ -186,11 +226,206 @@
   font-size: 0.875rem;
 }
 
+/* Tablet and below */
 @media (max-width: 768px) {
+  .page-header {
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .page-header p {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+  
   .payment-proof-grid,
   .stats-grid,
   .payment-methods,
   .testimonials {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .stat-content h3 {
+    font-size: 1.75rem;
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+  
+  .content-section {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .content-section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .proof-card,
+  .stat-card,
+  .method-card,
+  .testimonial {
+    padding: 1.25rem;
+  }
+  
+  .proof-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .proof-header h4 {
+    font-size: 1rem;
+    word-wrap: break-word;
+    width: 100%;
+  }
+  
+  .amount {
+    font-size: 1.25rem;
+    width: 100%;
+    text-align: left;
+  }
+  
+  .stat-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .method-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 480px) {
+  .page-content {
+    padding: 1rem 0;
+  }
+  
+  .page-header {
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+  }
+  
+  .page-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .page-header p {
+    font-size: 0.9rem;
+    padding: 0;
+  }
+  
+  .content-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+  }
+  
+  .content-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .content-section > p {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .payment-proof-grid,
+  .stats-grid,
+  .payment-methods,
+  .testimonials {
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+  
+  .proof-card,
+  .stat-card,
+  .method-card,
+  .testimonial {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .proof-header {
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .proof-header h4 {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    word-wrap: break-word;
+    width: 100%;
+  }
+  
+  .amount {
+    font-size: 1.1rem;
+    width: 100%;
+    text-align: left;
+  }
+  
+  .proof-details p {
+    font-size: 0.875rem;
+    margin: 0.4rem 0;
+  }
+  
+  .stat-content h3 {
+    font-size: 1.5rem;
+  }
+  
+  .plus-sign {
+    font-size: 1.25rem;
+  }
+  
+  .stat-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-content p {
+    font-size: 0.875rem;
+  }
+  
+  .method-card h4 {
+    font-size: 1.1rem;
+  }
+  
+  .method-card p {
+    font-size: 0.875rem;
+  }
+  
+  .method-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .method-card ul {
+    font-size: 0.875rem;
+    padding-left: 0;
+  }
+  
+  .testimonial-content p {
+    font-size: 0.9rem;
+  }
+  
+  .testimonial-author strong {
+    font-size: 0.9rem;
+  }
+  
+  .testimonial-author span {
+    font-size: 0.8rem;
   }
 }

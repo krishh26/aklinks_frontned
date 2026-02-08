@@ -104,6 +104,9 @@ app-root {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* Button Styles */
@@ -146,7 +149,7 @@ app-root {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 9999;
   width: 100%;
 }
 
@@ -163,6 +166,7 @@ app-root {
   min-height: 60px;
   width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -173,15 +177,20 @@ app-root {
   flex-shrink: 0;
   margin-right: auto;
   padding-left: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
 }
 
 .nav {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  flex-shrink: 0;
+  flex-shrink: 1;
   margin-left: auto;
   padding-right: 0;
+  min-width: 0;
 }
 
 .nav-links {
@@ -215,6 +224,7 @@ app-root {
 
 .dropdown {
   position: relative;
+  z-index: 10000;
 }
 
 .dropdown-toggle {
@@ -240,7 +250,7 @@ app-root {
 
 .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 0.5rem);
   left: 0;
   background: white;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -251,9 +261,13 @@ app-root {
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.3s ease;
+  z-index: 10000;
+  margin-top: 0.25rem;
 }
 
-.dropdown:hover .dropdown-menu {
+.dropdown:hover .dropdown-menu,
+.dropdown.active .dropdown-menu,
+.dropdown-menu.active {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -684,6 +698,7 @@ app-root {
 @media (max-width: 768px) {
   .header-content {
     padding: 1rem 1.5rem;
+    gap: 0.75rem;
   }
   
   .nav-links {
@@ -694,14 +709,28 @@ app-root {
     display: none;
   }
   
+  .header-actions {
+    display: none;
+  }
+  
   .mobile-menu-toggle {
     display: flex;
+    flex-shrink: 0;
   }
   
   .header {
     position: sticky;
     top: 0;
     z-index: 1000;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    max-width: 150px;
+  }
+  
+  .nav {
+    gap: 0.5rem;
   }
   
   .hero h1 {
@@ -727,7 +756,18 @@ app-root {
 
 @media (max-width: 480px) {
   .header-content {
-    padding: 1rem 1rem;
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+  }
+  
+  .logo {
+    font-size: 1.3rem;
+    max-width: 120px;
+  }
+  
+  .mobile-menu-toggle {
+    min-width: 36px;
+    padding: 0.5rem;
   }
   
   .container {

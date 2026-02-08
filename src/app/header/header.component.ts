@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isMobileDropdownOpen = false;
   isMobileCurrencyDropdownOpen = false;
   isCurrencyDropdownOpen = false;
+  isDropdownOpen = false;
   isAdminRoute = false;
   currentCurrency: Currency = 'USD';
   private currencySubscription?: Subscription;
@@ -81,12 +82,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isMobileDropdownOpen = !this.isMobileDropdownOpen;
   }
 
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     // Close currency dropdown if clicking outside
     if (!target.closest('.currency-selector-wrapper')) {
       this.isCurrencyDropdownOpen = false;
+    }
+    // Close dropdown if clicking outside
+    if (!target.closest('.dropdown')) {
+      this.isDropdownOpen = false;
     }
   }
 }

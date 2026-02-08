@@ -8,10 +8,13 @@
   align-items: center;
   gap: 1rem;
   margin-left: 0;
+  position: relative;
+  z-index: 10000;
 }
 
 .currency-selector-wrapper {
   position: relative;
+  z-index: 10000;
 }
 
 .currency-toggle {
@@ -68,7 +71,7 @@
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 10000;
 }
 
 .currency-dropdown.active {
@@ -190,21 +193,30 @@
 
 @media (max-width: 768px) {
   .header-actions {
-    margin-left: 0;
-  }
-  
-  .currency-toggle {
-    padding: 0.5rem 0.8rem;
-    height: 36px;
-  }
-  
-  .btn-login,
-  .btn-signup {
-    height: 36px;
-    padding: 0.5rem 0.9rem;
+    display: none;
   }
   
   .nav {
-    gap: 1rem;
+    gap: 0.5rem;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 1.3rem;
+    max-width: 100px;
+  }
+  
+  .mobile-menu-toggle {
+    padding: 0.5rem;
+    min-width: 40px;
   }
 }

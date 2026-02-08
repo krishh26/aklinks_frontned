@@ -10,17 +10,17 @@
           <li><a routerLink="/payment-proof" routerLinkActive="active">Payment Proof</a></li>
           <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
           
-          <li class="dropdown">
-            <button class="dropdown-toggle">
+          <li class="dropdown" [class.active]="isDropdownOpen">
+            <button class="dropdown-toggle" (click)="toggleDropdown()">
               Important Pages
               <span>▼</span>
             </button>
-            <div class="dropdown-menu">
-              <a routerLink="/payment-system">Payment System</a>
-              <a routerLink="/payment-rules">Payment Rules</a>
-              <a routerLink="/about-us">About Us</a>
-              <a routerLink="/contact-us">Contact Us</a>
-              <a routerLink="/privacy-policy">Privacy Policy</a>
+            <div class="dropdown-menu" [class.active]="isDropdownOpen">
+              <a routerLink="/payment-system" (click)="isDropdownOpen = false">Payment System</a>
+              <a routerLink="/payment-rules" (click)="isDropdownOpen = false">Payment Rules</a>
+              <a routerLink="/about-us" (click)="isDropdownOpen = false">About Us</a>
+              <a routerLink="/contact-us" (click)="isDropdownOpen = false">Contact Us</a>
+              <a routerLink="/privacy-policy" (click)="isDropdownOpen = false">Privacy Policy</a>
             </div>
           </li>
         </ul>
