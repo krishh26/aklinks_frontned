@@ -1,86 +1,200 @@
 .page-content {
   background: #f8f9fa;
-  min-height: 100vh;
-  width: 100%;
-  overflow-x: hidden;
-  box-sizing: border-box;
 }
 
-.content-section {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 6rem 0 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.content-section h2 {
-  color: #333;
-  font-size: 2rem;
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.3;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.hero-title {
+  font-size: 3.5rem;
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
 }
 
-.content-section > p {
-  color: #666;
-  margin-bottom: 1rem;
+.hero-subtitle {
+  font-size: 1.3rem;
+  opacity: 0.95;
   line-height: 1.6;
 }
 
-.proof-disclaimer {
-  font-size: 0.95rem;
+/* Section Styles */
+.section-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-badge {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.section-description {
+  font-size: 1.1rem;
   color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Payments Section */
+.payments-section {
+  background: white;
+  margin-top: -3rem;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.proof-disclaimer {
+  text-align: center;
+  margin-top: 0.75rem;
+  margin-bottom: 2rem;
+  color: #666;
+  font-size: 0.95rem;
+  font-style: italic;
 }
 
 .payment-proof-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
 }
 
 .proof-card {
   background: white;
-  border: 1px solid #e9ecef;
-  border-radius: 12px;
-  padding: 1.5rem;
+  border: 2px solid #e9ecef;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
 }
 
 .proof-card:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.15);
+  border-color: #667eea;
+}
+
+.proof-icon-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+.proof-icon {
+  font-size: 3.5rem;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
 
 .proof-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #f0f0f0;
 }
 
-.proof-header h4 {
+.proof-header h3 {
+  font-size: 1.3rem;
   color: #333;
-  margin: 0;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
 }
 
 .amount {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #28a745;
+  display: block;
 }
 
-.proof-details p {
-  margin: 0.5rem 0;
+.proof-details {
+  text-align: left;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: 600;
   color: #666;
+  font-size: 0.95rem;
+}
+
+.detail-value {
+  color: #333;
+  font-size: 0.95rem;
 }
 
 .status {
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .status.completed {
@@ -88,30 +202,49 @@
   color: #155724;
 }
 
+/* Stats Section */
+.stats-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
 .stat-card {
   background: white;
-  border: 1px solid #e9ecef;
-  border-radius: 12px;
-  padding: 1.5rem;
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
   text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  border-top: 4px solid #667eea;
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.15);
+}
+
+.stat-icon-wrapper {
+  margin-bottom: 1.5rem;
 }
 
 .stat-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: 3.5rem;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
 
 .stat-content h3 {
@@ -123,8 +256,7 @@
   align-items: baseline;
   justify-content: center;
   gap: 0.25rem;
-  flex-wrap: nowrap;
-  white-space: nowrap;
+  flex-wrap: wrap;
 }
 
 .plus-sign {
@@ -135,302 +267,262 @@
 .stat-content p {
   color: #666;
   margin: 0;
+  font-size: 1rem;
+}
+
+/* Methods Section */
+.methods-section {
+  background: white;
 }
 
 .payment-methods {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
 .method-card {
   background: white;
-  border: 1px solid #e9ecef;
-  border-radius: 12px;
-  padding: 1.5rem;
+  border: 2px solid #e9ecef;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
   text-align: center;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .method-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.15);
+  border-color: #667eea;
+}
+
+.method-icon-wrapper {
+  margin-bottom: 1.5rem;
 }
 
 .method-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+  font-size: 3.5rem;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
 
-.method-card h4 {
+.method-card h3 {
+  font-size: 1.3rem;
   color: #333;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
 }
 
 .method-card p {
   color: #666;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
-.method-card ul {
+.styled-list {
   list-style: none;
+  padding: 0;
+  margin: 0;
   text-align: left;
 }
 
-.method-card li {
-  padding: 0.25rem 0;
-  color: #666;
+.styled-list li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  font-size: 1.05rem;
+  color: #555;
 }
 
-.method-card li:before {
-  content: "✓";
-  color: #28a745;
-  font-weight: bold;
-  margin-right: 0.5rem;
+.list-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #667eea;
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 
 .testimonials {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
-.testimonial {
+.testimonial-card {
   background: white;
-  border: 1px solid #e9ecef;
-  border-radius: 12px;
-  padding: 1.5rem;
+  border: 2px solid #e9ecef;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
 }
 
-.testimonial:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+.testimonial-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.15);
+  border-color: #667eea;
+}
+
+.testimonial-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  color: #667eea;
 }
 
 .testimonial-content {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .testimonial-content p {
   color: #666;
   font-style: italic;
-  line-height: 1.6;
+  line-height: 1.8;
   margin: 0;
+  font-size: 1.05rem;
+}
+
+.testimonial-author {
+  padding-top: 1.5rem;
+  border-top: 2px solid #f0f0f0;
 }
 
 .testimonial-author strong {
   color: #333;
   display: block;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .testimonial-author span {
   color: #667eea;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
 }
 
-/* Tablet and below */
-@media (max-width: 768px) {
-  .page-header {
-    margin-bottom: 2rem;
-    padding: 0 1rem;
+/* Responsive Design */
+@media (max-width: 968px) {
+  .hero-title {
+    font-size: 2.5rem;
   }
-  
-  .page-header h1 {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
+
+  .hero-subtitle {
+    font-size: 1.1rem;
   }
-  
-  .page-header p {
-    font-size: 1rem;
-    padding: 0 1rem;
-  }
-  
+
   .payment-proof-grid,
   .stats-grid,
   .payment-methods,
   .testimonials {
     grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .stat-content h3 {
-    font-size: 1.75rem;
-    flex-wrap: wrap;
-    white-space: normal;
-  }
-  
-  .content-section {
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .content-section h2 {
-    font-size: 1.75rem;
-    margin-bottom: 1rem;
-  }
-  
-  .proof-card,
-  .stat-card,
-  .method-card,
-  .testimonial {
-    padding: 1.25rem;
-  }
-  
-  .proof-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-  
-  .proof-header h4 {
-    font-size: 1rem;
-    word-wrap: break-word;
-    width: 100%;
-  }
-  
-  .amount {
-    font-size: 1.25rem;
-    width: 100%;
-    text-align: left;
-  }
-  
-  .stat-icon {
-    font-size: 1.75rem;
-    margin-bottom: 0.75rem;
-  }
-  
-  .method-icon {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
   }
 }
 
-/* Mobile devices */
-@media (max-width: 480px) {
-  .page-content {
-    padding: 1rem 0;
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 4rem 0 3rem;
   }
-  
-  .page-header {
-    margin-bottom: 1.5rem;
-    padding: 0 0.5rem;
+
+  .hero-title {
+    font-size: 2rem;
   }
-  
-  .page-header h1 {
-    font-size: 1.75rem;
-    margin-bottom: 0.5rem;
+
+  .hero-subtitle {
+    font-size: 1.1rem;
   }
-  
-  .page-header p {
-    font-size: 0.9rem;
-    padding: 0;
+
+  .section-content {
+    padding: 3rem 1.5rem;
   }
-  
-  .content-section {
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 8px;
+
+  .section-header h2 {
+    font-size: 2rem;
   }
-  
-  .content-section h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
+
+  .payments-section {
+    margin-top: -2rem;
+    border-radius: 16px 16px 0 0;
   }
-  
-  .content-section > p {
-    font-size: 0.9rem;
-    margin-bottom: 0.75rem;
-  }
-  
-  .payment-proof-grid,
-  .stats-grid,
-  .payment-methods,
-  .testimonials {
-    gap: 0.75rem;
-    margin: 1rem 0;
-  }
-  
+
   .proof-card,
   .stat-card,
   .method-card,
-  .testimonial {
-    padding: 1rem;
-    border-radius: 8px;
+  .testimonial-card {
+    padding: 2rem 1.5rem;
   }
-  
-  .proof-header {
-    padding-bottom: 0.75rem;
-    margin-bottom: 0.75rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  
-  .proof-header h4 {
-    font-size: 0.9rem;
-    line-height: 1.4;
-    word-wrap: break-word;
-    width: 100%;
-  }
-  
+
   .amount {
-    font-size: 1.1rem;
-    width: 100%;
-    text-align: left;
+    font-size: 2rem;
   }
-  
-  .proof-details p {
-    font-size: 0.875rem;
-    margin: 0.4rem 0;
+
+  .stat-content h3 {
+    font-size: 1.75rem;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.75rem;
+  }
+
+  .section-content {
+    padding: 2rem 1rem;
+  }
+
+  .proof-card,
+  .stat-card,
+  .method-card,
+  .testimonial-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .amount {
+    font-size: 1.75rem;
+  }
+
+  .proof-icon,
+  .stat-icon,
+  .method-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 2.5rem;
+  }
+
   .stat-content h3 {
     font-size: 1.5rem;
   }
-  
-  .plus-sign {
-    font-size: 1.25rem;
-  }
-  
-  .stat-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .stat-content p {
-    font-size: 0.875rem;
-  }
-  
-  .method-card h4 {
-    font-size: 1.1rem;
-  }
-  
-  .method-card p {
-    font-size: 0.875rem;
-  }
-  
-  .method-icon {
-    font-size: 1.75rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .method-card ul {
-    font-size: 0.875rem;
-    padding-left: 0;
-  }
-  
-  .testimonial-content p {
-    font-size: 0.9rem;
-  }
-  
-  .testimonial-author strong {
-    font-size: 0.9rem;
-  }
-  
-  .testimonial-author span {
-    font-size: 0.8rem;
+
+  .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
   }
 }

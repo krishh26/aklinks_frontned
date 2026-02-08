@@ -1,165 +1,259 @@
 <div class="page-content">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Payment Proof</h1>
+        <p class="hero-subtitle">Transparent payment records and proof of earnings from our publisher program</p>
+      </div>
+    </div>
+  </section>
+
   <div class="container">
-    <div class="page-header">
-      <h1>Payment Proof</h1>
-      <p>Transparent payment records and proof of earnings from our publisher program</p>
-    </div>
-
-    <div class="content-section">
-      <h2>Recent Payments</h2>
-      <p>Here are some of our recent payments to publishers. All payments are processed automatically and on time.</p>
-      <p class="proof-disclaimer">Payment proof entries are examples for transparency. Actual amounts and schedules vary based on verified traffic and payout settings.</p>
-      
-      <div class="payment-proof-grid">
-        <div class="proof-card">
-          <div class="proof-header">
-            <h4>Weekly Payment #2024-001</h4>
-            <span class="amount">{{ formatCurrency(1250.00) }}</span>
-          </div>
-          <div class="proof-details">
-            <p><strong>Date:</strong> January 15, 2024</p>
-            <p><strong>Method:</strong> PayPal</p>
-            <p><strong>Status:</strong> <span class="status completed">Completed</span></p>
-            <p><strong>Recipients:</strong> 45 publishers</p>
-          </div>
+    <!-- Recent Payments Section -->
+    <section class="payments-section">
+      <div class="section-content">
+        <div class="section-header">
+          <span class="section-badge">Recent Activity</span>
+          <h2>Recent Payments</h2>
+          <p class="section-description">Here are some of our recent payments to publishers. All payments are processed automatically and on time.</p>
         </div>
+        <p class="proof-disclaimer">Payment proof entries are examples for transparency. Actual amounts and schedules vary based on verified traffic and payout settings.</p>
         
-        <div class="proof-card">
-          <div class="proof-header">
-            <h4>Weekly Payment #2024-002</h4>
-            <span class="amount">{{ formatCurrency(1480.00) }}</span>
+        <div class="payment-proof-grid">
+          <div class="proof-card">
+            <div class="proof-icon-wrapper">
+              <div class="proof-icon">💵</div>
+            </div>
+            <div class="proof-header">
+              <h3>Weekly Payment #2024-001</h3>
+              <span class="amount">{{ formatCurrency(1250.00) }}</span>
+            </div>
+            <div class="proof-details">
+              <div class="detail-item">
+                <span class="detail-label">Date:</span>
+                <span class="detail-value">January 15, 2024</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Method:</span>
+                <span class="detail-value">PayPal</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Status:</span>
+                <span class="status completed">Completed</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Recipients:</span>
+                <span class="detail-value">45 publishers</span>
+              </div>
+            </div>
           </div>
-          <div class="proof-details">
-            <p><strong>Date:</strong> January 22, 2024</p>
-            <p><strong>Method:</strong> Bank Transfer</p>
-            <p><strong>Status:</strong> <span class="status completed">Completed</span></p>
-            <p><strong>Recipients:</strong> 52 publishers</p>
+          
+          <div class="proof-card">
+            <div class="proof-icon-wrapper">
+              <div class="proof-icon">💵</div>
+            </div>
+            <div class="proof-header">
+              <h3>Weekly Payment #2024-002</h3>
+              <span class="amount">{{ formatCurrency(1480.00) }}</span>
+            </div>
+            <div class="proof-details">
+              <div class="detail-item">
+                <span class="detail-label">Date:</span>
+                <span class="detail-value">January 22, 2024</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Method:</span>
+                <span class="detail-value">Bank Transfer</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Status:</span>
+                <span class="status completed">Completed</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Recipients:</span>
+                <span class="detail-value">52 publishers</span>
+              </div>
+            </div>
           </div>
-        </div>
-        
-        <div class="proof-card">
-          <div class="proof-header">
-            <h4>Weekly Payment #2024-003</h4>
-            <span class="amount">{{ formatCurrency(1320.00) }}</span>
-          </div>
-          <div class="proof-details">
-            <p><strong>Date:</strong> January 29, 2024</p>
-            <p><strong>Method:</strong> PayPal</p>
-            <p><strong>Status:</strong> <span class="status completed">Completed</span></p>
-            <p><strong>Recipients:</strong> 48 publishers</p>
+          
+          <div class="proof-card">
+            <div class="proof-icon-wrapper">
+              <div class="proof-icon">💵</div>
+            </div>
+            <div class="proof-header">
+              <h3>Weekly Payment #2024-003</h3>
+              <span class="amount">{{ formatCurrency(1320.00) }}</span>
+            </div>
+            <div class="proof-details">
+              <div class="detail-item">
+                <span class="detail-label">Date:</span>
+                <span class="detail-value">January 29, 2024</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Method:</span>
+                <span class="detail-value">PayPal</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Status:</span>
+                <span class="status completed">Completed</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Recipients:</span>
+                <span class="detail-value">48 publishers</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="content-section">
-      <h2>Payment Statistics</h2>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon">💰</div>
-          <div class="stat-content">
-            <h3>{{ formatCurrency(2500000) }}<span class="plus-sign">+</span></h3>
-            <p>Total Paid to Publishers</p>
-          </div>
+    <!-- Payment Statistics Section -->
+    <section class="stats-section">
+      <div class="section-content">
+        <div class="section-header">
+          <span class="section-badge">Statistics</span>
+          <h2>Payment Statistics</h2>
+          <p class="section-description">Our commitment to transparency and timely payments</p>
         </div>
-        
-        <div class="stat-card">
-          <div class="stat-icon">👥</div>
-          <div class="stat-content">
-            <h3>1,200+</h3>
-            <p>Active Publishers</p>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <div class="stat-icon">💰</div>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formatCurrency(2500000) }}<span class="plus-sign">+</span></h3>
+              <p>Total Paid to Publishers</p>
+            </div>
           </div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-icon">⏰</div>
-          <div class="stat-content">
-            <h3>99.8%</h3>
-            <p>On-Time Payment Rate</p>
+          
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <div class="stat-icon">👥</div>
+            </div>
+            <div class="stat-content">
+              <h3>1,200+</h3>
+              <p>Active Publishers</p>
+            </div>
           </div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-icon">📈</div>
-          <div class="stat-content">
-            <h3>15%</h3>
-            <p>Average Monthly Growth</p>
+          
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <div class="stat-icon">⏰</div>
+            </div>
+            <div class="stat-content">
+              <h3>99.8%</h3>
+              <p>On-Time Payment Rate</p>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <div class="stat-icon">📈</div>
+            </div>
+            <div class="stat-content">
+              <h3>15%</h3>
+              <p>Average Monthly Growth</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="content-section">
-      <h2>Payment Methods</h2>
-      <div class="payment-methods">
-        <div class="method-card">
-          <div class="method-icon">💳</div>
-          <h4>PayPal</h4>
-          <p>Instant payments to your PayPal account</p>
-          <ul>
-            <li>No fees for publishers</li>
-            <li>Instant processing</li>
-            <li>Available worldwide</li>
-          </ul>
+    <!-- Payment Methods Section -->
+    <section class="methods-section">
+      <div class="section-content">
+        <div class="section-header">
+          <span class="section-badge">Payment Options</span>
+          <h2>Payment Methods</h2>
+          <p class="section-description">Choose from multiple secure payment options</p>
         </div>
-        
-        <div class="method-card">
-          <div class="method-icon">🏦</div>
-          <h4>Bank Transfer</h4>
-          <p>Direct deposit to your bank account</p>
-          <ul>
-            <li>1-3 business days</li>
-            <li>No fees for amounts over {{ formatCurrency(50) }}</li>
-            <li>Available in 40+ countries</li>
-          </ul>
-        </div>
-        
-        <div class="method-card">
-          <div class="method-icon">₿</div>
-          <h4>Cryptocurrency</h4>
-          <p>Payments in Bitcoin and Ethereum</p>
-          <ul>
-            <li>Low transaction fees</li>
-            <li>Global accessibility</li>
-            <li>Privacy focused</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="content-section">
-      <h2>Testimonials</h2>
-      <div class="testimonials">
-        <div class="testimonial">
-          <div class="testimonial-content">
-            <p>"AKLinks has been a game-changer for my affiliate marketing. The payments are always on time and the rates are competitive. I've earned over {{ formatCurrency(5000) }} in the past 6 months!"</p>
+        <div class="payment-methods">
+          <div class="method-card">
+            <div class="method-icon-wrapper">
+              <div class="method-icon">💳</div>
+            </div>
+            <h3>PayPal</h3>
+            <p>Instant payments to your PayPal account</p>
+            <ul class="styled-list">
+              <li><span class="list-icon">✓</span>No fees for publishers</li>
+              <li><span class="list-icon">✓</span>Instant processing</li>
+              <li><span class="list-icon">✓</span>Available worldwide</li>
+            </ul>
           </div>
-          <div class="testimonial-author">
-            <strong>Sarah Johnson</strong>
-            <span>Affiliate Marketer</span>
+          
+          <div class="method-card">
+            <div class="method-icon-wrapper">
+              <div class="method-icon">🏦</div>
+            </div>
+            <h3>Bank Transfer</h3>
+            <p>Direct deposit to your bank account</p>
+            <ul class="styled-list">
+              <li><span class="list-icon">✓</span>1-3 business days</li>
+              <li><span class="list-icon">✓</span>No fees for amounts over {{ formatCurrency(50) }}</li>
+              <li><span class="list-icon">✓</span>Available in 40+ countries</li>
+            </ul>
           </div>
-        </div>
-        
-        <div class="testimonial">
-          <div class="testimonial-content">
-            <p>"The transparency of payment proof really builds trust. I can see exactly when payments are made and to how many people. It's refreshing to work with such an honest company."</p>
-          </div>
-          <div class="testimonial-author">
-            <strong>Mike Chen</strong>
-            <span>Content Creator</span>
-          </div>
-        </div>
-        
-        <div class="testimonial">
-          <div class="testimonial-content">
-            <p>"I've tried many URL shorteners, but AKLinks is the only one that consistently pays on time. The support team is also very responsive when I have questions."</p>
-          </div>
-          <div class="testimonial-author">
-            <strong>Emily Rodriguez</strong>
-            <span>Blogger</span>
+          
+          <div class="method-card">
+            <div class="method-icon-wrapper">
+              <div class="method-icon">₿</div>
+            </div>
+            <h3>Cryptocurrency</h3>
+            <p>Payments in Bitcoin and Ethereum</p>
+            <ul class="styled-list">
+              <li><span class="list-icon">✓</span>Low transaction fees</li>
+              <li><span class="list-icon">✓</span>Global accessibility</li>
+              <li><span class="list-icon">✓</span>Privacy focused</li>
+            </ul>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+      <div class="section-content">
+        <div class="section-header">
+          <span class="section-badge">Testimonials</span>
+          <h2>What Our Publishers Say</h2>
+          <p class="section-description">Real feedback from our satisfied publishers</p>
+        </div>
+        <div class="testimonials">
+          <div class="testimonial-card">
+            <div class="testimonial-icon">💬</div>
+            <div class="testimonial-content">
+              <p>"AKLinks has been a game-changer for my affiliate marketing. The payments are always on time and the rates are competitive. I've earned over {{ formatCurrency(5000) }} in the past 6 months!"</p>
+            </div>
+            <div class="testimonial-author">
+              <strong>Sarah Johnson</strong>
+              <span>Affiliate Marketer</span>
+            </div>
+          </div>
+          
+          <div class="testimonial-card">
+            <div class="testimonial-icon">💬</div>
+            <div class="testimonial-content">
+              <p>"The transparency of payment proof really builds trust. I can see exactly when payments are made and to how many people. It's refreshing to work with such an honest company."</p>
+            </div>
+            <div class="testimonial-author">
+              <strong>Mike Chen</strong>
+              <span>Content Creator</span>
+            </div>
+          </div>
+          
+          <div class="testimonial-card">
+            <div class="testimonial-icon">💬</div>
+            <div class="testimonial-content">
+              <p>"I've tried many URL shorteners, but AKLinks is the only one that consistently pays on time. The support team is also very responsive when I have questions."</p>
+            </div>
+            <div class="testimonial-author">
+              <strong>Emily Rodriguez</strong>
+              <span>Blogger</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
