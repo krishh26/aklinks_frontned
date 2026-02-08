@@ -119,7 +119,7 @@
           <label class="checkbox-container">
             <input type="checkbox" formControlName="agreeTerms" [class.error]="signupForm.get('agreeTerms')?.invalid && signupForm.get('agreeTerms')?.touched">
             <span class="checkmark"></span>
-            I agree to the <a href="#" (click)="$event.preventDefault()">Terms of Service</a> and <a href="#" (click)="$event.preventDefault()">Privacy Policy</a>
+            I agree to the <a routerLink="/terms-of-service">Terms of Service</a> and <a routerLink="/privacy-policy">Privacy Policy</a>
           </label>
         </div>
 

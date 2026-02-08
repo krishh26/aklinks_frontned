@@ -204,6 +204,50 @@
   text-decoration: underline;
 }
 
+.compliance {
+  padding: 6rem 0;
+  background: white;
+}
+
+.compliance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.compliance-card {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.compliance-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.compliance-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+  color: #333;
+}
+
+.compliance-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.compliance-links {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .testimonials {
   padding: 6rem 0;
   background: white;

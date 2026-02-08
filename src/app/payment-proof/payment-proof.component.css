@@ -27,6 +27,11 @@
   line-height: 1.6;
 }
 
+.proof-disclaimer {
+  font-size: 0.95rem;
+  color: #666;
+}
+
 .payment-proof-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));

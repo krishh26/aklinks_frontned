@@ -42,6 +42,12 @@
   margin-bottom: 2rem;
 }
 
+.rate-disclaimer {
+  margin-top: 0.75rem;
+  color: #666;
+  font-size: 0.95rem;
+}
+
 .rate-features {
   list-style: none;
   text-align: left;

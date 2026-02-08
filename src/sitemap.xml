@@ -2,55 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://aklinks.in/</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://aklinks.in/about-us</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aklinks.in/contact-us</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aklinks.in/blog</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://aklinks.in/publisher-rates</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://aklinks.in/payment-proof</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://aklinks.in/payment-system</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://aklinks.in/payment-rules</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://aklinks.in/privacy-policy</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://aklinks.in/terms-of-service</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://aklinks.in/content-policy</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>

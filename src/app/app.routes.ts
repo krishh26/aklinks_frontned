@@ -8,6 +8,8 @@ import { BlogComponent } from './blog/blog.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { ContentPolicyComponent } from './content-policy/content-policy.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { CallbackComponent } from './auth/callback/callback.component';
@@ -24,6 +26,8 @@ export const routes: Routes = [
   { path: 'about-us', component: AboutUsComponent },
   { path: 'contact-us', component: ContactUsComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'terms-of-service', component: TermsOfServiceComponent },
+  { path: 'content-policy', component: ContentPolicyComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: 'auth/forgot-password', component: ForgotPasswordComponent },
   { path: 'auth/reset-password', component: ResetPasswordComponent },
