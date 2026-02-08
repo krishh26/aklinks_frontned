@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -12,7 +12,10 @@ import { Subscription } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild('dropdownToggle') dropdownToggleRef?: ElementRef<HTMLButtonElement>;
+  @ViewChild('currencyToggle') currencyToggleRef?: ElementRef<HTMLButtonElement>;
+
   isMobileMenuOpen = false;
   isMobileDropdownOpen = false;
   isMobileCurrencyDropdownOpen = false;
@@ -20,7 +23,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isDropdownOpen = false;
   isAdminRoute = false;
   currentCurrency: Currency = 'USD';
+  dropdownMenuTop = 0;
+  dropdownMenuLeft = 0;
+  currencyDropdownTop = 0;
+  currencyDropdownLeft = 0;
   private currencySubscription?: Subscription;
+  private dropdownPositionNeedsUpdate = false;
+  private currencyPositionNeedsUpdate = false;
 
   constructor(
     private router: Router,
@@ -53,6 +62,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleCurrencyDropdown(): void {
     this.isCurrencyDropdownOpen = !this.isCurrencyDropdownOpen;
+    if (this.isCurrencyDropdownOpen) {
+      this.currencyPositionNeedsUpdate = true;
+    }
   }
 
   selectCurrency(currency: Currency): void {
@@ -84,6 +96,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
+    if (this.isDropdownOpen) {
+      this.dropdownPositionNeedsUpdate = true;
+    }
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.dropdownPositionNeedsUpdate && this.isDropdownOpen && this.dropdownToggleRef?.nativeElement) {
+      this.dropdownPositionNeedsUpdate = false;
+      const rect = this.dropdownToggleRef.nativeElement.getBoundingClientRect();
+      this.dropdownMenuTop = rect.bottom + 8;
+      this.dropdownMenuLeft = rect.left;
+    }
+    if (this.currencyPositionNeedsUpdate && this.isCurrencyDropdownOpen && this.currencyToggleRef?.nativeElement) {
+      this.currencyPositionNeedsUpdate = false;
+      const rect = this.currencyToggleRef.nativeElement.getBoundingClientRect();
+      this.currencyDropdownTop = rect.bottom + 8;
+      this.currencyDropdownLeft = rect.left;
+    }
   }
 
   @HostListener('document:click', ['$event'])

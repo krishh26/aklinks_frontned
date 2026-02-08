@@ -11,11 +11,16 @@
           <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
           
           <li class="dropdown" [class.active]="isDropdownOpen">
-            <button class="dropdown-toggle" (click)="toggleDropdown()">
+            <button #dropdownToggle class="dropdown-toggle" (click)="toggleDropdown()">
               Important Pages
               <span>▼</span>
             </button>
-            <div class="dropdown-menu" [class.active]="isDropdownOpen">
+            <div
+              class="dropdown-menu dropdown-menu-fixed"
+              [class.active]="isDropdownOpen"
+              [style.top.px]="dropdownMenuTop"
+              [style.left.px]="dropdownMenuLeft"
+            >
               <a routerLink="/payment-system" (click)="isDropdownOpen = false">Payment System</a>
               <a routerLink="/payment-rules" (click)="isDropdownOpen = false">Payment Rules</a>
               <a routerLink="/about-us" (click)="isDropdownOpen = false">About Us</a>
@@ -29,12 +34,17 @@
         
         <div class="header-actions">
           <div class="currency-selector-wrapper">
-            <button class="currency-toggle" (click)="toggleCurrencyDropdown()">
+            <button #currencyToggle class="currency-toggle" (click)="toggleCurrencyDropdown()">
               <span class="currency-icon">💱</span>
               <span class="currency-text">{{ currentCurrency }}</span>
               <span class="currency-arrow">▼</span>
             </button>
-            <div class="currency-dropdown" [class.active]="isCurrencyDropdownOpen">
+            <div
+              class="currency-dropdown currency-dropdown-fixed"
+              [class.active]="isCurrencyDropdownOpen"
+              [style.top.px]="currencyDropdownTop"
+              [style.left.px]="currencyDropdownLeft"
+            >
               <button 
                 class="currency-option" 
                 [class.active]="currentCurrency === 'USD'"

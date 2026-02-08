@@ -74,6 +74,20 @@
   z-index: 10000;
 }
 
+/* Fixed positioning so dropdown overlays all content and is never clipped */
+.currency-dropdown.currency-dropdown-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: auto;
+  z-index: 100000;
+}
+.currency-dropdown.currency-dropdown-fixed.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
 .currency-dropdown.active {
   opacity: 1;
   visibility: visible;

@@ -232,7 +232,7 @@ app-root {
   color: white;
 }
 
-/* Header Styles */
+/* Header Styles - no scrollbar in header; dropdowns not clipped */
 .header {
   background: linear-gradient(135deg, white 0%, white 60%, #f0f4f8 60%, #f0f4f8 100%);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -240,11 +240,26 @@ app-root {
   top: 0;
   z-index: 9999;
   width: 100%;
+  overflow: hidden;
+}
+
+/* Hide page scrollbar in header area (dropdowns use position:fixed so not clipped) */
+.header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 18px;
+  height: 100%;
+  background: linear-gradient(135deg, white 0%, white 60%, #f0f4f8 60%, #f0f4f8 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .header .container {
   max-width: 100%;
   padding: 0;
+  overflow: visible !important;
 }
 
 .header-content {
@@ -256,6 +271,7 @@ app-root {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  overflow: visible;
 }
 
 .logo {
@@ -280,6 +296,7 @@ app-root {
   margin-left: auto;
   padding-right: 0;
   min-width: 0;
+  overflow: visible;
 }
 
 .nav-links {
@@ -289,6 +306,7 @@ app-root {
   margin: 0;
   padding: 0;
   align-items: center;
+  overflow: visible;
 }
 
 .nav-links li {
@@ -349,17 +367,35 @@ app-root {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: all 0.3s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
   z-index: 10000;
   margin-top: 0.25rem;
 }
 
-.dropdown:hover .dropdown-menu,
-.dropdown.active .dropdown-menu,
-.dropdown-menu.active {
+/* Important Pages: fixed positioning so it overlays all content and is never clipped */
+.dropdown-menu.dropdown-menu-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateY(-10px);
+  z-index: 100000;
+  margin-top: 0;
+}
+.dropdown-menu.dropdown-menu-fixed.active {
+  transform: translateY(0);
+}
+
+.dropdown:hover .dropdown-menu:not(.dropdown-menu-fixed),
+.dropdown.active .dropdown-menu:not(.dropdown-menu-fixed),
+.dropdown-menu:not(.dropdown-menu-fixed).active {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+.dropdown-menu.dropdown-menu-fixed.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 .dropdown-menu a {
