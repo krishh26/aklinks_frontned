@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
   imports: [CommonModule, RouterModule],
   template: `
     <header class="admin-header">
+      <div class="admin-header-inner">
       <div class="header-left">
         <button class="sidebar-toggle-header-btn" *ngIf="!isSidebarOpen" (click)="onSidebarToggle()" title="Open Sidebar">
           <span class="hamburger-line"></span>
@@ -23,10 +24,10 @@ import { Subscription } from 'rxjs';
       
       <div class="header-right">
         <div class="currency-switcher-wrapper">
-          <button class="header-icon currency-toggle" (click)="toggleCurrencyDropdown()">
+          <button #currencyBtn class="header-icon currency-toggle" (click)="toggleCurrencyDropdown()">
             <span>{{ getCurrencyIcon() }}</span>
           </button>
-          <div class="currency-dropdown" [class.active]="isCurrencyDropdownOpen">
+          <div class="currency-dropdown" [class.active]="isCurrencyDropdownOpen" [style.top.px]="currencyDropdownTop" [style.right.px]="currencyDropdownRight">
             <button 
               class="currency-option" 
               [class.active]="currentCurrency === 'USD'"
@@ -44,10 +45,10 @@ import { Subscription } from 'rxjs';
           </div>
         </div>
         <div class="theme-switcher-wrapper">
-          <button class="header-icon theme-toggle" (click)="toggleThemeDropdown()">
+          <button #themeBtn class="header-icon theme-toggle" (click)="toggleThemeDropdown()">
             <span>{{ getThemeIcon() }}</span>
           </button>
-          <div class="theme-dropdown" [class.active]="isThemeDropdownOpen">
+          <div class="theme-dropdown" [class.active]="isThemeDropdownOpen" [style.top.px]="themeDropdownTop" [style.right.px]="themeDropdownRight">
             <button 
               class="theme-option" 
               [class.active]="currentTheme === 'light'"
@@ -76,10 +77,10 @@ import { Subscription } from 'rxjs';
           <span class="notification-badge">3</span>
         </button> -->
         <div class="profile-wrapper">
-          <button class="header-icon profile" (click)="toggleProfileDropdown()">
+          <button #profileBtn class="header-icon profile" (click)="toggleProfileDropdown()">
             <span>👤</span>
           </button>
-          <div class="profile-dropdown" [class.active]="isProfileDropdownOpen">
+          <div class="profile-dropdown" [class.active]="isProfileDropdownOpen" [style.top.px]="profileDropdownTop" [style.right.px]="profileDropdownRight">
             <button 
               class="profile-option" 
               (click)="navigateToProfile()">
@@ -95,6 +96,7 @@ import { Subscription } from 'rxjs';
           </div>
         </div>
       </div>
+      </div>
     </header>
   `,
   styleUrls: ['./admin-header.component.scss']
@@ -102,12 +104,21 @@ import { Subscription } from 'rxjs';
 export class AdminHeaderComponent implements OnInit, OnDestroy {
   @Input() isSidebarOpen: boolean = false;
   @Output() sidebarToggle = new EventEmitter<void>();
-  
+  @ViewChild('currencyBtn') currencyBtn!: ElementRef<HTMLButtonElement>;
+  @ViewChild('themeBtn') themeBtn!: ElementRef<HTMLButtonElement>;
+  @ViewChild('profileBtn') profileBtn!: ElementRef<HTMLButtonElement>;
+
   currentTheme: Theme = 'light';
   currentCurrency: Currency = 'USD';
   isThemeDropdownOpen = false;
   isCurrencyDropdownOpen = false;
   isProfileDropdownOpen = false;
+  currencyDropdownTop = 70;
+  currencyDropdownRight = 24;
+  themeDropdownTop = 70;
+  themeDropdownRight = 24;
+  profileDropdownTop = 70;
+  profileDropdownRight = 24;
   private themeSubscription?: Subscription;
   private currencySubscription?: Subscription;
 
@@ -158,10 +169,10 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
 
   toggleCurrencyDropdown(): void {
     this.isCurrencyDropdownOpen = !this.isCurrencyDropdownOpen;
-    // Close other dropdowns when opening currency dropdown
     if (this.isCurrencyDropdownOpen) {
       this.isThemeDropdownOpen = false;
       this.isProfileDropdownOpen = false;
+      this.updateDropdownPosition('currency');
     }
   }
 
@@ -172,10 +183,10 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
 
   toggleThemeDropdown(): void {
     this.isThemeDropdownOpen = !this.isThemeDropdownOpen;
-    // Close other dropdowns when opening theme dropdown
     if (this.isThemeDropdownOpen) {
       this.isCurrencyDropdownOpen = false;
       this.isProfileDropdownOpen = false;
+      this.updateDropdownPosition('theme');
     }
   }
 
@@ -186,11 +197,31 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
 
   toggleProfileDropdown(): void {
     this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
-    // Close other dropdowns when opening profile dropdown
     if (this.isProfileDropdownOpen) {
       this.isThemeDropdownOpen = false;
       this.isCurrencyDropdownOpen = false;
+      this.updateDropdownPosition('profile');
     }
+  }
+
+  private updateDropdownPosition(which: 'currency' | 'theme' | 'profile'): void {
+    setTimeout(() => {
+      const btn = which === 'currency' ? this.currencyBtn : which === 'theme' ? this.themeBtn : this.profileBtn;
+      if (!btn?.nativeElement) return;
+      const rect = btn.nativeElement.getBoundingClientRect();
+      const top = rect.bottom + 10;
+      const right = window.innerWidth - rect.right;
+      if (which === 'currency') {
+        this.currencyDropdownTop = top;
+        this.currencyDropdownRight = right;
+      } else if (which === 'theme') {
+        this.themeDropdownTop = top;
+        this.themeDropdownRight = right;
+      } else {
+        this.profileDropdownTop = top;
+        this.profileDropdownRight = right;
+      }
+    }, 0);
   }
 
   navigateToProfile(): void {

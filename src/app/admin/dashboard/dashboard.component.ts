@@ -26,7 +26,16 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   todaysEarning = 0.83;
   todaysCpmCount = 6.95;
   todaysView = 120;
-  totalReferral = 4.37;
+  todaysReferral = 0.31;
+
+  // Total / overall stats (can be wired to API later)
+  totalEarning = 125.43;
+  totalCpmCount = 689.25;
+  totalView = 4523;
+  totalReferral = 48.92;
+
+  // Which card is currently flipped (for tap-to-flip)
+  activeCard: 'earning' | 'cpm' | 'views' | 'referral' | null = null;
 
   constructor(
     private router: Router,
@@ -157,6 +166,30 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   formatCurrency(usdAmount: number): string {
     return this.currencyService.format(usdAmount);
+  }
+
+  /**
+   * Basic numeric validation to avoid showing invalid values in the UI.
+   */
+  isValidNumber(value: unknown): boolean {
+    const num = Number(value);
+    return !isNaN(num) && isFinite(num);
+  }
+
+  sanitizedCount(value: unknown, fallback: number = 0): number {
+    const num = Number(value);  
+    if (!isNaN(num) && isFinite(num) && num >= 0) {
+      return num;
+    }
+    return fallback;
+  }
+
+  /**
+   * Toggle flip state for a given card.
+   * Only one card can be flipped at a time; clicking again unflips it.
+   */
+  toggleCard(card: 'earning' | 'cpm' | 'views' | 'referral'): void {
+    this.activeCard = this.activeCard === card ? null : card;
   }
 
   @HostListener('window:resize', ['$event'])

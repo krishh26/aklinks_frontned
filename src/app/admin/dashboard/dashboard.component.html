@@ -24,38 +24,218 @@
     </header>
 
     <!-- Dashboard Content -->
-    <div class="dashboard-content">
+    <div class="dashboard-content animate-on-load">
       <!-- Stats Cards -->
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon">💰</div>
-          <div class="stat-content">
-            <h3 class="stat-number">{{ formatCurrency(todaysEarning) }}</h3>
-            <p class="stat-label">Today's Earning</p>
+        <!-- Earnings Card -->
+        <div
+          class="stat-card stat-card--flip"
+          [class.stat-card--flipped]="activeCard === 'earning'"
+          *ngIf="isValidNumber(todaysEarning) && isValidNumber(totalEarning)"
+        >
+          <div class="stat-card-inner">
+            <!-- Front: Today -->
+            <div class="stat-card-face stat-card-face--front">
+              <div class="stat-icon">💰</div>
+              <div class="stat-content">
+                <div class="stat-meta">
+                  <span class="stat-pill stat-pill--today">Today</span>
+                  <span class="stat-hint">Hover to see total</span>
+                </div>
+                <h3 class="stat-number">
+                  {{ formatCurrency(todaysEarning) }}
+                </h3>
+                <p class="stat-label">Earnings</p>
+              </div>
+              <button
+                type="button"
+                class="stat-flip-btn"
+                (click)="toggleCard('earning'); $event.stopPropagation()"
+              >
+                Flip
+              </button>
+            </div>
+
+            <!-- Back: Total -->
+            <div class="stat-card-face stat-card-face--back">
+              <div class="stat-icon">💰</div>
+              <div class="stat-content">
+                <div class="stat-meta">
+                  <span class="stat-pill stat-pill--total">Total</span>
+                  <span class="stat-hint">Hover to see today</span>
+                </div>
+                <h3 class="stat-number">
+                  {{ formatCurrency(totalEarning) }}
+                </h3>
+                <p class="stat-label">Earnings</p>
+              </div>
+              <button
+                type="button"
+                class="stat-flip-btn"
+                (click)="toggleCard('earning'); $event.stopPropagation()"
+              >
+                Flip
+              </button>
+            </div>
           </div>
         </div>
-        
-        <div class="stat-card">
-          <div class="stat-icon">📊</div>
-          <div class="stat-content">
-            <h3 class="stat-number">{{ formatCurrency(todaysCpmCount) }}</h3>
-            <p class="stat-label">Today's CPM Count</p>
+
+        <!-- CPM Card -->
+        <div
+          class="stat-card stat-card--flip"
+          [class.stat-card--flipped]="activeCard === 'cpm'"
+          *ngIf="isValidNumber(todaysCpmCount) && isValidNumber(totalCpmCount)"
+        >
+          <div class="stat-card-inner">
+            <!-- Front: Today -->
+            <div class="stat-card-face stat-card-face--front">
+              <div class="stat-icon">📊</div>
+              <div class="stat-content">
+                <div class="stat-meta">
+                  <span class="stat-pill stat-pill--today">Today</span>
+                  <span class="stat-hint">Hover to see total</span>
+                </div>
+                <h3 class="stat-number">
+                  {{ formatCurrency(todaysCpmCount) }}
+                </h3>
+                <p class="stat-label">CPM</p>
+              </div>
+              <button
+                type="button"
+                class="stat-flip-btn"
+                (click)="toggleCard('cpm'); $event.stopPropagation()"
+              >
+                Flip
+              </button>
+            </div>
+
+            <!-- Back: Total -->
+            <div class="stat-card-face stat-card-face--back">
+              <div class="stat-icon">📊</div>
+              <div class="stat-content">
+                <div class="stat-meta">
+                  <span class="stat-pill stat-pill--total">Total</span>
+                  <span class="stat-hint">Hover to see today</span>
+                </div>
+                <h3 class="stat-number">
+                  {{ formatCurrency(totalCpmCount) }}
+                </h3>
+                <p class="stat-label">CPM</p>
+              </div>
+              <button
+                type="button"
+                class="stat-flip-btn"
+                (click)="toggleCard('cpm'); $event.stopPropagation()"
+              >
+                Flip
+              </button>
+            </div>
           </div>
         </div>
-        
-        <div class="stat-card">
-          <div class="stat-icon">👁️</div>
-          <div class="stat-content">
-            <h3 class="stat-number">{{ todaysView }}</h3>
-            <p class="stat-label">Today's View</p>
+
+        <!-- Views Card -->
+        <div
+          class="stat-card stat-card--flip"
+          [class.stat-card--flipped]="activeCard === 'views'"
+          *ngIf="isValidNumber(todaysView) && isValidNumber(totalView)"
+        >
+          <div class="stat-card-inner">
+            <!-- Front: Today -->
+            <div class="stat-card-face stat-card-face--front">
+              <div class="stat-icon">👁️</div>
+              <div class="stat-content">
+                <div class="stat-meta">
+                  <span class="stat-pill stat-pill--today">Today</span>
+                  <span class="stat-hint">Hover to see total</span>
+                </div>
+                <h3 class="stat-number">
+                  {{ sanitizedCount(todaysView) | number : '1.0-0' }}
+                </h3>
+                <p class="stat-label">Views</p>
+              </div>
+              <button
+                type="button"
+                class="stat-flip-btn"
+                (click)="toggleCard('views'); $event.stopPropagation()"
+              >
+                Flip
+              </button>
+            </div>
+
+            <!-- Back: Total -->
+            <div class="stat-card-face stat-card-face--back">
+              <div class="stat-icon">👁️</div>
+              <div class="stat-content">
+                <div class="stat-meta">
+                  <span class="stat-pill stat-pill--total">Total</span>
+                  <span class="stat-hint">Hover to see today</span>
+                </div>
+                <h3 class="stat-number">
+                  {{ sanitizedCount(totalView) | number : '1.0-0' }}
+                </h3>
+                <p class="stat-label">Views</p>
+              </div>
+              <button
+                type="button"
+                class="stat-flip-btn"
+                (click)="toggleCard('views'); $event.stopPropagation()"
+              >
+                Flip
+              </button>
+            </div>
           </div>
         </div>
-        
-        <div class="stat-card">
-          <div class="stat-icon">👥</div>
-          <div class="stat-content">
-            <h3 class="stat-number">{{ formatCurrency(totalReferral) }}</h3>
-            <p class="stat-label">Total Referral</p>
+
+        <!-- Referral Card -->
+        <div
+          class="stat-card stat-card--flip"
+          [class.stat-card--flipped]="activeCard === 'referral'"
+          *ngIf="isValidNumber(todaysReferral) && isValidNumber(totalReferral)"
+        >
+          <div class="stat-card-inner">
+            <!-- Front: Today -->
+            <div class="stat-card-face stat-card-face--front">
+              <div class="stat-icon">👥</div>
+              <div class="stat-content">
+                <div class="stat-meta">
+                  <span class="stat-pill stat-pill--today">Today</span>
+                  <span class="stat-hint">Hover to see total</span>
+                </div>
+                <h3 class="stat-number">
+                  {{ formatCurrency(todaysReferral) }}
+                </h3>
+                <p class="stat-label">Referral Earnings</p>
+              </div>
+              <button
+                type="button"
+                class="stat-flip-btn"
+                (click)="toggleCard('referral'); $event.stopPropagation()"
+              >
+                Flip
+              </button>
+            </div>
+
+            <!-- Back: Total -->
+            <div class="stat-card-face stat-card-face--back">
+              <div class="stat-icon">👥</div>
+              <div class="stat-content">
+                <div class="stat-meta">
+                  <span class="stat-pill stat-pill--total">Total</span>
+                  <span class="stat-hint">Hover to see today</span>
+                </div>
+                <h3 class="stat-number">
+                  {{ formatCurrency(totalReferral) }}
+                </h3>
+                <p class="stat-label">Referral Earnings</p>
+              </div>
+              <button
+                type="button"
+                class="stat-flip-btn"
+                (click)="toggleCard('referral'); $event.stopPropagation()"
+              >
+                Flip
+              </button>
+            </div>
           </div>
         </div>
       </div>

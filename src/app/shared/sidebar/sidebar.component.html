@@ -8,33 +8,44 @@
     <h2 class="logo">AKLinks</h2>
   </div>
   
-  <!-- User Profile Card -->
-  <div class="user-profile-card">
-    <div class="user-profile-top">
-      <div class="user-avatar">
-        <span>😊</span>
+  <!-- User Profile Card - Authentic box UI -->
+  <div class="user-profile-card" role="region" aria-label="User profile">
+    <div class="user-profile-card-inner">
+      <div class="user-profile-top">
+        <div class="user-avatar-wrap">
+          <div class="user-avatar">
+            <span aria-hidden="true">😊</span>
+          </div>
+          <span class="user-status-dot" aria-hidden="true"></span>
+        </div>
+        <div class="user-info">
+          <div class="username">{{ userName }}</div>
+          <span class="user-role-badge">{{ userRole }}</span>
+        </div>
+        <button
+          type="button"
+          class="user-menu-btn"
+          (click)="toggleUserMenu()"
+          [attr.aria-expanded]="isUserMenuOpen"
+          aria-label="Toggle profile menu"
+        >
+          <span class="user-menu-icon" [class.open]="isUserMenuOpen" aria-hidden="true"></span>
+        </button>
       </div>
-      <div class="user-info">
-        <div class="username">{{ userName }}</div>
-        <div class="user-role">{{ userRole }}</div>
+      <div class="user-profile-links" [class.collapsed]="!isUserMenuOpen" role="menu">
+        <a href="#" class="profile-link" (click)="$event.preventDefault()" role="menuitem">
+          <span class="profile-link-icon" aria-hidden="true">👤</span>
+          <span>My Account</span>
+        </a>
+        <a href="#" class="profile-link" (click)="$event.preventDefault()" role="menuitem">
+          <span class="profile-link-icon" aria-hidden="true">💳</span>
+          <span>Payments</span>
+        </a>
+        <a href="#" class="profile-link" (click)="$event.preventDefault(); logout()" role="menuitem">
+          <span class="profile-link-icon" aria-hidden="true">🚪</span>
+          <span>Logout</span>
+        </a>
       </div>
-      <button class="user-menu-btn" (click)="toggleUserMenu()">
-        <span>☰</span>
-      </button>
-    </div>
-    <div class="user-profile-links" [class.collapsed]="!isUserMenuOpen">
-      <a href="#" class="profile-link" (click)="$event.preventDefault()">
-        <span class="profile-link-icon">👤</span>
-        <span>My Account</span>
-      </a>
-      <a href="#" class="profile-link" (click)="$event.preventDefault()">
-        <span class="profile-link-icon">💳</span>
-        <span>Payments</span>
-      </a>
-      <a href="#" class="profile-link" (click)="$event.preventDefault(); logout()">
-        <span class="profile-link-icon">🚪</span>
-        <span>Logout</span>
-      </a>
     </div>
   </div>
   

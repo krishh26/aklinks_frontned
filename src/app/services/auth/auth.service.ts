@@ -8,6 +8,7 @@ export enum AuthEndPoint {
     LOGIN = '/auth/login',
     REGISTER = '/auth/register',
     RESET_PASSWORD = '/auth/reset-password',
+    FORGOT_PASSWORD= '/auth/forgot-password',
 }
 
 @Injectable({
@@ -58,5 +59,10 @@ export enum AuthEndPoint {
     resetPassword(payload: { token: string; newPassword: string }): Observable<any> {
         return this.httpClient
           .post<any>(this.baseUrl + AuthEndPoint.RESET_PASSWORD, payload, { headers: this.getPublicHeader() });
+    }
+
+    forgotPassword(payload: { email: string }): Observable<any> {
+        return this.httpClient
+          .post<any>(this.baseUrl + AuthEndPoint.FORGOT_PASSWORD, payload, { headers: this.getPublicHeader() });
     }
   }
