@@ -42,7 +42,7 @@
                   name="name" 
                   [(ngModel)]="contactForm.name"
                   class="form-input"
-                  [class.invalid]="supportForm.submitted && supportForm.controls['name']?.invalid"
+                  [class.invalid]="supportForm.submitted && supportForm.controls['name'].invalid"
                   required
                   minlength="2"
                 />
@@ -60,7 +60,7 @@
                   name="subject" 
                   [(ngModel)]="contactForm.subject"
                   class="form-input"
-                  [class.invalid]="supportForm.submitted && supportForm.controls['subject']?.invalid"
+                  [class.invalid]="supportForm.submitted && supportForm.controls['subject'].invalid"
                   required
                   minlength="3"
                 />
@@ -78,7 +78,7 @@
                   name="email" 
                   [(ngModel)]="contactForm.email"
                   class="form-input"
-                  [class.invalid]="supportForm.submitted && supportForm.controls['email']?.invalid"
+                  [class.invalid]="supportForm.submitted && supportForm.controls['email'].invalid"
                   required
                   email
                 />
@@ -95,7 +95,7 @@
                   name="message" 
                   [(ngModel)]="contactForm.message"
                   class="form-textarea"
-                  [class.invalid]="supportForm.submitted && supportForm.controls['message']?.invalid"
+                  [class.invalid]="supportForm.submitted && supportForm.controls['message'].invalid"
                   rows="5"
                   required
                   minlength="10"

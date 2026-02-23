@@ -1,8 +1,73 @@
+// 3D Animation Variables
+$perspective: 1000px;
+$transition-3d: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+
+// Global 3D Container
+.hero,
+.work-process,
+.why-join,
+.solutions,
+.compliance,
+.testimonials,
+.mobile-app {
+  perspective: $perspective;
+  transform-style: preserve-3d;
+}
+
 .hero {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 6rem 0;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  min-height: 600px;
+  
+  // 3D Background Elements
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: float3d 20s infinite linear;
+    transform: translateZ(-100px) rotateX(60deg);
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    transform: translateZ(-50px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.3;
+  }
+  
+  .container {
+    position: relative;
+    z-index: 1;
+    transform-style: preserve-3d;
+  }
 }
 
 .hero h1 {
@@ -10,6 +75,9 @@
   font-weight: 700;
   margin-bottom: 1.5rem;
   line-height: 1.2;
+  transform-style: preserve-3d;
+  animation: fadeInUp3d 1s ease-out;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .hero-subtitle {
@@ -19,6 +87,8 @@
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  transform-style: preserve-3d;
+  animation: fadeInUp3d 1s ease-out 0.2s both;
 }
 
 .hero-buttons {
@@ -26,11 +96,61 @@
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+  transform-style: preserve-3d;
+  animation: fadeInUp3d 1s ease-out 0.4s both;
+  
+  .btn {
+    transform-style: preserve-3d;
+    transition: $transition-3d, box-shadow 0.3s ease;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      transform: translateZ(-10px) scale(0.9);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    &:hover {
+      transform: translateY(-5px) translateZ(20px) rotateX(5deg);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+      
+      &::before {
+        opacity: 1;
+      }
+    }
+    
+    &:active {
+      transform: translateY(-2px) translateZ(10px);
+    }
+  }
 }
 
 .work-process {
   padding: 6rem 0;
   background: #f8f9fa;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(102, 126, 234, 0.03) 50%, transparent 70%);
+    transform: translateZ(-200px) rotateY(45deg);
+    animation: slide3d 15s infinite linear;
+    pointer-events: none;
+  }
 }
 
 .section-header {
@@ -74,6 +194,46 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
   position: relative;
+  transform-style: preserve-3d;
+  transition: $transition-3d, box-shadow 0.6s ease;
+  cursor: pointer;
+  opacity: 0;
+  animation: fadeInScale3d 0.8s ease-out forwards;
+  
+  @for $i from 1 through 4 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 14px;
+    opacity: 0;
+    transform: translateZ(-20px) scale(0.95);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    z-index: -1;
+  }
+  
+  &:hover {
+    transform: translateY(-15px) translateZ(30px) rotateX(5deg) rotateY(-5deg);
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+    
+    &::before {
+      opacity: 1;
+      transform: translateZ(-10px) scale(1);
+    }
+    
+    .step-number {
+      transform: translateZ(20px) rotateY(360deg) scale(1.1);
+    }
+  }
 }
 
 .step-number {
@@ -88,6 +248,20 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 auto 1.5rem auto;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    opacity: 0.3;
+    transform: translateZ(-10px) scale(0.8);
+    transition: transform 0.6s ease;
+  }
 }
 
 .step-card h3 {
@@ -130,17 +304,55 @@
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: $transition-3d, box-shadow 0.6s ease;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  position: relative;
+  opacity: 0;
+  animation: fadeInRotate3d 0.8s ease-out forwards;
+  
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.05}s;
+    }
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    opacity: 0;
+    transform: translateZ(-30px) scale(0.9);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    z-index: -1;
+  }
 }
 
 .feature-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-10px) translateZ(25px) rotateX(8deg) rotateY(5deg);
+  box-shadow: 0 15px 50px rgba(102, 126, 234, 0.25);
+  
+  &::after {
+    opacity: 1;
+    transform: translateZ(-10px) scale(1);
+  }
+  
+  .feature-icon {
+    transform: translateZ(20px) rotateY(360deg) scale(1.2);
+  }
 }
 
 .feature-icon {
   font-size: 2.5rem;
   margin-bottom: 0.75rem;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  display: inline-block;
 }
 
 .feature-image {
@@ -189,16 +401,55 @@
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: $transition-3d, box-shadow 0.6s ease;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  position: relative;
+  opacity: 0;
+  animation: fadeInFlip3d 0.8s ease-out forwards;
+  
+  @for $i from 1 through 4 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+    transform: translateZ(-25px) scale(0.95);
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    z-index: -1;
+  }
 }
 
 .solution-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-12px) translateZ(35px) rotateX(-8deg) rotateY(8deg);
+  box-shadow: 0 25px 70px rgba(102, 126, 234, 0.3);
+  
+  &::before {
+    opacity: 1;
+    transform: translateZ(-5px) scale(1);
+  }
+  
+  .solution-icon {
+    transform: translateZ(25px) rotateZ(360deg) scale(1.15);
+  }
 }
 
 .solution-icon {
   font-size: 3rem;
   margin-bottom: 1rem;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  display: inline-block;
 }
 
 .solution-card h3 {
@@ -241,11 +492,52 @@
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   text-align: center;
+  transform-style: preserve-3d;
+  transition: $transition-3d, box-shadow 0.6s ease;
+  cursor: pointer;
+  position: relative;
+  opacity: 0;
+  animation: fadeInSlide3d 0.8s ease-out forwards;
+  
+  @for $i from 1 through 4 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    opacity: 0;
+    transform: translateZ(-20px) scale(0.9);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    z-index: -1;
+  }
+  
+  &:hover {
+    transform: translateY(-10px) translateZ(30px) rotateX(10deg);
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.25);
+    
+    &::after {
+      opacity: 0.2;
+      transform: translateZ(-5px) scale(1);
+    }
+    
+    .compliance-icon {
+      transform: translateZ(20px) rotateY(180deg) scale(1.2);
+    }
+  }
 }
 
 .compliance-icon {
   font-size: 2.5rem;
   margin-bottom: 1rem;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  display: inline-block;
 }
 
 .compliance-card h3 {
@@ -284,6 +576,43 @@
   padding: 2rem;
   border-radius: 12px;
   border-left: 4px solid #667eea;
+  transform-style: preserve-3d;
+  transition: $transition-3d, box-shadow 0.6s ease;
+  cursor: pointer;
+  position: relative;
+  opacity: 0;
+  animation: fadeInRotateY3d 0.8s ease-out forwards;
+  
+  @for $i from 1 through 5 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.08}s;
+    }
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+    transform: translateZ(-30px) scale(0.95);
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    z-index: -1;
+  }
+  
+  &:hover {
+    transform: translateY(-8px) translateZ(25px) rotateY(-5deg);
+    box-shadow: 0 15px 50px rgba(102, 126, 234, 0.2);
+    
+    &::before {
+      opacity: 1;
+      transform: translateZ(-10px) scale(1);
+    }
+  }
 }
 
 .testimonial-content p {
@@ -381,6 +710,15 @@
   padding: 20px;
   margin: 0 auto;
   position: relative;
+  transform-style: preserve-3d;
+  transition: $transition-3d;
+  animation: floatPhone3d 3s ease-in-out infinite;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  
+  &:hover {
+    transform: translateZ(50px) rotateY(15deg) rotateX(5deg);
+    animation-play-state: paused;
+  }
 }
 
 .phone-screen {
@@ -498,5 +836,207 @@
   .features-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+  }
+}
+
+// 3D Keyframe Animations
+@keyframes float3d {
+  0%, 100% {
+    transform: translateZ(-100px) rotateX(60deg) translateY(0);
+  }
+  50% {
+    transform: translateZ(-100px) rotateX(60deg) translateY(-20px);
+  }
+}
+
+@keyframes slide3d {
+  0% {
+    transform: translateZ(-200px) rotateY(45deg) translateX(-100%);
+  }
+  100% {
+    transform: translateZ(-200px) rotateY(45deg) translateX(100%);
+  }
+}
+
+@keyframes fadeInUp3d {
+  from {
+    opacity: 0;
+    transform: translateY(30px) translateZ(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+@keyframes fadeInScale3d {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateZ(-100px) rotateX(20deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateZ(0) rotateX(0);
+  }
+}
+
+@keyframes fadeInRotate3d {
+  from {
+    opacity: 0;
+    transform: rotateY(-90deg) translateZ(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0) translateZ(0);
+  }
+}
+
+@keyframes fadeInFlip3d {
+  from {
+    opacity: 0;
+    transform: rotateX(90deg) translateZ(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: rotateX(0) translateZ(0);
+  }
+}
+
+@keyframes fadeInSlide3d {
+  from {
+    opacity: 0;
+    transform: translateX(-50px) translateZ(-50px) rotateY(20deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateZ(0) rotateY(0);
+  }
+}
+
+@keyframes fadeInRotateY3d {
+  from {
+    opacity: 0;
+    transform: rotateY(90deg) translateZ(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0) translateZ(0);
+  }
+}
+
+@keyframes floatPhone3d {
+  0%, 100% {
+    transform: translateY(0) translateZ(0) rotateY(0);
+  }
+  25% {
+    transform: translateY(-10px) translateZ(20px) rotateY(5deg);
+  }
+  50% {
+    transform: translateY(-5px) translateZ(10px) rotateY(0);
+  }
+  75% {
+    transform: translateY(-10px) translateZ(20px) rotateY(-5deg);
+  }
+}
+
+// Parallax effect for sections
+.parallax-section {
+  transform-style: preserve-3d;
+}
+
+// Scroll-triggered animations
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(50px) translateZ(-100px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+// Enhanced 3D button effects
+.btn {
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%) translateZ(-10px);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+  
+  &:hover::after {
+    width: 300px;
+    height: 300px;
+  }
+  
+  &:active {
+    transform: translateY(0) translateZ(5px) scale(0.98);
+  }
+}
+
+// 3D section backgrounds
+.work-process,
+.solutions {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      linear-gradient(45deg, transparent 30%, rgba(102, 126, 234, 0.02) 50%, transparent 70%),
+      radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
+    transform: translateZ(-150px);
+    pointer-events: none;
+    animation: backgroundFloat3d 20s ease-in-out infinite;
+  }
+}
+
+@keyframes backgroundFloat3d {
+  0%, 100% {
+    transform: translateZ(-150px) translateY(0);
+  }
+  50% {
+    transform: translateZ(-150px) translateY(-20px);
+  }
+}
+
+// Mobile responsive 3D adjustments
+@media (max-width: 768px) {
+  .hero {
+    min-height: 500px;
+  }
+  
+  .step-card,
+  .feature-item,
+  .solution-card,
+  .compliance-card,
+  .testimonial-card {
+    &:hover {
+      transform: translateY(-8px) translateZ(15px);
+    }
+  }
+  
+  .phone-mockup {
+    animation: floatPhone3d 3s ease-in-out infinite;
+    
+    &:hover {
+      transform: translateZ(20px) rotateY(5deg);
+    }
   }
 }
