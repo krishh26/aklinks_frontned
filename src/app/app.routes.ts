@@ -5,6 +5,7 @@ import { PaymentProofComponent } from './payment-proof/payment-proof.component';
 import { PaymentSystemComponent } from './payment-system/payment-system.component';
 import { PaymentRulesComponent } from './payment-rules/payment-rules.component';
 import { BlogComponent } from './blog/blog.component';
+import { BlogDetailComponent } from './blog/blog-detail/blog-detail.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
@@ -23,6 +24,7 @@ export const routes: Routes = [
   { path: 'payment-system', component: PaymentSystemComponent },
   { path: 'payment-rules', component: PaymentRulesComponent },
   { path: 'blog', component: BlogComponent },
+  { path: 'blog/detail', component: BlogDetailComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'contact-us', component: ContactUsComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },

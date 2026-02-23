@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { CurrencyService, Currency } from '../services/currency.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-publisher-rates',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './publisher-rates.component.html',
   styleUrls: ['./publisher-rates.component.css']
 })
