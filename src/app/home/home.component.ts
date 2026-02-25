@@ -155,7 +155,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         particlesMesh.rotation.y += 0.001;
       }
 
-      this.scene?.children.forEach((child, index) => {
+      this.scene?.children.forEach((child: THREE.Object3D, index: number) => {
         if (child instanceof THREE.Mesh && index > 0) {
           child.rotation.x += 0.005;
           child.rotation.y += 0.005;
