@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 })
 export class FooterComponent implements OnInit, OnDestroy {
   isAdminRoute = false;
+  currentYear = new Date().getFullYear();
   private routerSubscription?: Subscription;
 
   constructor(private router: Router) {}
