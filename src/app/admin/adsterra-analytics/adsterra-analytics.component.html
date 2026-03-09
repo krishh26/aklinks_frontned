@@ -1,0 +1,216 @@
+<div class="dashboard-container" [class.sidebar-closed]="!isSidebarOpen">
+  <app-sidebar [isOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-sidebar>
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
+
+  <main class="main-content">
+    <app-admin-header [isSidebarOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-admin-header>
+
+    <section class="adsterra-section animate-on-load">
+      <nav class="breadcrumbs">
+        <a routerLink="/admin/dashboard" class="breadcrumb-link">Home</a>
+        <span class="breadcrumb-separator">></span>
+        <span class="breadcrumb-current">Adsterra Analytics</span>
+      </nav>
+
+      <div class="page-header">
+        <h1 class="page-title">Adsterra Analytics</h1>
+        <p class="page-subtitle">View domains, placements, SmartLinks, and statistics from your Adsterra publisher account.</p>
+        <a routerLink="/admin/settings/adsterra-api" class="settings-link">Configure API Key</a>
+      </div>
+
+      <div class="error-banner" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="tabs-container">
+        <div class="tabs">
+          <button class="tab" [class.active]="activeTab === 'domains'" (click)="setActiveTab('domains')">Domains</button>
+          <button class="tab" [class.active]="activeTab === 'placements'" (click)="setActiveTab('placements')">Placements</button>
+          <button class="tab" [class.active]="activeTab === 'smartlinks'" (click)="setActiveTab('smartlinks')">SmartLinks</button>
+          <button class="tab" [class.active]="activeTab === 'stats'" (click)="setActiveTab('stats')">Statistics</button>
+        </div>
+
+        <div class="tab-content">
+          <!-- Domains Tab -->
+          <div *ngIf="activeTab === 'domains'" class="tab-panel">
+            <div class="panel-header">
+              <h2>Your Domains (Websites)</h2>
+              <button class="refresh-btn" (click)="loadDomains()" [disabled]="isLoading">Refresh</button>
+            </div>
+            <div *ngIf="isLoading" class="loading-state">Loading domains...</div>
+            <div *ngIf="!isLoading && domains.length === 0" class="empty-state">No domains found. Add websites in your Adsterra panel.</div>
+            <div *ngIf="!isLoading && domains.length > 0" class="data-section">
+              <div class="domain-select-row">
+                <label>Select domain to view placements:</label>
+                <select [(ngModel)]="selectedDomainId" (ngModelChange)="onDomainSelect($event)" class="form-select">
+                  <option value="">-- Select Domain --</option>
+                  <option *ngFor="let d of domains" [value]="d.id || d.domain_id">{{ d.name || d.title || d.id }}</option>
+                </select>
+              </div>
+              <table class="data-table" *ngIf="domains.length > 0">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let d of domains">
+                    <td>{{ d.id || d.domain_id }}</td>
+                    <td>{{ d.name || d.title }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div *ngIf="selectedDomainId" class="domain-placements">
+                <h3>Placements for selected domain</h3>
+                <table class="data-table" *ngIf="domainPlacements.length > 0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name / Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let p of domainPlacements">
+                      <td>{{ p.id || p.placement_id }}</td>
+                      <td>{{ p.name || p.title || JSON.stringify(p) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p *ngIf="domainPlacements.length === 0" class="empty-inline">No placements for this domain.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Placements Tab -->
+          <div *ngIf="activeTab === 'placements'" class="tab-panel">
+            <div class="panel-header">
+              <h2>All Placements</h2>
+              <button class="refresh-btn" (click)="loadPlacements()" [disabled]="isLoading">Refresh</button>
+            </div>
+            <div *ngIf="isLoading" class="loading-state">Loading placements...</div>
+            <div *ngIf="!isLoading && placements.length === 0" class="empty-state">No placements found.</div>
+            <div *ngIf="!isLoading && placements.length > 0" class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Domain ID</th>
+                    <th>Name / Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let p of placements">
+                    <td>{{ p.id || p.placement_id }}</td>
+                    <td>{{ p.domain_id || p.domainId }}</td>
+                    <td>{{ p.name || p.title || '-' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SmartLinks Tab -->
+          <div *ngIf="activeTab === 'smartlinks'" class="tab-panel">
+            <div class="panel-header">
+              <h2>SmartLinks</h2>
+              <button class="refresh-btn" (click)="loadSmartLinks()" [disabled]="isLoading">Refresh</button>
+            </div>
+            <div *ngIf="isLoading" class="loading-state">Loading SmartLinks...</div>
+            <div *ngIf="!isLoading && smartLinks.length === 0" class="empty-state">No SmartLinks found.</div>
+            <div *ngIf="!isLoading && smartLinks.length > 0" class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>URL</th>
+                    <th>Traffic Type</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let s of smartLinks">
+                    <td>{{ s.id }}</td>
+                    <td>{{ s.title || s.alias }}</td>
+                    <td class="url-cell">
+                      <span class="url-text">{{ s.url }}</span>
+                      <button class="copy-btn" (click)="copyToClipboard(s.url)" title="Copy">Copy</button>
+                    </td>
+                    <td>{{ s.traffic_type }}</td>
+                    <td><span class="status-badge" [class.active]="s.status === 'Active'">{{ s.status }}</span></td>
+                    <td>-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Statistics Tab -->
+          <div *ngIf="activeTab === 'stats'" class="tab-panel">
+            <div class="panel-header">
+              <h2>Statistics</h2>
+            </div>
+            <div class="stats-filters">
+              <div class="filter-row">
+                <div class="form-group">
+                  <label>Start Date</label>
+                  <input type="date" [(ngModel)]="statsStartDate" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label>Finish Date</label>
+                  <input type="date" [(ngModel)]="statsFinishDate" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label>Group By</label>
+                  <select [(ngModel)]="statsGroupBy" class="form-select">
+                    <option value="date">Date</option>
+                    <option value="domain">Domain</option>
+                    <option value="placement">Placement</option>
+                    <option value="country">Country</option>
+                    <option value="placement_sub_id">Placement Sub ID</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Domain ID (optional)</label>
+                  <input type="text" [(ngModel)]="statsDomainId" class="form-input" placeholder="Filter by domain" />
+                </div>
+                <div class="form-group">
+                  <label>Placement ID (optional)</label>
+                  <input type="text" [(ngModel)]="statsPlacementId" class="form-input" placeholder="Filter by placement" />
+                </div>
+                <div class="form-group">
+                  <label>Country (optional)</label>
+                  <input type="text" [(ngModel)]="statsCountry" class="form-input" placeholder="e.g. US" />
+                </div>
+              </div>
+              <button class="load-stats-btn" (click)="loadStats()" [disabled]="isLoading">Load Statistics</button>
+            </div>
+            <div *ngIf="isLoading" class="loading-state">Loading statistics...</div>
+            <div *ngIf="!isLoading && statsItems.length > 0" class="table-wrapper">
+              <table class="data-table stats-table">
+                <thead>
+                  <tr>
+                    <th *ngFor="let col of getStatsColumns()">{{ col | titlecase }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of statsItems">
+                    <td *ngFor="let col of getStatsColumns()">
+                      <span *ngIf="col === 'revenue' || col === 'cpm'">{{ formatCurrency(row[col]) }}</span>
+                      <span *ngIf="col !== 'revenue' && col !== 'cpm'">{{ row[col] }}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="!isLoading && activeTab === 'stats' && statsItems.length === 0 && !errorMessage" class="empty-state">
+              Set filters and click "Load Statistics" to fetch data.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

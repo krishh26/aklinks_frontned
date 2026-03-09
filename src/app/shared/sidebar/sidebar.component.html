@@ -100,6 +100,12 @@
             <span class="nav-chevron">›</span>
           </a>
         </li>
+        <li class="nav-item" *ngIf="isAdminRole">
+          <a routerLink="/admin/adsterra-analytics" routerLinkActive="active" class="nav-link">
+            Adsterra Analytics
+            <span class="nav-chevron">›</span>
+          </a>
+        </li>
       </ul>
     </div>
 
@@ -256,6 +262,11 @@
             <li class="nav-item" *ngIf="isAdminRole">
               <a routerLink="/admin/settings/refer-earn-setting" routerLinkActive="active" class="nav-link submenu-link">
                 Refer & Earn Settings
+              </a>
+            </li>
+            <li class="nav-item" *ngIf="isAdminRole">
+              <a routerLink="/admin/settings/adsterra-api" routerLinkActive="active" class="nav-link submenu-link">
+                Adsterra API
               </a>
             </li>
           </ul>

@@ -1,0 +1,80 @@
+<div class="dashboard-container" [class.sidebar-closed]="!isSidebarOpen">
+  <app-sidebar [isOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-sidebar>
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
+
+  <main class="main-content">
+    <app-admin-header [isSidebarOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-admin-header>
+
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <nav class="breadcrumbs">
+          <a routerLink="/admin/dashboard" class="breadcrumb-link">Home</a>
+          <span class="breadcrumb-separator">></span>
+          <a routerLink="/admin/settings/profile" class="breadcrumb-link">Settings</a>
+          <span class="breadcrumb-separator">></span>
+          <span class="breadcrumb-current">Adsterra API</span>
+        </nav>
+        <h1 class="page-title">Adsterra API Settings</h1>
+        <p class="page-subtitle">Configure your Adsterra Publishers API key to fetch domains, placements, statistics, and SmartLinks.</p>
+      </div>
+    </header>
+
+    <div class="dashboard-content animate-on-load">
+      <div class="settings-card">
+        <h2 class="card-title">API Key Configuration</h2>
+        <p class="card-description">
+          Get your API token from the <a href="https://beta.publishers.adsterra.com/api-token" target="_blank" rel="noopener noreferrer">API page</a> in your Adsterra publisher panel. 
+          The API key is stored securely on the server and used to proxy requests to Adsterra.
+        </p>
+
+        <div *ngIf="isLoading" class="loading-state">Loading...</div>
+
+        <div *ngIf="!isLoading" class="api-key-section">
+          <div *ngIf="hasApiKey" class="api-key-status">
+            <span class="status-badge success">Configured</span>
+            <span class="masked-key">{{ maskedKey }}</span>
+            <button type="button" class="update-btn" (click)="toggleApiKeyInput()">
+              {{ showApiKeyInput ? 'Cancel' : 'Update Key' }}
+            </button>
+          </div>
+
+          <div *ngIf="!hasApiKey || showApiKeyInput" class="api-key-form">
+            <form (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                <label for="apiKey">Adsterra API Key</label>
+                <input
+                  type="password"
+                  id="apiKey"
+                  name="apiKey"
+                  [(ngModel)]="apiKey"
+                  class="form-input"
+                  placeholder="Enter your Adsterra API key"
+                  autocomplete="off"
+                />
+                <small class="form-hint">Only one valid token at a time. Generating a new token invalidates the previous one.</small>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="submit-btn" [disabled]="!apiKey?.trim() || isSaving">
+                  {{ isSaving ? 'Saving...' : 'Save API Key' }}
+                </button>
+                <button *ngIf="showApiKeyInput" type="button" class="cancel-btn" (click)="onCancel()">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3 class="info-title">API Documentation</h3>
+        <ul class="info-list">
+          <li><strong>Base URL:</strong> https://api3.adsterratools.com/publisher</li>
+          <li><strong>Rate Limit:</strong> 1200 requests per minute per user</li>
+          <li><strong>Endpoints:</strong> Domains, Placements, SmartLinks, Statistics</li>
+          <li><strong>Documentation:</strong> <a href="https://docs.adsterratools.com/public/v3/publishers-api/" target="_blank" rel="noopener noreferrer">Adsterra Publishers API v3</a></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>

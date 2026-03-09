@@ -1019,9 +1019,31 @@
   transition: color 0.3s ease;
 }
 
+.statistics-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .statistics-tabs {
   display: flex;
   gap: 0.5rem;
+}
+
+.stats-loading {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.adsterra-link {
+  font-size: 0.875rem;
+  color: var(--gradient-start);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .tab-button {
