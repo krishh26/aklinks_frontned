@@ -22,6 +22,7 @@ export class AdsterraAnalyticsComponent implements OnInit, OnDestroy {
   activeTab: TabType = 'domains';
   isLoading = false;
   errorMessage = '';
+  JSON = JSON; // Expose JSON for template use
 
   // Data
   domains: any[] = [];

@@ -54,7 +54,7 @@
                 <small class="form-hint">Only one valid token at a time. Generating a new token invalidates the previous one.</small>
               </div>
               <div class="form-actions">
-                <button type="submit" class="submit-btn" [disabled]="!apiKey?.trim() || isSaving">
+                <button type="submit" class="submit-btn" [disabled]="!apiKey.trim() || isSaving">
                   {{ isSaving ? 'Saving...' : 'Save API Key' }}
                 </button>
                 <button *ngIf="showApiKeyInput" type="button" class="cancel-btn" (click)="onCancel()">
