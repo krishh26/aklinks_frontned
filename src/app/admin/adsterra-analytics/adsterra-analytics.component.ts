@@ -169,6 +169,7 @@ export class AdsterraAnalyticsComponent implements OnInit, OnDestroy {
       })
       .subscribe({
         next: (res) => {
+          console.log('[AdsterraAnalyticsComponent] loadStats response ----', res);
           if (res.status === 'success') {
             const data = res.data;
             this.statsItems = Array.isArray(data) ? data : (data?.items || data?.stats || []);

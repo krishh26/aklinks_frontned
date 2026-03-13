@@ -73,12 +73,15 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     const startDate = weekAgo.toISOString().split('T')[0];
     const finishDate = today.toISOString().split('T')[0];
 
+    console.log('[Dashboard] Loading Adsterra stats', { startDate, finishDate });
+
     this.adsterraService.getStatistics({
       start_date: startDate,
       finish_date: finishDate,
       group_by: 'date'
     }).subscribe({
       next: (res) => {
+        console.log('[Dashboard] Adsterra stats response', res);
         if (res.status === 'success' && res.data) {
           const items = Array.isArray(res.data) ? res.data : (res.data?.items || res.data?.stats || []);
           this.processAdsterraStats(items);
@@ -88,7 +91,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
         this.adsterraStatsLoaded = true;
         this.isAdsterraLoading = false;
       },
-      error: () => {
+      error: (err) => {
+        console.error('[Dashboard] Adsterra stats error', err);
         this.adsterraStatsLoaded = true;
         this.isAdsterraLoading = false;
       }
