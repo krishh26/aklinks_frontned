@@ -56,7 +56,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
         this.chart.update();
       }
     });
-    this.loadAdsterraStats();
+    // Temporarily disabled to debug page unresponsive issue.
+    // this.loadAdsterraStats();
   }
 
   private isAdmin(): boolean {
@@ -193,10 +194,11 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    // Temporarily disabled chart initialization to debug page unresponsive issue.
     // Small delay to ensure DOM is fully rendered
-    setTimeout(() => {
-      this.initChart();
-    }, 100);
+    // setTimeout(() => {
+    //   this.initChart();
+    // }, 100);
   }
 
   ngOnDestroy(): void {
