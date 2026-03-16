@@ -156,7 +156,10 @@ html {
 html, body {
   width: 100%;
   height: 100%;
-  overflow-x: hidden !important;
+  /* Allow horizontal swipe/scroll (e.g. wide tables, admin layouts).
+     We still hide scrollbars visually via the rules above, so this
+     won't show a bar but will let the user move the page. */
+  overflow-x: auto;
   overflow-y: auto !important; /* Allow vertical scrolling */
   margin: 0;
   padding: 0;

@@ -152,8 +152,8 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
   }
 
   copyToClipboard(shortLink: string): void {
-    // const fullShortLink = `${window.location.origin}/${shortLink}`;
-    const fullShortLink = `${'http://localhost:3000'}/${shortLink}`;
+    // const fullShortLink = `${'http://ads.aklinks.in'}/${shortLink}`;
+    const fullShortLink = `${'http://ads.aklinks.in'}/${shortLink}`;
     navigator.clipboard.writeText(fullShortLink).then(() => {
       this.toastService.showSuccess('Link copied to clipboard!');
     }).catch(() => {
@@ -162,8 +162,8 @@ export class ShortenLinkComponent implements OnInit, OnDestroy {
   }
 
   getFullShortLink(shortLink: string): string {
-    return `${window.location.origin}/${shortLink}`;
-    // return `${'http://localhost:3000'}/${shortLink}`;
+   // return `${'http://ads.aklinks.in'}/${shortLink}`;
+     return `${'http://ads.aklinks.in'}/${shortLink}`;
   }
 
   formatDate(dateString: string): string {

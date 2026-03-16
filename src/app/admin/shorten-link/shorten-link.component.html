@@ -7,8 +7,13 @@
 
   <!-- Main Content -->
   <main class="main-content">
-    <!-- Admin Header -->
-    <app-admin-header [isSidebarOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-admin-header>
+    <!-- Admin Header (same as dashboard, with Shorten Link button) -->
+    <app-admin-header [isSidebarOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()">
+      <button class="shorten-link-btn" routerLink="/admin/shorten-link">
+        Shorten Link
+        <span class="plus-icon">+</span>
+      </button>
+    </app-admin-header>
 
     <!-- Shorten Link Content -->
     <section class="shorten-link-section animate-on-load">

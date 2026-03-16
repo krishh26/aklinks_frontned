@@ -130,7 +130,7 @@ export class HiddenLinksComponent implements OnInit, OnDestroy {
   }
 
   copyToClipboard(shortLink: string): void {
-    const fullShortLink = `${window.location.origin}/${shortLink}`;
+    const fullShortLink = `${'http://ads.aklinks.in'}/${shortLink}`;
     navigator.clipboard.writeText(fullShortLink).then(() => {
       this.toastService.showSuccess('Link copied to clipboard!');
     }).catch(() => {
@@ -139,7 +139,7 @@ export class HiddenLinksComponent implements OnInit, OnDestroy {
   }
 
   getFullShortLink(shortLink: string): string {
-    return `${window.location.origin}/${shortLink}`;
+    return `${'http://ads.aklinks.in'}/${shortLink}`;
   }
 
   formatDate(dateString: string): string {
