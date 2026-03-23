@@ -16,7 +16,6 @@ export class SidebarComponent implements OnInit, OnChanges {
   @Output() sidebarToggle = new EventEmitter<void>();
   
   currentTheme: Theme = 'light';
-  isUserMenuOpen = false;
   isSettingsMenuOpen = false;
   isAdminRole: boolean = false;
   isUserRole: boolean = false;
@@ -38,9 +37,8 @@ export class SidebarComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Close user menu when sidebar closes
+    // Close menus when sidebar closes
     if (changes['isOpen'] && !changes['isOpen'].currentValue) {
-      this.isUserMenuOpen = false;
       this.isSettingsMenuOpen = false;
     }
   }
@@ -67,10 +65,6 @@ export class SidebarComponent implements OnInit, OnChanges {
 
   toggleSidebar(): void {
     this.sidebarToggle.emit();
-  }
-
-  toggleUserMenu(): void {
-    this.isUserMenuOpen = !this.isUserMenuOpen;
   }
 
   toggleSettingsMenu(): void {

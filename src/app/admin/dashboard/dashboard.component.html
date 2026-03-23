@@ -8,20 +8,7 @@
   <!-- Main Content -->
   <main class="main-content">
     <!-- Admin Header -->
-    <app-admin-header [isSidebarOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()">
-      <button class="shorten-link-btn" (click)="navigateToShortenLink()">
-        Shorten Link
-        <span class="plus-icon">+</span>
-      </button>
-    </app-admin-header>
-
-    <!-- Top Bar -->
-    <header class="top-bar">
-      <div class="top-bar-left">
-        <h1 class="page-title">Dashboard</h1>
-        <p class="page-subtitle">Welcome back! Here's what's happening with your links.</p>
-      </div>
-    </header>
+    <app-admin-header [isSidebarOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-admin-header>
 
     <!-- Dashboard Content -->
     <div class="dashboard-content animate-on-load">

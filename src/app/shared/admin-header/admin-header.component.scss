@@ -49,6 +49,32 @@
   gap: 1.5rem;
 }
 
+.shorten-link-btn {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  border: none;
+  color: white;
+  padding: 0.875rem 1.75rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px var(--shadow);
+}
+
+.shorten-link-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow-hover);
+}
+
+.plus-icon {
+  font-size: 1.0375rem;
+  font-weight: 700;
+}
+
 .sidebar-toggle-header-btn {
   background: rgba(255, 255, 255, 0.1);
   border: none;
@@ -347,9 +373,191 @@
   font-weight: 500;
 }
 
+.shorten-link-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 18, 35, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 4.5rem 1rem 1rem;
+  z-index: 10010;
+}
+
+.shorten-link-modal {
+  width: min(1120px, 100%);
+  max-height: calc(100vh - 6rem);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.shorten-link-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.shorten-link-modal-header h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.125rem;
+}
+
+.modal-close-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+.shorten-link-modal-body {
+  overflow: auto;
+  padding: 1.25rem;
+}
+
+.form-card,
+.links-container {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.links-container {
+  margin-top: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.form-input {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border-radius: 10px;
+  padding: 0.75rem 0.875rem;
+  outline: none;
+}
+
+.submit-btn,
+.copy-btn,
+.delete-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 0.625rem 0.875rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.submit-btn {
+  margin-top: 0.9rem;
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: #fff;
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.section-title {
+  margin: 0 0 0.75rem;
+  color: var(--text-primary);
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.links-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.links-table th,
+.links-table td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.7rem 0.5rem;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+.original-link,
+.short-link {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.copy-btn {
+  background: rgba(76, 175, 80, 0.18);
+  color: #2f9f45;
+}
+
+.delete-btn {
+  background: rgba(231, 76, 60, 0.18);
+  color: #d9392b;
+}
+
+.empty-state p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.message-container {
+  margin-bottom: 0.875rem;
+}
+
+.error-message,
+.success-message {
+  border-radius: 10px;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.error-message {
+  background: rgba(231, 76, 60, 0.15);
+  color: #d9392b;
+}
+
+.success-message {
+  background: rgba(76, 175, 80, 0.15);
+  color: #2f9f45;
+}
+
 @media (max-width: 1024px) {
   .admin-header-inner {
     padding: 0.625rem 1rem;
+  }
+
+  .shorten-link-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8375rem;
   }
 
   .header-right {
@@ -359,5 +567,32 @@
   .header-icon {
     width: 35px;
     height: 35px;
+  }
+
+  .shorten-link-modal {
+    max-height: calc(100vh - 5.5rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .header-left {
+    gap: 0.75rem;
+  }
+
+  .shorten-link-btn {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+
+  .shorten-link-btn .plus-icon {
+    display: none;
+  }
+
+  .shorten-link-modal-backdrop {
+    padding: 4rem 0.5rem 0.5rem;
+  }
+
+  .shorten-link-modal-body {
+    padding: 0.875rem;
   }
 }

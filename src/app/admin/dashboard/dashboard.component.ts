@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { CurrencyService } from '../../services/currency.service';
 import { AdsterraService } from '../../services/adsterra/adsterra.service';
@@ -41,7 +41,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   activeCard: 'earning' | 'cpm' | 'views' | 'referral' | null = null;
 
   constructor(
-    private router: Router,
     private localStorageService: LocalStorageService,
     private currencyService: CurrencyService,
     private adsterraService: AdsterraService
@@ -331,7 +330,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.activeCard = this.activeCard === card ? null : card;
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onResize(): void {
     this.checkScreenSize();
   }
@@ -351,8 +350,5 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isSidebarOpen = false;
   }
 
-  navigateToShortenLink() {
-    this.router.navigate(['/admin/shorten-link']);
-  }
 }
 

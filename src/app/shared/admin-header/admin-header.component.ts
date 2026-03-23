@@ -1,15 +1,18 @@
 import { Component, OnInit, OnDestroy, HostListener, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ThemeService, Theme } from '../../services/theme.service';
 import { CurrencyService, Currency } from '../../services/currency.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { Subscription } from 'rxjs';
+import { LinkService, Link } from '../../services/link/link.service';
+import { ToastService } from '../../services/toast/toast.service';
 
 @Component({
   selector: 'app-admin-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   template: `
     <header class="admin-header">
       <div class="admin-header-inner">
@@ -18,6 +21,10 @@ import { Subscription } from 'rxjs';
           <span class="hamburger-line"></span>
           <span class="hamburger-line"></span>
           <span class="hamburger-line"></span>
+        </button>
+        <button class="shorten-link-btn" (click)="navigateToShortenLink()">
+          Shorten Link
+          <span class="plus-icon">+</span>
         </button>
         <ng-content></ng-content>
       </div>
@@ -98,6 +105,91 @@ import { Subscription } from 'rxjs';
       </div>
       </div>
     </header>
+
+    <div class="shorten-link-modal-backdrop" *ngIf="isShortenLinkModalOpen" (click)="closeShortenLinkModal()">
+      <div class="shorten-link-modal" (click)="$event.stopPropagation()">
+        <div class="shorten-link-modal-header">
+          <h2>Shorten Link</h2>
+          <button type="button" class="modal-close-btn" (click)="closeShortenLinkModal()">×</button>
+        </div>
+
+        <div class="shorten-link-modal-body">
+          <div class="message-container" *ngIf="errorMessage || successMessage">
+            <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+            <div class="success-message" *ngIf="successMessage">{{ successMessage }}</div>
+          </div>
+
+          <div class="form-card">
+            <form (ngSubmit)="onSubmit()" #shortenLinkForm="ngForm">
+              <div class="form-group">
+                <label for="modalOriginalLink" class="form-label">Enter URL to Shorten</label>
+                <input
+                  type="url"
+                  id="modalOriginalLink"
+                  name="originalLink"
+                  [(ngModel)]="originalLink"
+                  class="form-input"
+                  placeholder="https://example.com/very-long-url"
+                  required>
+              </div>
+
+              <button type="submit" class="submit-btn" [disabled]="!shortenLinkForm.valid || isLoading">
+                <span *ngIf="!isLoading">Shorten Link</span>
+                <span *ngIf="isLoading">Generating...</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="links-container">
+            <h3 class="section-title">Your Shortened Links</h3>
+
+            <div class="table-container" *ngIf="links.length > 0; else emptyLinks">
+              <table class="links-table">
+                <thead>
+                  <tr>
+                    <th>Original Link</th>
+                    <th>Short Link</th>
+                    <th>Clicks</th>
+                    <th>Created Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let link of links">
+                    <td class="link-cell">
+                      <a [href]="link.originalLink" target="_blank" class="original-link">
+                        {{ link.originalLink.length > 50 ? (link.originalLink | slice:0:50) + '...' : link.originalLink }}
+                      </a>
+                    </td>
+                    <td class="link-cell">
+                      <span class="short-link">{{ getFullShortLink(link.shortLink) }}</span>
+                    </td>
+                    <td>{{ link.clicks }}</td>
+                    <td>{{ formatDate(link.createdAt) }}</td>
+                    <td>
+                      <div class="action-buttons">
+                        <button class="copy-btn" (click)="copyToClipboard(link.shortLink)" title="Copy Link">
+                          Copy
+                        </button>
+                        <button class="delete-btn" (click)="deleteLink(link)" title="Delete Link">
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <ng-template #emptyLinks>
+              <div class="empty-state">
+                <p>No shortened links yet. Create your first shortened link above!</p>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
   styleUrls: ['./admin-header.component.scss']
 })
@@ -121,12 +213,20 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
   profileDropdownRight = 24;
   private themeSubscription?: Subscription;
   private currencySubscription?: Subscription;
+  isShortenLinkModalOpen = false;
+  originalLink: string = '';
+  isLoading: boolean = false;
+  links: Link[] = [];
+  errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(
     private themeService: ThemeService,
     private currencyService: CurrencyService,
     private router: Router,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private linkService: LinkService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -229,6 +329,21 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/admin/settings/profile']);
   }
 
+  openShortenLinkModal(): void {
+    this.isShortenLinkModalOpen = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.loadLinks();
+  }
+
+  closeShortenLinkModal(): void {
+    this.isShortenLinkModalOpen = false;
+  }
+
+  navigateToShortenLink(): void {
+    this.openShortenLinkModal();
+  }
+
   logout(): void {
     this.isProfileDropdownOpen = false;
     this.localStorageService.clearStorage();
@@ -249,6 +364,154 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
       this.isCurrencyDropdownOpen = false;
       this.isThemeDropdownOpen = false;
       this.isProfileDropdownOpen = false;
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
+    if (this.isShortenLinkModalOpen) {
+      this.closeShortenLinkModal();
+    }
+  }
+
+  onSubmit(): void {
+    const token = this.localStorageService.getLoggerToken();
+    if (!token || token === 'null' || token === 'undefined') {
+      this.toastService.showError('Please login to shorten links');
+      setTimeout(() => {
+        this.router.navigate(['/auth/login']);
+      }, 2000);
+      return;
+    }
+
+    if (!this.originalLink.trim()) {
+      this.toastService.showError('Please enter a valid URL');
+      return;
+    }
+
+    try {
+      new URL(this.originalLink);
+    } catch (e) {
+      if (!this.originalLink.startsWith('http://') && !this.originalLink.startsWith('https://')) {
+        this.originalLink = 'https://' + this.originalLink;
+      } else {
+        this.toastService.showError('Please enter a valid URL');
+        return;
+      }
+    }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    this.linkService.createLink(this.originalLink).subscribe({
+      next: (response) => {
+        if (response.status === 'success') {
+          this.toastService.showSuccess('Link shortened successfully!');
+          this.originalLink = '';
+          this.loadLinks();
+        } else {
+          const errorMsg = response.message || 'Failed to shorten link';
+          this.errorMessage = errorMsg;
+          this.toastService.showError(errorMsg);
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        if (error.status === 401 || error.status === 403) {
+          this.toastService.showError('Session expired. Please login again.');
+          setTimeout(() => {
+            this.localStorageService.clearStorage();
+            this.router.navigate(['/auth/login']);
+          }, 2000);
+        } else {
+          const errorMsg = error.error?.message || 'Failed to shorten link. Please try again.';
+          this.errorMessage = errorMsg;
+          this.toastService.showError(errorMsg);
+        }
+        this.isLoading = false;
+      }
+    });
+  }
+
+  loadLinks(): void {
+    const token = this.localStorageService.getLoggerToken();
+    if (!token || token === 'null' || token === 'undefined') {
+      return;
+    }
+
+    this.linkService.getAllLinks().subscribe({
+      next: (response) => {
+        if (response.status === 'success') {
+          this.links = response.data || [];
+        }
+      },
+      error: (error) => {
+        if (error.status === 401 || error.status === 403) {
+          this.localStorageService.clearStorage();
+          this.router.navigate(['/auth/login']);
+        } else {
+          console.error('Failed to load links:', error);
+        }
+      }
+    });
+  }
+
+  copyToClipboard(shortLink: string): void {
+    const fullShortLink = `${'http://ads.aklinks.in'}/${shortLink}`;
+    navigator.clipboard.writeText(fullShortLink).then(() => {
+      this.toastService.showSuccess('Link copied to clipboard!');
+    }).catch(() => {
+      this.toastService.showError('Failed to copy link');
+    });
+  }
+
+  getFullShortLink(shortLink: string): string {
+    return `${'http://ads.aklinks.in'}/${shortLink}`;
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+
+  deleteLink(link: Link): void {
+    if (confirm(`Are you sure you want to delete this link?\n\nOriginal: ${link.originalLink.substring(0, 50)}...\nShort: ${this.getFullShortLink(link.shortLink)}`)) {
+      this.isLoading = true;
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      this.linkService.deleteLink(link._id).subscribe({
+        next: (response) => {
+          if (response.status === 'success') {
+            this.toastService.showSuccess('Link deleted successfully!');
+            this.loadLinks();
+          } else {
+            const errorMsg = response.message || 'Failed to delete link';
+            this.errorMessage = errorMsg;
+            this.toastService.showError(errorMsg);
+          }
+          this.isLoading = false;
+        },
+        error: (error) => {
+          if (error.status === 401 || error.status === 403) {
+            this.toastService.showError('Session expired. Please login again.');
+            setTimeout(() => {
+              this.localStorageService.clearStorage();
+              this.router.navigate(['/auth/login']);
+            }, 2000);
+          } else {
+            const errorMsg = error.error?.message || 'Failed to delete link. Please try again.';
+            this.errorMessage = errorMsg;
+            this.toastService.showError(errorMsg);
+          }
+          this.isLoading = false;
+        }
+      });
     }
   }
 }
