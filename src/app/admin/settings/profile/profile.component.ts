@@ -7,6 +7,7 @@ import { CurrencyService } from '../../../services/currency.service';
 import { SidebarComponent } from '../../../shared/sidebar/sidebar.component';
 import { AdminHeaderComponent } from '../../../shared/admin-header/admin-header.component';
 import { ToastService } from '../../../services/toast/toast.service';
+import { AuthService } from '../../../services/auth/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -18,6 +19,7 @@ import { Subscription } from 'rxjs';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   isSidebarOpen = false; // Will be set based on screen size
+  isProfileLoading = false;
 
   profileForm = {
     username: 'Time17',
@@ -62,19 +64,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
   withdrawalAccountDetails: string = '';
 
   private currencySubscription?: Subscription;
+  private originalProfileSnapshot: any = null;
 
   constructor(
     private router: Router,
     private localStorageService: LocalStorageService,
     private toastService: ToastService,
-    private currencyService: CurrencyService
+    private currencyService: CurrencyService,
+    private authService: AuthService
   ) {
     // Initialize sidebar state based on screen size
     this.checkScreenSize();
   }
 
   ngOnInit(): void {
-    // Load user profile data (you can fetch from API/localStorage)
     this.loadProfileData();
     
     this.currencySubscription = this.currencyService.currency$.subscribe(() => {
@@ -93,7 +96,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(): void {
+  onResize(_event?: Event): void {
     this.checkScreenSize();
   }
 
@@ -105,7 +108,43 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   loadProfileData(): void {
-    // Load profile data from localStorage or API
+    this.fetchProfileFromApi();
+  }
+
+  private fetchProfileFromApi(): void {
+    this.isProfileLoading = true;
+    this.authService.getUserProfile().subscribe({
+      next: (response) => {
+        const user = response?.data?.user;
+        if (response?.status === 'success' && user) {
+          this.applyUserProfileToForm(user);
+          this.localStorageService.setLogger(user);
+          this.localStorageService.setItem('userProfile', this.profileForm);
+          this.originalProfileSnapshot = {
+            profileForm: { ...this.profileForm },
+            selectedWithdrawalMethod: this.selectedWithdrawalMethod,
+            withdrawalAccountDetails: this.withdrawalAccountDetails
+          };
+        } else {
+          this.loadProfileFromLocalStorageFallback();
+          this.toastService.showError('Unable to load profile data from server.');
+        }
+        this.isProfileLoading = false;
+      },
+      error: (error) => {
+        this.isProfileLoading = false;
+        if (error?.status === 401 || error?.status === 403) {
+          this.localStorageService.clearStorage();
+          this.router.navigate(['/auth/login']);
+          return;
+        }
+        this.loadProfileFromLocalStorageFallback();
+        this.toastService.showError(error?.error?.message || 'Failed to load profile. Showing last saved data.');
+      }
+    });
+  }
+
+  private loadProfileFromLocalStorageFallback(): void {
     const savedProfile = this.localStorageService.getItem('userProfile');
     if (savedProfile) {
       this.profileForm = { ...this.profileForm, ...savedProfile };
@@ -117,6 +156,53 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (savedImage) {
       this.profileImageUrl = savedImage;
     }
+
+    this.originalProfileSnapshot = {
+      profileForm: { ...this.profileForm },
+      selectedWithdrawalMethod: this.selectedWithdrawalMethod,
+      withdrawalAccountDetails: this.withdrawalAccountDetails
+    };
+  }
+
+  private applyUserProfileToForm(user: any): void {
+    const firstName = user?.firstName || '';
+    const lastName = user?.lastName || '';
+    const fullName = user?.name || user?.fullName || '';
+
+    this.profileForm = {
+      ...this.profileForm,
+      username: user?.username || user?.userName || user?.name || this.profileForm.username,
+      email: user?.email || this.profileForm.email,
+      firstName: firstName || this.extractFirstName(fullName),
+      lastName: lastName || this.extractLastName(fullName),
+      phone: user?.phone || user?.mobile || '',
+      bio: user?.bio || '',
+      website: user?.website || '',
+      location: user?.location || user?.address || '',
+      withdrawalMethod: user?.withdrawalMethod || user?.paymentMethod || '',
+      withdrawalAccountDetails: user?.withdrawalAccountDetails || user?.paymentAccount || ''
+    };
+
+    this.selectedWithdrawalMethod = this.profileForm.withdrawalMethod || '';
+    this.withdrawalAccountDetails = this.profileForm.withdrawalAccountDetails || '';
+    if (user?.profileImage || user?.avatar || user?.image) {
+      this.profileImageUrl = user.profileImage || user.avatar || user.image;
+    }
+  }
+
+  private extractFirstName(fullName: string): string {
+    if (!fullName) {
+      return '';
+    }
+    return fullName.trim().split(' ')[0] || '';
+  }
+
+  private extractLastName(fullName: string): string {
+    if (!fullName) {
+      return '';
+    }
+    const parts = fullName.trim().split(' ').filter(Boolean);
+    return parts.length > 1 ? parts.slice(1).join(' ') : '';
   }
 
   toggleSidebar(): void {
@@ -168,7 +254,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   onCancel(): void {
-    // Reset to original values
+    if (this.originalProfileSnapshot) {
+      this.profileForm = { ...this.originalProfileSnapshot.profileForm };
+      this.selectedWithdrawalMethod = this.originalProfileSnapshot.selectedWithdrawalMethod;
+      this.withdrawalAccountDetails = this.originalProfileSnapshot.withdrawalAccountDetails;
+      return;
+    }
     this.loadProfileData();
   }
 
