@@ -248,8 +248,8 @@
               <button class="tab-button active">Table</button>
               <button class="tab-button">Top 10 Links</button>
             </div>
-            <span *ngIf="isAdsterraLoading" class="stats-loading">Loading Adsterra data...</span>
-            <a *ngIf="adsterraStatsLoaded && adsterraStatsRows.length > 0" routerLink="/admin/adsterra-analytics" class="adsterra-link">View full analytics →</a>
+            <span *ngIf="isDashboardLoading" class="stats-loading">Loading dashboard data...</span>
+            <a *ngIf="!isDashboardLoading && dashboardLoaded" routerLink="/admin/adsterra-analytics" class="adsterra-link">Adsterra analytics →</a>
           </div>
         </div>
         
@@ -272,6 +272,9 @@
                   <td>{{ formatCurrency(row.cpm) }}</td>
                   <td>{{ formatCurrency(row.earnings) }}</td>
                   <td>{{ formatCurrency(row.referrals) }}</td>
+                </tr>
+                <tr *ngIf="dashboardLoaded && !isDashboardLoading && getStatsTableRows().length === 0">
+                  <td colspan="5" class="statistics-empty">No link or referral activity in the last 14 days.</td>
                 </tr>
               </tbody>
             </table>

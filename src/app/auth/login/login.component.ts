@@ -54,11 +54,14 @@ export class LoginComponent {
       this.authService.loginUser(payload).subscribe({
         next: (response) => {
           this.isLoading = false;
+          console.log("responseresponseresponse", response, typeof response)
           if (response.status === 'success' && response.data) {
             // Save token and user data
             if (response.data.token) {
               this.localStorageService.setLoginToken({ token: response.data.token });
             }
+            console.log("response.data.user", response.data.user)
+            console.log("response.data", response.data)
             if (response.data.user) {
               this.localStorageService.setLogger(response.data.user);
               this.toastService.showSuccess('Login successful!');

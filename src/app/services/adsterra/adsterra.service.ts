@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, timeout, catchError, throwError } from 'rxjs';
 
 export enum AdsterraEndPoint {
   API_KEY = '/adsterra/api-key',
@@ -137,9 +137,20 @@ export class AdsterraService {
     if (params.placement_sub_id)
       httpParams = httpParams.set('placement_sub_id', params.placement_sub_id);
 
-    return this.httpClient.get<any>(this.baseUrl + AdsterraEndPoint.STATS, {
-      headers: this.getHeader(),
-      params: httpParams,
-    });
+    console.log('[AdsterraService] getStatistics params', params);
+
+    return this.httpClient
+      .get<any>(this.baseUrl + AdsterraEndPoint.STATS, {
+        headers: this.getHeader(),
+        params: httpParams,
+      })
+      .pipe(
+        // Give the backend (which already has its own 15s timeout) enough time.
+        timeout(20000),
+        catchError((err) => {
+          console.error('[AdsterraService] getStatistics error', err);
+          return throwError(() => err);
+        })
+      );
   }
 }

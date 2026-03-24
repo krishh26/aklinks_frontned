@@ -73,7 +73,7 @@
                   <tbody>
                     <tr *ngFor="let p of domainPlacements">
                       <td>{{ p.id || p.placement_id }}</td>
-                      <td>{{ p.name || p.title || JSON.stringify(p) }}</td>
+                      <td>{{ p.name || p.title || '-' }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -132,7 +132,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let s of smartLinks">
-                    <td>{{ s.id }}</td>
+                    <td>{{ s.id }}</td> 
                     <td>{{ s.title || s.alias }}</td>
                     <td class="url-cell">
                       <span class="url-text">{{ s.url }}</span>
