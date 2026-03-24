@@ -29,19 +29,23 @@ export class AppComponent implements OnInit {
     const token = this.localStorageService.getLoggerToken();
     const currentUrl = window.location.pathname;
     
+    console.log("tokentokentoken", token)
     // Check if user is already on an admin route - if so, don't redirect
     const isAdminRoute = currentUrl.startsWith('/admin') || currentUrl.startsWith('/manage-user-admin');
     
     // Only redirect if user has token and is NOT already in admin area
     // This prevents redirect when refreshing admin pages like /admin/withdraws
     if (token && !isAdminRoute) {
+      this.router.navigate(['/admin/dashboard']);
       // Define public routes that should redirect to dashboard
-      const publicRoutes = ['/', '/auth/login', '/auth/signup', '/publisher-rates', '/payment-proof', '/payment-system', '/payment-rules', '/blog', '/about-us', '/contact-us', '/privacy-policy'];
-      const isPublicRoute = publicRoutes.some(route => currentUrl === route || currentUrl.startsWith(route + '/'));
+      // const publicRoutes = ['/', '/auth/login', '/auth/signup', '/publisher-rates', '/payment-proof', '/payment-system', '/payment-rules', '/blog', '/about-us', '/contact-us', '/privacy-policy'];
+      // const isPublicRoute = publicRoutes.some(route => currentUrl === route || currentUrl.startsWith(route + '/'));
       
-      if (isPublicRoute) {
-        this.router.navigate(['/admin/dashboard']);
-      }
+      // if (isPublicRoute) {
+      //   this.router.navigate(['/admin/dashboard']);
+      // }
+    } else {
+      this.router.navigate(['/']);
     }
   }
 }

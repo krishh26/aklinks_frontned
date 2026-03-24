@@ -1110,6 +1110,13 @@
   border-bottom: none;
 }
 
+.statistics-empty {
+  text-align: center;
+  color: var(--text-secondary, #888);
+  font-style: italic;
+  padding: 1.5rem 1rem !important;
+}
+
 /* Responsive Design */
 
 /* Tablet and below (1024px) */

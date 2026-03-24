@@ -145,7 +145,8 @@ export class AdsterraService {
         params: httpParams,
       })
       .pipe(
-        timeout(1),
+        // Give the backend (which already has its own 15s timeout) enough time.
+        timeout(20000),
         catchError((err) => {
           console.error('[AdsterraService] getStatistics error', err);
           return throwError(() => err);
