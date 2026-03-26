@@ -287,42 +287,49 @@
         <!-- Recent Activity -->
         <div class="dashboard-card">
           <div class="card-header">
-            <h3 class="card-title">Recent Activity</h3>
-            <a href="#" class="card-action">View All</a>
+            <div class="card-header-text">
+              <h3 class="card-title">Recent Activity</h3>
+              <p class="card-scope-line" *ngIf="widgetsLoaded && activityScope">
+                {{ activityScope === 'all' ? 'Platform-wide' : 'Your account' }}
+              </p>
+            </div>
+            <a routerLink="/admin/all-links" class="card-action">View All</a>
           </div>
           <div class="card-content">
             <div class="activity-list">
-              <div class="activity-item">
-                <div class="activity-icon">🔗</div>
-                <div class="activity-content">
-                  <p class="activity-text">New link created: <strong>bit.ly/abc123</strong></p>
-                  <span class="activity-time">2 minutes ago</span>
+              <p *ngIf="widgetsLoading" class="widgets-placeholder">Loading activity…</p>
+              <ng-container *ngIf="!widgetsLoading && widgetsLoaded">
+                <div class="activity-item" *ngFor="let item of recentActivities">
+                  <div class="activity-icon">{{ activityIcon(item.type) }}</div>
+                  <div class="activity-content">
+                    <ng-container [ngSwitch]="item.type">
+                      <p *ngSwitchCase="'link_created'" class="activity-text">
+                        New link created:
+                        <strong>{{ item.shortLink }}</strong>
+                        <span *ngIf="isAdmin() && item.actorName"> · {{ item.actorName }}</span>
+                      </p>
+                      <p *ngSwitchCase="'user_registered'" class="activity-text">
+                        New user registered:
+                        <strong>{{ item.userName }}</strong>
+                      </p>
+                      <p *ngSwitchCase="'link_click'" class="activity-text">
+                        Link clicked:
+                        <strong>{{ item.shortLink }}</strong>
+                        <span *ngIf="(item.revenue ?? 0) > 0">
+                          · {{ formatCurrency(item.revenue ?? 0) }}
+                        </span>
+                      </p>
+                      <p *ngSwitchCase="'referral_bonus'" class="activity-text">
+                        Referral reward:
+                        <strong>{{ formatCurrency(item.amount ?? 0) }}</strong>
+                        <span *ngIf="item.referredUserName"> · {{ item.referredUserName }}</span>
+                      </p>
+                    </ng-container>
+                    <span class="activity-time">{{ formatRelativeTime(item.at) }}</span>
+                  </div>
                 </div>
-              </div>
-              
-              <div class="activity-item">
-                <div class="activity-icon">👤</div>
-                <div class="activity-content">
-                  <p class="activity-text">New user registered: <strong>john_doe</strong></p>
-                  <span class="activity-time">15 minutes ago</span>
-                </div>
-              </div>
-              
-              <div class="activity-item">
-                <div class="activity-icon">👁️</div>
-                <div class="activity-content">
-                  <p class="activity-text">Link clicked: <strong>bit.ly/xyz789</strong></p>
-                  <span class="activity-time">1 hour ago</span>
-                </div>
-              </div>
-              
-              <div class="activity-item">
-                <div class="activity-icon">💰</div>
-                <div class="activity-content">
-                  <p class="activity-text">Payment processed: <strong>{{ formatCurrency(25.00) }}</strong></p>
-                  <span class="activity-time">2 hours ago</span>
-                </div>
-              </div>
+                <p *ngIf="recentActivities.length === 0" class="widgets-empty">No recent activity yet.</p>
+              </ng-container>
             </div>
           </div>
         </div>
@@ -330,53 +337,46 @@
         <!-- Top Performing Links -->
         <div class="dashboard-card">
           <div class="card-header">
-            <h3 class="card-title">Top Performing Links</h3>
-            <a href="#" class="card-action">View All</a>
+            <div class="card-header-text">
+              <h3 class="card-title">Top Performing Links</h3>
+              <p class="card-scope-line" *ngIf="widgetsLoaded && topLinksScope">
+                {{ topLinksScope === 'all' ? 'All users' : 'Your links' }}
+              </p>
+            </div>
+            <a routerLink="/admin/all-links" class="card-action">View All</a>
           </div>
           <div class="card-content">
             <div class="table-container">
-              <table class="data-table">
+              <p *ngIf="widgetsLoading" class="widgets-placeholder">Loading top links…</p>
+              <table class="data-table" *ngIf="!widgetsLoading && widgetsLoaded">
                 <thead>
                   <tr>
                     <th>Link</th>
+                    <th *ngIf="isAdmin()">Owner</th>
                     <th>Clicks</th>
                     <th>Revenue</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr *ngFor="let row of topPerformingLinks">
                     <td>
                       <div class="link-cell">
-                        <span class="link-short">bit.ly/abc123</span>
-                        <span class="link-original">https://example.com/very-long-url</span>
+                        <span class="link-short">{{ row.shortLink }}</span>
+                        <span class="link-original">{{ truncateUrl(row.originalLink, 52) }}</span>
                       </div>
                     </td>
-                    <td>1,234</td>
-                    <td>{{ formatCurrency(12.34) }}</td>
-                    <td><span class="status-badge active">Active</span></td>
+                    <td *ngIf="isAdmin()">{{ row.ownerName || '—' }}</td>
+                    <td>{{ row.clicks | number : '1.0-0' }}</td>
+                    <td>{{ formatCurrency(row.revenue) }}</td>
+                    <td>
+                      <span class="status-badge active">{{ row.status }}</span>
+                    </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <div class="link-cell">
-                        <span class="link-short">bit.ly/xyz789</span>
-                        <span class="link-original">https://example.com/another-long-url</span>
-                      </div>
+                  <tr *ngIf="topPerformingLinks.length === 0">
+                    <td [attr.colspan]="isAdmin() ? 5 : 4" class="widgets-empty-cell">
+                      No click data yet. Share your links to see performance here.
                     </td>
-                    <td>987</td>
-                    <td>{{ formatCurrency(9.87) }}</td>
-                    <td><span class="status-badge active">Active</span></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="link-cell">
-                        <span class="link-short">bit.ly/def456</span>
-                        <span class="link-original">https://example.com/yet-another-url</span>
-                      </div>
-                    </td>
-                    <td>654</td>
-                    <td>{{ formatCurrency(6.54) }}</td>
-                    <td><span class="status-badge paused">Paused</span></td>
                   </tr>
                 </tbody>
               </table>

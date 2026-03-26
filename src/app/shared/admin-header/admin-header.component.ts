@@ -439,8 +439,18 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
     if (!token || token === 'null' || token === 'undefined') {
       return;
     }
+    let userId: string | undefined = undefined;
+    const user = this.localStorageService.getLogger();
+    if (user && user !== '' && typeof user === 'object') {
+      userId = user._id || user.id || undefined;
+    }
 
-    this.linkService.getAllLinks().subscribe({
+    if(!userId) {
+      this.toastService.showError('User not found');
+      return;
+    }
+
+    this.linkService.getUserLinks(userId).subscribe({
       next: (response) => {
         if (response.status === 'success') {
           this.links = response.data || [];

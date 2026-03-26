@@ -7,9 +7,14 @@ import {
   AdminDashboardService,
   AdminDashboardDailyRow,
 } from '../../services/admin-dashboard/admin-dashboard.service';
+import {
+  DashboardWidgetsService,
+  DashboardRecentActivityItem,
+  DashboardTopLinkItem,
+} from '../../services/dashboard-widgets/dashboard-widgets.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { AdminHeaderComponent } from '../../shared/admin-header/admin-header.component';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -40,12 +45,20 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   dashboardLoaded = false;
   isDashboardLoading = false;
 
+  recentActivities: DashboardRecentActivityItem[] = [];
+  topPerformingLinks: DashboardTopLinkItem[] = [];
+  activityScope: 'all' | 'user' | null = null;
+  topLinksScope: 'all' | 'user' | null = null;
+  widgetsLoaded = false;
+  widgetsLoading = false;
+
   activeCard: 'earning' | 'cpm' | 'views' | 'referral' | null = null;
 
   constructor(
     private localStorageService: LocalStorageService,
     private currencyService: CurrencyService,
-    private adminDashboardService: AdminDashboardService
+    private adminDashboardService: AdminDashboardService,
+    private dashboardWidgetsService: DashboardWidgetsService
   ) {
     this.checkScreenSize();
   }
@@ -57,11 +70,88 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.loadAdminDashboard();
+    this.loadDashboardWidgets();
   }
 
-  private isAdmin(): boolean {
+  isAdmin(): boolean {
     const user = this.localStorageService.getLogger();
     return user?.role?.toLowerCase() === 'admin' || user?.role?.toLowerCase() === 'super_admin';
+  }
+
+  private loadDashboardWidgets(): void {
+    this.widgetsLoading = true;
+    forkJoin({
+      activity: this.dashboardWidgetsService.getRecentActivity(),
+      top: this.dashboardWidgetsService.getTopLinks(),
+    }).subscribe({
+      next: ({ activity, top }) => {
+        if (activity.status === 'success' && activity.data?.items) {
+          this.recentActivities = activity.data.items;
+          this.activityScope = activity.data.scope;
+        }
+        if (top.status === 'success' && top.data?.items) {
+          this.topPerformingLinks = top.data.items;
+          this.topLinksScope = top.data.scope;
+        }
+        this.widgetsLoaded = true;
+        this.widgetsLoading = false;
+      },
+      error: (err) => {
+        console.error('[Dashboard] widgets error', err);
+        this.widgetsLoaded = true;
+        this.widgetsLoading = false;
+      },
+    });
+  }
+
+  formatRelativeTime(iso: string): string {
+    const t = new Date(iso).getTime();
+    if (isNaN(t)) {
+      return '';
+    }
+    const sec = Math.floor((Date.now() - t) / 1000);
+    if (sec < 45) {
+      return 'Just now';
+    }
+    const min = Math.floor(sec / 60);
+    if (min < 60) {
+      return `${min} minute${min === 1 ? '' : 's'} ago`;
+    }
+    const h = Math.floor(min / 60);
+    if (h < 24) {
+      return `${h} hour${h === 1 ? '' : 's'} ago`;
+    }
+    const d = Math.floor(h / 24);
+    if (d < 14) {
+      return `${d} day${d === 1 ? '' : 's'} ago`;
+    }
+    return new Date(iso).toLocaleString();
+  }
+
+  activityIcon(type: DashboardRecentActivityItem['type']): string {
+    switch (type) {
+      case 'link_created':
+        return '🔗';
+      case 'user_registered':
+        return '👤';
+      case 'link_click':
+        return '👁️';
+      case 'referral_bonus':
+        return '💰';
+      default:
+        return '•';
+    }
+  }
+
+  truncateUrl(url: string | undefined, maxLen: number): string {
+    if (!url) {
+      return '';
+    }
+    if (url.length <= maxLen) {
+      return url;
+    }
+    const half = Math.floor((maxLen - 3) / 2);
+    return `${url.slice(0, half)}…${url.slice(-half)}`;
   }
 
   private loadAdminDashboard(): void {

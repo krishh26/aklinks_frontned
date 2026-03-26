@@ -810,6 +810,10 @@
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
+.dashboard-card .card-header {
+  align-items: flex-start;
+}
+
 .card-header {
   padding: 1.5rem;
   border-bottom: 1px solid var(--border-color);
@@ -825,6 +829,21 @@
   color: var(--text-primary);
   margin: 0;
   transition: color 0.3s ease;
+}
+
+.card-header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.card-scope-line {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
 .card-action {
@@ -875,6 +894,19 @@
   font-size: 0.6875rem;
   color: var(--text-secondary);
   transition: color 0.3s ease;
+}
+
+.widgets-placeholder,
+.widgets-empty {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.widgets-empty-cell {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
 }
 
 /* Data Table */
