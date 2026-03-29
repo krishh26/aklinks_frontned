@@ -425,6 +425,72 @@
   padding: 1.25rem;
 }
 
+.latest-short-link-section {
+  margin-bottom: 1rem;
+}
+
+.latest-short-link-heading {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+.latest-short-link-pill {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 9999px;
+  overflow: hidden;
+  min-height: 2.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.latest-short-link-url {
+  flex: 1 1 78%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 1rem;
+  background: #2d3238;
+  color: #c8ccd0;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.latest-short-link-copy-btn {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.25rem;
+  padding: 0 1rem;
+  border: none;
+  cursor: pointer;
+  background: #f5b8c4;
+  color: #c41e4a;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.latest-short-link-copy-btn:hover {
+  background: #f0a8b6;
+  color: #a01838;
+}
+
+.latest-short-link-copy-btn:active {
+  background: #eb98a8;
+}
+
+.latest-short-link-copy-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
+}
+
 .form-card,
 .links-container {
   background: var(--card-bg);

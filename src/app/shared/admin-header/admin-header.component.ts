@@ -114,6 +114,22 @@ import { ToastService } from '../../services/toast/toast.service';
         </div>
 
         <div class="shorten-link-modal-body">
+          <div class="latest-short-link-section" *ngIf="latestLink as link">
+            <div class="latest-short-link-heading">Short link</div>
+            <div class="latest-short-link-pill">
+              <span class="latest-short-link-url" [title]="getFullShortLink(link.shortLink)">{{ getFullShortLink(link.shortLink) }}</span>
+              <button
+                type="button"
+                class="latest-short-link-copy-btn"
+                (click)="copyToClipboard(link.shortLink)"
+                title="Copy link">
+                <svg class="latest-short-link-copy-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
           <div class="message-container" *ngIf="errorMessage || successMessage">
             <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
             <div class="success-message" *ngIf="successMessage">{{ successMessage }}</div>
@@ -487,6 +503,16 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
       month: 'short',
       day: 'numeric'
     });
+  }
+
+  /** Most recently created link (by createdAt). */
+  get latestLink(): Link | null {
+    if (!this.links?.length) {
+      return null;
+    }
+    return [...this.links].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )[0];
   }
 
   deleteLink(link: Link): void {
