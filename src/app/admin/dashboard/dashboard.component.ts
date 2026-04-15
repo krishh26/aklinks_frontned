@@ -16,6 +16,7 @@ import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { AdminHeaderComponent } from '../../shared/admin-header/admin-header.component';
 import { Subscription, forkJoin } from 'rxjs';
 import { Chart, registerables } from 'chart.js';
+import { CpmService } from '../../services/cpm.service';
 
 Chart.register(...registerables);
 
@@ -29,6 +30,7 @@ Chart.register(...registerables);
 export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   isSidebarOpen = false;
   private currencySubscription?: Subscription;
+  private cpmSubscription?: Subscription;
   private chart: Chart | null = null;
 
   todaysEarning = 0;
@@ -53,10 +55,12 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   widgetsLoading = false;
 
   activeCard: 'earning' | 'cpm' | 'views' | 'referral' | null = null;
+  configuredCpm = 5;
 
   constructor(
     private localStorageService: LocalStorageService,
     private currencyService: CurrencyService,
+    private cpmService: CpmService,
     private adminDashboardService: AdminDashboardService,
     private dashboardWidgetsService: DashboardWidgetsService
   ) {
@@ -69,6 +73,12 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
         this.chart.update();
       }
     });
+
+    // CPM is a global config; keep it updated for all users.
+    this.cpmSubscription = this.cpmService.getCpm$().subscribe((val) => {
+      this.configuredCpm = val;
+    });
+
     this.loadAdminDashboard();
     this.loadDashboardWidgets();
   }
@@ -225,9 +235,20 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.currencySubscription) {
       this.currencySubscription.unsubscribe();
     }
+    if (this.cpmSubscription) {
+      this.cpmSubscription.unsubscribe();
+    }
     if (this.chart) {
       this.chart.destroy();
     }
+  }
+
+  displayCpmToday(): number {
+    return this.isAdmin() ? this.todaysCpmCount : this.configuredCpm;
+  }
+
+  displayCpmTotal(): number {
+    return this.isAdmin() ? this.totalCpmCount : this.configuredCpm;
   }
 
   private initChart(): void {

@@ -53,7 +53,7 @@ export class SidebarComponent implements OnInit, OnChanges {
       // Check role for permissions
       if (user.role) {
         const userRole = user.role.toLowerCase();
-        this.isAdminRole = userRole === 'admin';
+        this.isAdminRole = userRole === 'admin' || userRole === 'super_admin';
         this.isUserRole = userRole === 'user' || this.isAdminRole;
       }
     } else {

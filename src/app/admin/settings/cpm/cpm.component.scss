@@ -1,0 +1,140 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: #0b0f19;
+  color: #e5e7eb;
+}
+
+.sidebar-closed .main-content {
+  margin-left: 0;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 280px;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 9;
+}
+
+.dashboard-content {
+  padding: 24px;
+}
+
+.settings-container {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.settings-form {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.section-title {
+  margin: 0 0 8px 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.section-description {
+  margin: 0 0 18px 0;
+  color: rgba(229, 231, 235, 0.85);
+  line-height: 1.5;
+}
+
+.form-group {
+  margin-top: 16px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  color: #e5e7eb;
+  outline: none;
+}
+
+.form-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-hint {
+  display: block;
+  margin-top: 8px;
+  color: rgba(229, 231, 235, 0.7);
+}
+
+.info-box {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.18);
+}
+
+.info-title {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.info-list {
+  margin: 0;
+  padding-left: 18px;
+  color: rgba(229, 231, 235, 0.85);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.submit-button {
+  background: #2563eb;
+  color: white;
+}
+
+.cancel-button {
+  background: transparent;
+  color: #e5e7eb;
+}
+
+.submit-button:disabled,
+.cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 0;
+  }
+}
+
