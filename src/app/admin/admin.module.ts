@@ -9,6 +9,7 @@ import { SupportComponent } from "./support/support.component";
 import { ChangePasswordComponent } from "./settings/change-password/change-password.component";
 import { ProfileComponent } from "./settings/profile/profile.component";
 import { CurrencyComponent } from "./settings/currency/currency.component";
+import { CpmComponent } from "./settings/cpm/cpm.component";
 import { ReferEarnSettingComponent } from "./settings/refer-earn-setting/refer-earn-setting.component";
 import { AdsterraApiComponent } from "./settings/adsterra-api/adsterra-api.component";
 import { AllLinksComponent } from "./all-links/all-links.component";
@@ -29,6 +30,7 @@ import { AdsterraAnalyticsComponent } from "./adsterra-analytics/adsterra-analyt
     ChangePasswordComponent,
     ProfileComponent,
     CurrencyComponent,
+    CpmComponent,
     ReferEarnSettingComponent,
     AdsterraApiComponent,
     AllLinksComponent,
@@ -46,6 +48,7 @@ import { AdsterraAnalyticsComponent } from "./adsterra-analytics/adsterra-analyt
       { path: 'settings/profile', component: ProfileComponent },
       { path: 'settings/change-password', component: ChangePasswordComponent },
       { path: 'settings/currency', component: CurrencyComponent },
+      { path: 'settings/cpm', component: CpmComponent },
       { path: 'settings/refer-earn-setting', component: ReferEarnSettingComponent },
       { path: 'settings/adsterra-api', component: AdsterraApiComponent },
       { path: 'adsterra-analytics', component: AdsterraAnalyticsComponent },

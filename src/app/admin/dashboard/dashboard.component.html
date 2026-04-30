@@ -71,7 +71,7 @@
         <div
           class="stat-card stat-card--flip"
           [class.stat-card--flipped]="activeCard === 'cpm'"
-          *ngIf="isValidNumber(todaysCpmCount) && isValidNumber(totalCpmCount)"
+          *ngIf="isValidNumber(displayCpmToday()) && isValidNumber(displayCpmTotal())"
         >
           <div class="stat-card-inner">
             <!-- Front: Today -->
@@ -83,7 +83,7 @@
                   <span class="stat-hint">Hover to see total</span>
                 </div>
                 <h3 class="stat-number">
-                  {{ formatCurrency(todaysCpmCount) }}
+                  {{ formatCurrency(displayCpmToday()) }}
                 </h3>
                 <p class="stat-label">CPM</p>
               </div>
@@ -105,7 +105,7 @@
                   <span class="stat-hint">Hover to see today</span>
                 </div>
                 <h3 class="stat-number">
-                  {{ formatCurrency(totalCpmCount) }}
+                  {{ formatCurrency(displayCpmTotal()) }}
                 </h3>
                 <p class="stat-label">CPM</p>
               </div>

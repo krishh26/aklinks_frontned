@@ -10,6 +10,8 @@ export enum SettingsEndPoint {
     GET_ALL_SETTINGS = '/settings/all',
     GET_REFER_AMOUNT = '/settings/refer-amount',
     UPDATE_REFER_AMOUNT = '/settings/refer-amount',
+    GET_CPM_VALUE = '/settings/cpm',
+    UPDATE_CPM_VALUE = '/settings/cpm',
 }
 
 @Injectable({
@@ -95,6 +97,27 @@ export class SettingsService {
         return this.httpClient
             .put<any>(this.baseUrl + SettingsEndPoint.UPDATE_REFER_AMOUNT, 
                 { referAmount }, 
+                { headers: this.getHeader() }
+            );
+    }
+
+    /**
+     * Get CPM value (public endpoint)
+     */
+    getCpmValue(): Observable<any> {
+        return this.httpClient
+            .get<any>(this.baseUrl + SettingsEndPoint.GET_CPM_VALUE, {
+                headers: this.getPublicHeader()
+            });
+    }
+
+    /**
+     * Update CPM value (admin only)
+     */
+    updateCpmValue(cpm: number): Observable<any> {
+        return this.httpClient
+            .put<any>(this.baseUrl + SettingsEndPoint.UPDATE_CPM_VALUE,
+                { cpm },
                 { headers: this.getHeader() }
             );
     }

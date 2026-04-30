@@ -1,0 +1,67 @@
+<div class="dashboard-container" [class.sidebar-closed]="!isSidebarOpen">
+  <app-sidebar [isOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-sidebar>
+
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
+
+  <main class="main-content">
+    <app-admin-header [isSidebarOpen]="isSidebarOpen" (sidebarToggle)="toggleSidebar()"></app-admin-header>
+
+    <div class="dashboard-content animate-on-load">
+      <div class="settings-container">
+        <form (ngSubmit)="onSubmit()" class="settings-form">
+          <div class="settings-form-wrapper">
+            <h2 class="section-title">CPM Configuration</h2>
+            <p class="section-description">
+              Set the CPM (Cost Per Mille) value used throughout the application.
+              CPM represents the cost in USD per 1000 impressions.
+            </p>
+
+            <div class="form-group">
+              <label for="cpm">CPM (USD per 1000 impressions) *</label>
+              <input
+                type="number"
+                id="cpm"
+                name="cpm"
+                [(ngModel)]="cpm"
+                class="form-input"
+                required
+                min="0.01"
+                step="0.01"
+                placeholder="Enter CPM (e.g., 5)"
+                [disabled]="isLoading || isSaving"
+              />
+              <small class="form-hint">
+                Current CPM: ${{ cpm }}
+              </small>
+            </div>
+
+            <div class="info-box">
+              <h3 class="info-title">ℹ️ Information</h3>
+              <ul class="info-list">
+                <li>The default CPM is set to $5 per 1000 impressions.</li>
+                <li>Only administrators can modify this setting.</li>
+                <li>Changes will be reflected immediately after saving.</li>
+              </ul>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="submit-button" [disabled]="isLoading || isSaving">
+                <span *ngIf="!isSaving">Save Changes</span>
+                <span *ngIf="isSaving">Saving...</span>
+              </button>
+              <button
+                type="button"
+                class="cancel-button"
+                (click)="onCancel()"
+                [disabled]="isLoading || isSaving"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
