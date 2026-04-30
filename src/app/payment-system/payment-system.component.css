@@ -65,3 +65,21 @@
   font-weight: bold;
   margin-right: 0.5rem;
 }
+
+.coming-soon-item {
+  display: block;
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  margin-left: 0.6rem;
+  margin-top: 0;
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffe69c;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  white-space: nowrap;
+}
