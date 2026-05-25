@@ -52,6 +52,7 @@ import { AdsterraAnalyticsComponent } from "./adsterra-analytics/adsterra-analyt
       { path: 'settings/refer-earn-setting', component: ReferEarnSettingComponent },
       { path: 'settings/adsterra-api', component: AdsterraApiComponent },
       { path: 'adsterra-analytics', component: AdsterraAnalyticsComponent },
+      { path: 'links', redirectTo: 'all-links', pathMatch: 'full' },
       { path: 'all-links', component: AllLinksComponent },
       { path: 'hidden-links', component: HiddenLinksComponent },
       { path: 'referral-earning', component: ReferralEarningComponent },
